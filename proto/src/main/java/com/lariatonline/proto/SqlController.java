@@ -68,30 +68,35 @@ public class SqlController {
 		return "readlimited";
 	}
 	
-	
-	
-	@GetMapping("/api/readuniq")
-	public String seekDistinct() {
-		String url0 = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2024/Dec2024/databaseDUMP/database5.db";
-		String query0 = "SELECT * hic_path FROM imag";
-		
-		try {
-			Connection connection = DriverManager.getConnection(url0);
-			PreparedStatement statement = connection.prepareStatement(query0);		
-//			Statement statement = connection.createStatement();
-			ResultSet response = statement.executeQuery();
-            while (response.next()) {
-                System.out.println("hic_path: " + response.getString("hic_path"));
-            }
 
-            response.close();
-            statement.close();
-            connection.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }		
-		
-		return "readHic";
-	}	
+	/***
+	 * 
+	 * DISTINCT keyword fails, find something else.
+	 * 
+	 */
+	
+//	@GetMapping("/api/readuniq")
+//	public String seekDistinct() {
+//		String url0 = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2024/Dec2024/databaseDUMP/database5.db";
+//		String query0 = "SELECT * hic_path FROM imag";
+//		
+//		try {
+//			Connection connection = DriverManager.getConnection(url0);
+//			PreparedStatement statement = connection.prepareStatement(query0);		
+////			Statement statement = connection.createStatement();
+//			ResultSet response = statement.executeQuery();
+//            while (response.next()) {
+//                System.out.println("hic_path: " + response.getString("hic_path"));
+//            }
+//
+//            response.close();
+//            statement.close();
+//            connection.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }		
+//		
+//		return "readHic";
+//	}	
 
 }
