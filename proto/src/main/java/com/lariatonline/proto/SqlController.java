@@ -68,8 +68,10 @@ public class SqlController {
 		return "readlimited";
 	}
 	
+	
+	
 	@GetMapping("/api/readuniq")
-	public String findDistinct() {
+	public String seekDistinct() {
 		String url0 = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2024/Dec2024/databaseDUMP/database5.db";
 		String query0 = "SELECT * hic_path FROM imag";
 		
