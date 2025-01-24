@@ -12,15 +12,24 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
+import com.google.gson.Gson; 
+//import org.apache.commons.dbutils.QueryRunner;
+//import org.apache.commons.dbutils.ResultSetHandler;
+
 import java.sql.*;
 import java.sql.DriverManager;
 //import java.sql.SQLException;
+
+//import com.lariatonline.proto.BindDatabase;
 
 
 @RestController
 public class SqlController {
 	
 	Map<String,List<String>> tableMemory = new HashMap<>();
+	
+	BindDatabase binder = new BindDatabase();
+	
 	
 	@GetMapping("/api/test")
 	public ResponseEntity<String> test() {
@@ -89,7 +98,7 @@ public class SqlController {
 	 */
 	
 	@GetMapping("/api/scanDB")
-	public String walkDatabase() {
+	public ResponseEntity<String> walkDatabase() {
 		String url0 = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/Jan2025/012125_java2sqlite3/database5.db";
 		String query0 = "SELECT hic_path,resolution FROM imag";
 		
@@ -121,8 +130,13 @@ public class SqlController {
             e.printStackTrace();
         }		
 		
+		String payload = "";
 		
-		return "readHic";
+		System.out.println(binder.BindPath());
+		
+		
+		return new ResponseEntity<String>(payload, HttpStatus.OK);
+//		return "readHic";
 	}	
 
 }
