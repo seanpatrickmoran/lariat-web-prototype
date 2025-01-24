@@ -1,5 +1,7 @@
 import Draggable from 'react-draggable';
-import React, {useState} from 'react';
+// import React, {useState} from 'react';
+import React, {useEffect,useState} from 'react';
+import { fetchTest } from './QueryView.jsx';
 
   async function getTableMemory() {
     // const reply = window.api.invoke('load-table-memory','get table mem');
@@ -44,6 +46,17 @@ export default class QueryBody extends React.Component{
   // const options = window.api.invoke('talk-to-main', 'gimme');
 
   }
+
+  // useEffect(() => {
+  //     const fetchData = async () => {
+  //         const response = await fetch(`http://localhost:8080/api/test`)
+  //         const newData = await response.json()
+  //         console.log(newData)
+  //     };  
+
+  //       fetchData();
+  //   }, []);
+
 
 	  render (){
   return <>

@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+
 import java.sql.*;
 import java.sql.DriverManager;
 //import java.sql.SQLException;
@@ -19,9 +22,8 @@ public class SqlController {
 	
 	Map<String,List<String>> tableMemory = new HashMap<>();
 	
-	
 	@GetMapping("/api/test")
-	public String test() {
+	public ResponseEntity<String> test() {
 		String url0 = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/Jan2025/012125_java2sqlite3/database5.db";
 		String query0 = "SELECT * FROM imag LIMIT 200 OFFSET 0";		
 		
@@ -43,7 +45,9 @@ public class SqlController {
             
         }		
 		
-		return "test test, anybody home?";
+		return new ResponseEntity<String>("\"hello!\"", HttpStatus.OK);
+		
+//		return "test test, anybody home?";
 	}
 	
 	/**
@@ -106,10 +110,8 @@ public class SqlController {
             	
             	if(!(tableMemory.get(hicResponse).contains(resolutionResponse))) {
             		tableMemory.get(hicResponse).add(resolutionResponse);
-            		
             		System.out.println(hicResponse + ", " + resolutionResponse + " ..." );
             	}
-            	
             }
 
             response.close();
