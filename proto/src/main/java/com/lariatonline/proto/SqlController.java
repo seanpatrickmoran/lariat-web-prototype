@@ -54,6 +54,7 @@ public class SqlController {
             
         }		
 		
+		System.out.println(readTableMemory());
 		return new ResponseEntity<String>(new Gson().toJson(listOfMaps), HttpStatus.OK);
 	}
 	
@@ -82,7 +83,7 @@ public class SqlController {
 			 e.printStackTrace();
 		}
 		
-		
+		System.out.println(readTableMemory());		
 		return new ResponseEntity<String>(new Gson().toJson(listOfMaps), HttpStatus.OK);
 	}
 	
@@ -125,12 +126,23 @@ public class SqlController {
         } catch (Exception e) {
             e.printStackTrace();
         }		
+				
+//		System.out.println(binder.BindPath());
+//		System.out.println(readTableMemory());
+		return new ResponseEntity<String>("", HttpStatus.OK);
+	}
+	
+	@GetMapping("/api/readTableMemory")
+	public String readTableMemory() {
+		if(tableMemory.isEmpty()) {
+			ResponseEntity sink = walkDatabase();
+//			System.out.println(sink);
+		}
 		
-		String payload = "";
-		
-		System.out.println(binder.BindPath());
-		
-		return new ResponseEntity<String>(payload, HttpStatus.OK);
+		Gson gson = new Gson(); 
+		return gson.toJson(tableMemory); 
 	}	
+	
+	
 
 }
