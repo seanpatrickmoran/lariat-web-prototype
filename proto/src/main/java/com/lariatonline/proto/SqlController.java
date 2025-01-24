@@ -13,12 +13,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
 import com.google.gson.Gson; 
-//import org.apache.commons.dbutils.QueryRunner;
-//import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.dbutils.handlers.MapListHandler;
 
-import java.sql.*;
-import java.sql.DriverManager;
+
 //import java.sql.SQLException;
+import java.sql.*;
 
 //import com.lariatonline.proto.BindDatabase;
 
@@ -27,67 +28,62 @@ import java.sql.DriverManager;
 public class SqlController {
 	
 	Map<String,List<String>> tableMemory = new HashMap<>();
-	
 	BindDatabase binder = new BindDatabase();
 	
 	
 	@GetMapping("/api/test")
 	public ResponseEntity<String> test() {
-		String url0 = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/Jan2025/012125_java2sqlite3/database5.db";
-		String query0 = "SELECT * FROM imag LIMIT 200 OFFSET 0";		
+		
+        Connection connection = null;
+        List<Map<String, Object>> listOfMaps = null;
+        
+		String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/Jan2025/012125_java2sqlite3/database5.db";
+		String testQuery = "SELECT * FROM imag LIMIT 200 OFFSET 0";		
 		
 		try {
-			Connection connection = DriverManager.getConnection(url0);
-			Statement statement = connection.createStatement();
-			ResultSet response = statement.executeQuery(query0);
+			MapListHandler beanListHandler = new MapListHandler();
+			QueryRunner queryrunner = new QueryRunner();
 			
-            while (response.next()) {
-                System.out.println("Name: " + response.getString("name") +
-                                   ", Coordinates: " + response.getString("coordinates"));
-            }
-
-            response.close();
-            statement.close();
+			
+			connection = DriverManager.getConnection(databaseURI);
+			listOfMaps = queryrunner.query(connection, testQuery, beanListHandler);
+			
             connection.close();
         } catch (Exception e) {
             e.printStackTrace();
             
         }		
 		
-		return new ResponseEntity<String>("\"hello!\"", HttpStatus.OK);
-		
-//		return "test test, anybody home?";
+		return new ResponseEntity<String>(new Gson().toJson(listOfMaps), HttpStatus.OK);
 	}
+	
 	
 	/**
 	 * @param offset
 	 * @return
 	 */
 	@GetMapping("/api/read_limiter")
-	public String read_limiter(@RequestParam("offset")int offset) {
-		String url0 = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/Jan2025/012125_java2sqlite3/database5.db";
-		String query0 = "SELECT * FROM imag LIMIT 200 OFFSET ?";	
+	public ResponseEntity<String> read_limiter(@RequestParam("offset")int offset) {
+		
+        Connection connection = null;
+        List<Map<String, Object>> listOfMaps = null;		
+		
+		String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/Jan2025/012125_java2sqlite3/database5.db";
+		String callQuery = "SELECT * FROM imag LIMIT 200 OFFSET ?";	
 		
 		try {
-			Connection connection = DriverManager.getConnection(url0);
-			PreparedStatement statement = connection.prepareStatement(query0);
-			statement.setInt(1, offset);
+			MapListHandler beanListHandler = new MapListHandler();
+			QueryRunner queryrunner = new QueryRunner();
 			
-			ResultSet response = statement.executeQuery();
-            while (response.next()) {
-                System.out.println("Name: " + response.getString("name") +
-                                   ", Coordinates: " + response.getString("coordinates"));
-            }
-
-            response.close();
-            statement.close();
-            connection.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            
-        }		
+			connection = DriverManager.getConnection(databaseURI);
+			listOfMaps = queryrunner.query(connection, callQuery, beanListHandler, offset);
+			
+		} catch (Exception e) {
+			 e.printStackTrace();
+		}
 		
-		return "readlimited";
+		
+		return new ResponseEntity<String>(new Gson().toJson(listOfMaps), HttpStatus.OK);
 	}
 	
 
@@ -134,9 +130,7 @@ public class SqlController {
 		
 		System.out.println(binder.BindPath());
 		
-		
 		return new ResponseEntity<String>(payload, HttpStatus.OK);
-//		return "readHic";
 	}	
 
 }
