@@ -8,12 +8,9 @@ export default class MainContent extends React.Component{
     console.log('Data: ', data);
   };
   componentDidMount() {
-      // Changing the state after 2 sec
-      // from the time when the component
-      // is rendered
-      setTimeout(() => {
-          console.log('hello');
-      }, 10);
+      // setTimeout(() => {
+      //     console.log('hello');
+      // }, 10);
   }
 
   render (){

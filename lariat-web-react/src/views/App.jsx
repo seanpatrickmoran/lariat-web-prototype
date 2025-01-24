@@ -1,40 +1,3 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
-
-// function App() {
-//   const [count, setCount] = useState(0)
-
-//   return (
-//     <>
-//       <div>
-//         <a href="https://vite.dev" target="_blank">
-//           <img src={viteLogo} className="logo" alt="Vite logo" />
-//         </a>
-//         <a href="https://react.dev" target="_blank">
-//           <img src={reactLogo} className="logo react" alt="React logo" />
-//         </a>
-//       </div>
-//       <h1>Vite + React</h1>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is {count}
-//         </button>
-//         <p>
-//           Edit <code>src/App.jsx</code> and save to test HMR
-//         </p>
-//       </div>
-//       <p className="read-the-docs">
-//         Click on the Vite and React logos to learn more
-//       </p>
-//     </>
-//   )
-// }
-
-// export default App
-
-
 import { useState, useEffect } from 'react'
 import React from "react";
 import {
@@ -42,40 +5,57 @@ import {
     Routes,
     Route,
 } from  "react-router";
-// import MainContent from './MainView/MainContent.jsx'
-// import Head from './MainView/Head.jsx'
+
 import MainPage from './MainView/MainPage.jsx'
 import QueryPage from './QueryView/QueryView.jsx'
-// const { ipcRenderer } = window
-
-// import channels from '../shared/constants.js';
-// const { ipcRenderer } = window.require('electron');
+import useLocalStorage from './CustomHooks/UseLocalStorage.js'
 
 
+export function App() {
+    // callTableMemory();
+  // const [_tMEM,set_tMEM] = useState(null);
+  // callTableMemory();
 
 
-function App() {
-    // window.api("talk-to-main", "stinky");
-  // const getData = () => {
-    // function sendData(){
-    //     console.log('sending ~stinky~')
-    //     const resolve = window.api.invoke("talk-to-main", "stinky")
-    //     resolve.then((value)=>console.log(value)).catch((err) => console.log("oh no...."));
-    // }
-  // };
-  // const [isOverlay, setIsOverlay] = useState(false)
-//   let tableMemory = {
-//             "datasetFields": Array(),
-//             // "resolutionFields": Array(),
-//             "resolutionFields": {},
-//             "NamesFields": "",
-//             "databaseName" : "",
-//             }
+  // useEffect(() => {
+  //       fetch(`http://localhost:8080/api/readTableMemory`, {
+  //         method: "GET"
+  //       })
+  //         .then((response) => response.json())
+  //         .then((data) => {
+  //           set_tMEM(data);
+  //         })
+  //         .catch((error) => console.log(error));;
+  //     }, []);
+  // const [tableMemory, setTableMemory] = useLocalStorage("tableMemory",_tMEM);
 
-//   useEffect(()=>{
-//     const reply = window.api.invoke('load-table-memory','get table mem');
-//     reply.then((result)=> {tableMemory = {...result}});
-// });
+
+
+  // const [data, setData] = useState();
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const response = await fetch(`http://localhost:8080/api/readTableMemory`, {
+  //         method: "GET"
+  //       });
+  //     setData(JSON.stringify(response));
+  //     console.log(JSON.stringify(response))
+  //   };
+
+  //   fetchData();
+  // }, [setData]);
+  // console.log(data)
+
+
+
+
+
+  // const [tableMemory, setTableMemory] = useLocalStorage("tableMemory",callTableMemory());
+  // });
+
+
+  // const [data, setData] = useState();
+
+
 
 
   return (
@@ -99,4 +79,23 @@ function App() {
     );
 }
 
-export default App
+// export async 
+
+
+// export function callTableMemory(){
+//   const [test, setTest] = useState(null);
+//   useEffect(() => {
+//     fetch(`http://localhost:8080/api/readTableMemory`, {
+//       method: "GET"
+//     })
+//       .then((response) => response.json())
+//       .then((data) => {
+//         setTest(test);
+//         console.log(data);
+//       })
+//       .catch((error) => console.log(error));;
+//   }, []);
+// }
+
+
+

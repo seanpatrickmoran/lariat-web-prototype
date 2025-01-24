@@ -53,8 +53,6 @@ public class SqlController {
             e.printStackTrace();
             
         }		
-		
-		System.out.println(readTableMemory());
 		return new ResponseEntity<String>(new Gson().toJson(listOfMaps), HttpStatus.OK);
 	}
 	
@@ -86,16 +84,13 @@ public class SqlController {
 		System.out.println(readTableMemory());		
 		return new ResponseEntity<String>(new Gson().toJson(listOfMaps), HttpStatus.OK);
 	}
-	
 
-	/***
-	 * 
-	 * DISTINCT keyword fails, find something else.
-	 * 
-	 */
+	
+	
 	
 	@GetMapping("/api/scanDB")
-	public ResponseEntity<String> walkDatabase() {
+	public void walkDatabase() {	
+//	public ResponseEntity<String> walkDatabase() {
 		String url0 = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/Jan2025/012125_java2sqlite3/database5.db";
 		String query0 = "SELECT hic_path,resolution FROM imag";
 		
@@ -126,20 +121,17 @@ public class SqlController {
         } catch (Exception e) {
             e.printStackTrace();
         }		
-				
-//		System.out.println(binder.BindPath());
-//		System.out.println(readTableMemory());
-		return new ResponseEntity<String>("", HttpStatus.OK);
+
 	}
 	
 	@GetMapping("/api/readTableMemory")
 	public String readTableMemory() {
 		if(tableMemory.isEmpty()) {
-			ResponseEntity sink = walkDatabase();
-//			System.out.println(sink);
+			walkDatabase();
 		}
 		
 		Gson gson = new Gson(); 
+		System.out.println(gson.toJson(tableMemory));
 		return gson.toJson(tableMemory); 
 	}	
 	

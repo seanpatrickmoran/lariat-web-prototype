@@ -1,7 +1,8 @@
 import Draggable from 'react-draggable';
 // import React, {useState} from 'react';
 import React, {useEffect,useState} from 'react';
-import { fetchTest } from './QueryView.jsx';
+// import { fetchTest } from './QueryView.jsx';
+import useLocalStorage from './../CustomHooks/UseLocalStorage.js'
 
   async function getTableMemory() {
     // const reply = window.api.invoke('load-table-memory','get table mem');
@@ -19,43 +20,11 @@ export default class QueryBody extends React.Component{
 
 
   componentDidMount(){
-
-  let tableMemory = {
-    "datasetFields": Array(),
-    // "resolutionFields": Array(),
-    "resolutionFields": {},
-    "NamesFields": "",
-    "databaseName" : "",
-    }
-
     // const well = await getTableMemory();
-
-
-    console.log("component did mount");
-    console.log(this);
-  // tableMemory = await ...getTableMemory();
-
-  // const reply = window.api.invoke('load-table-memory','get table mem').then((result) => result);
-  // reply.then((result)=> {tableMemory = {...result}; 
-    // console.log(result); 
-    // console.log(tableMemory)});
-
-  // console.log(reply)
-  // console.log(tableMemory);
-
-  // const options = window.api.invoke('talk-to-main', 'gimme');
 
   }
 
-  // useEffect(() => {
-  //     const fetchData = async () => {
-  //         const response = await fetch(`http://localhost:8080/api/test`)
-  //         const newData = await response.json()
-  //         console.log(newData)
-  //     };  
 
-  //       fetchData();
-  //   }, []);
 
 
 	  render (){
@@ -70,6 +39,7 @@ export default class QueryBody extends React.Component{
   onStart={this.handleStart}
   onDrag={this.handleDrag}
   onStop={this.handleStop}>
+
   <div id="content" className="content">
   <div className="control-box close-box"><a className="control-box-inner"></a></div>
   <div className="control-box zoom-box"><div className="control-box-inner"><div className="zoom-box-inner"></div></div></div>
