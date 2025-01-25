@@ -1,7 +1,5 @@
 import Draggable from 'react-draggable';
-// import React, {useState} from 'react';
 import React, {useEffect,useState} from 'react';
-// import { fetchTest } from './QueryView.jsx';
 import useLocalStorage from './../CustomHooks/UseLocalStorage.js'
 
 
@@ -10,35 +8,47 @@ export default class InspectBody extends React.Component{
          constructor(props){
             super(props);
             this.state = {selectValue: ''};  // initial state value
-            // this.ResolutionState = {selectValue: ''};  // initial state value
-            this.resolutionOptions = null;
+            this.resolutionOptions = (this.props.storetable[Object.keys(this.props.storetable)[0]]).map((el) => <option value={el} key={el}>{el}</option>);
             this.offSetQueries = null;
             this.offset = 0;
            }
 
-  // componentDidMount(){
-  // };
+componentDidMount(){
+      const node = document.getElementById("names-field");
+      console.log(Object.keys(this.props.storetable)[0])
+      const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset}&hic_path=${Object.keys(this.props.storetable)[0]}&resolution=${this.props.storetable[Object.keys(this.props.storetable)[0]][0]}`);
+            fetchPromise.then(response => {
+              return response.json();
+                  }).then(entries => {
+              let names = entries.map(elem => elem.name).join("<option />");
+              console.log(names)
+              node.innerHTML = "<option />" + names;
+              });
+
+
+      }
 
   handleDatasetChange = (event) => {
     this.setState({selectValue: event.target.value});
     if (event.target.value != "dataset"){
       this.resolutionOptions = this.props.storetable[event.target.value].map((el) => <option value={el} key={el}>{el}</option>);
-      const storeHicPath = document.getElementById("dataset-field-select").value;
+      const storeHicPath = document.getElementById("field-select").value;
       const storeResolution = document.getElementById("resolution-field-select").value;
-      const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset}&hic_path=${storeHicPath}&resolution=${storeResolution}`);
-      const node = document.getElementById("names");
+      const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset}&hic_path=${event.target.value}&resolution=${this.props.storetable[event.target.value][0]}`);
+      const node = document.getElementById("names-field");
 
       fetchPromise.then(response => {
               return response.json();
                   }).then(entries => {
               let names = entries.map(elem => elem.name).join("<option />");
+              console.log(names)
               node.innerHTML = "<option />" + names;
               });
       }
 
     else {
       this.resolutionOptions = "";
-      const node = document.getElementById("names");
+      const node = document.getElementById("names-field");
       node.innerHTML = "";
     }
   };
@@ -46,11 +56,12 @@ export default class InspectBody extends React.Component{
 
   handleResolutionChange = (event) => {
     this.setState({selectValue: event.target.value});
-    if (event.target.value != "resolution" && document.getElementById("dataset-field-select").value!="dataset"){
-      const storeHicPath = document.getElementById("dataset-field-select").value;
+    if (event.target.value != "resolution" && document.getElementById("field-select").value!="dataset"){
+      const storeHicPath = document.getElementById("field-select").value;
+      console.log(storeHicPath)
       const storeResolution = event.target.value;
-      const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset}&hic_path=${storeHicPath}&resolution=${storeResolution}`);
-      const node = document.getElementById("names");
+      const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset}&hic_path=${storeHicPath}&resolution=${event.target.value}`);
+      const node = document.getElementById("names-field");
 
       fetchPromise.then(response => {
               return response.json();
@@ -62,18 +73,15 @@ export default class InspectBody extends React.Component{
     };
 
 
-
-
     handleIncrement = (event) => {
-      const storeHicPath = document.getElementById("dataset-field-select").value;
+      const storeHicPath = document.getElementById("field-select").value;
       const storeResolution = document.getElementById("resolution-field-select").value;
       const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset+200}&hic_path=${storeHicPath}&resolution=${storeResolution}`);
-      const node = document.getElementById("names");
-
+      const node = document.getElementById("names-field");
       fetchPromise.then(response => {
               return response.json();
                   }).then(entries => {
-              names = [...entries.map(elem => elem.name)];
+              let names = [...entries.map(elem => elem.name)];
               if (names.length!=0){
                   this.offset += 200;
                   let names = entries.map(elem => elem.name).join("<option />");
@@ -84,15 +92,15 @@ export default class InspectBody extends React.Component{
 
 
     handleDecrement = (event) => {
-      const storeHicPath = document.getElementById("dataset-field-select").value;
+      const storeHicPath = document.getElementById("field-select").value;
       const storeResolution = document.getElementById("resolution-field-select").value;
       const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset-200}&hic_path=${storeHicPath}&resolution=${storeResolution}`);
-      const node = document.getElementById("names");
+      const node = document.getElementById("names-field");
 
       fetchPromise.then(response => {
               return response.json();
                   }).then(entries => {
-              names = [...entries.map(elem => elem.name)];
+              let names = [...entries.map(elem => elem.name)];
               if (names.length!=0){
                   this.offset -= 200;
                   let names = entries.map(elem => elem.name).join("<option />");
@@ -100,6 +108,13 @@ export default class InspectBody extends React.Component{
                 }
               });
     }
+
+    handleResolutionChange = (event) => {
+      const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset-200}&hic_path=${storeHicPath}&resolution=${storeResolution}`);
+
+      
+    }
+
 
 
 	  render (){
@@ -113,23 +128,23 @@ export default class InspectBody extends React.Component{
   onDrag={this.handleDrag}
   onStop={this.handleStop}>
 
-      <div id="content" class="content">
-      <div class="control-box close-box"><a class="control-box-inner"></a></div>
-      <div class="control-box zoom-box">
-         <div class="control-box-inner">
-            <div class="zoom-box-inner"></div>
+      <div id="content" className="content">
+      <div className="control-box close-box"><a className="control-box-inner"></a></div>
+      <div className="control-box zoom-box">
+         <div className="control-box-inner">
+            <div className="zoom-box-inner"></div>
          </div>
       </div>
-      <div class="control-box windowshade-box">
-         <div class="control-box-inner">
-            <div class="windowshade-box-inner"></div>
+      <div className="control-box windowshade-box">
+         <div className="control-box-inner">
+            <div className="windowshade-box-inner"></div>
          </div>
       </div>
-      <h1 class="title">Inspect</h1>
-      <section class="container">
-        <div class="block">
+      <h1 className="title">Inspect</h1>
+      <div className="container">
+        <div className="block">
 
-          <div class="row-container">
+          <div className="row-container">
              <button type="button" id="inspectBtn">Inspect</button>
              <button type="button" id="popViewBtn">PopView</button> 
              <button type="button" id='tail-sql'>Filter</button>
@@ -137,46 +152,59 @@ export default class InspectBody extends React.Component{
           </div>
 
 
-          <div class="row-container">
-            <div class="column-container">
-              <div class="row-container">
+          <div className="row-container">
+            <div className="column-container">
+              <div className="row-container">
                <label for="field-select">Dataset:</label>
               </div>
-              <div class="row-container">
+              <div className="row-container">
                 <label for="field-select">Resolution:</label>
               </div>
 
             </div>
 
 
-            <div class="column-container">
-              <div class="row-container">
-               <select name="fields" id="field-select" value="dataset"></select>
+            <div className="column-container">
+              <div className="row-container">
+               <select name="fields" id="field-select" onChange={this.handleDatasetChange}>
+                               {
+                Object.keys(this.props.storetable).map((key) => {
+                  return  <option value={key}>{key}</option>
+                  })        
+                } 
+                </select>              
               </div>
 
-              <div class="row-container">
-               <select id="resolution-field-select" value="resolution"></select>
+              <div className="row-container">
+                <select id="resolution-field-select" onChange={this.handleResolutionChange}>
+                  {this.resolutionOptions}
+                </select>
               </div>
              </div>  
           </div>
 
-         <div class="row-container">
-            <select id="names-field" size="12"></select>
+         <div className="row-container">
+            <select id="names-field" size="12" onChange={this.namesFieldToCanvas}></select>
          </div>  
 
-          <div class="row-container">
-                      <div class="column-container">
-               <div id="sql-query-payload" class="column-container">
+          <div className="row-container">
+                      <div className="column-container">
+               <div id="sql-query-payload" className="column-container">
                </div>
              </div>
           </div>
 
-         <div class="row-container offset-navigation" >
-            <button type="button" id="offSetLeftButton">&#8592;</button>
-            <button type="button" id="offSetRightButton">&#8594;</button>
+         <div className="row-container offset-navigation" >
+          <button type="button" id="offSetLeftButton" onClick={this.handleDecrement}>&#8592;</button>
+          <button type="button" id="offSetRightButton" onClick={this.handleIncrement}>&#8594;</button>
           </div>
         </div>
-      </section>
+      <div class="block">
+         <div class="row-container">
+            <canvas id="canvas-inspect" width="450" height="450"></canvas>
+         </div>
+       </div>
+      </div>
       </div>
 
   </Draggable>

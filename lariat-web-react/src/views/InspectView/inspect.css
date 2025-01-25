@@ -7,8 +7,8 @@
 }*/
 
 #names-field{
-  width: 285px;
-  height: 200px;
+  width: 360px;
+  height: 480px;
 }
 
 #resolution-field-select{
@@ -132,8 +132,8 @@ ul {
 /*    z-index: 2;
     font-size: 12px;
     font-weight: normal;*/
-    width: 770px;
-    height: 520px;
+    width: 1064px;
+    height: 768px;
 /*    margin: 100px auto 0;
     border: 1px solid #111;
     background: #ccc;
