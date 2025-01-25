@@ -19,12 +19,35 @@ export default class QueryBody extends React.Component{
 
   handleDatasetChange = (event) => {
     this.setState({selectValue: event.target.value});
-    console.log(event.target.value);
-    console.log(this.state.selectValue);
     if (event.target.value != "dataset"){
       this.resolutionOptions = this.props.storetable[event.target.value].map((el) => <option value={el} key={el}>{el}</option>);
+      const storeHicPath = document.getElementById("dataset-field-select").value;
+      const storeResolution = document.getElementById("resolution-field-select").value;
+      const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset}&hic_path=${storeHicPath}&resolution=${storeResolution}`);
+      const node = document.getElementById("names");
 
-      const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset}`);
+      fetchPromise.then(response => {
+              return response.json();
+                  }).then(entries => {
+              let names = entries.map(elem => elem.name).join("<option />");
+              node.innerHTML = "<option />" + names;
+              });
+      }
+
+    else {
+      this.resolutionOptions = "";
+      const node = document.getElementById("names");
+      node.innerHTML = "";
+    }
+  };
+
+
+  handleResolutionChange = (event) => {
+    this.setState({selectValue: event.target.value});
+    if (event.target.value != "resolution" && document.getElementById("dataset-field-select").value!="dataset"){
+      const storeHicPath = document.getElementById("dataset-field-select").value;
+      const storeResolution = event.target.value;
+      const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset}&hic_path=${storeHicPath}&resolution=${storeResolution}`);
       const node = document.getElementById("names");
 
       fetchPromise.then(response => {
@@ -36,17 +59,22 @@ export default class QueryBody extends React.Component{
       };
     };
 
-    handleIncrement = (event) => {
 
-      //check that we have anything new.
-      const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset+200}`);
+
+
+
+
+
+    handleIncrement = (event) => {
+      const storeHicPath = document.getElementById("dataset-field-select").value;
+      const storeResolution = document.getElementById("resolution-field-select").value;
+      const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset+200}&hic_path=${storeHicPath}&resolution=${storeResolution}`);
       const node = document.getElementById("names");
 
       fetchPromise.then(response => {
               return response.json();
                   }).then(entries => {
               names = [...entries.map(elem => elem.name)];
-              console.log(names);
               if (names.length!=0){
                   this.offset += 200;
                   let names = entries.map(elem => elem.name).join("<option />");
@@ -57,14 +85,15 @@ export default class QueryBody extends React.Component{
 
 
     handleDecrement = (event) => {
-      const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset-200}`);
+      const storeHicPath = document.getElementById("dataset-field-select").value;
+      const storeResolution = document.getElementById("resolution-field-select").value;
+      const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset-200}&hic_path=${storeHicPath}&resolution=${storeResolution}`);
       const node = document.getElementById("names");
 
       fetchPromise.then(response => {
               return response.json();
                   }).then(entries => {
               names = [...entries.map(elem => elem.name)];
-              console.log(names);
               if (names.length!=0){
                   this.offset -= 200;
                   let names = entries.map(elem => elem.name).join("<option />");
@@ -105,7 +134,8 @@ export default class QueryBody extends React.Component{
     </div>
 
     <div className="row-container">
-      <select name="fields" id="resolution-field-select" selected="resolution">
+      <select name="fields" id="resolution-field-select" selected="resolution" onChange={this.handleResolutionChange}>
+        <option value="resolution">Resolution</option>
         {this.resolutionOptions}
       </select>
     </div>
