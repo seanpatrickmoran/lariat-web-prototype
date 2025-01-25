@@ -57,25 +57,27 @@ public class SqlController {
 	}
 	
 	
-	/**
-	 * @param offset
-	 * @return
-	 */
+	
 	@GetMapping("/api/read_limiter")
-	public ResponseEntity<String> read_limiter(@RequestParam("offset")int offset) {
+	public ResponseEntity<String> read_limiter(
+			@RequestParam("offset")int offset,
+			@RequestParam("hic_path")String hic_path,
+			@RequestParam("resolution")String resolution) {
 		
         Connection connection = null;
         List<Map<String, Object>> listOfMaps = null;		
-		
+			
 		String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/Jan2025/012125_java2sqlite3/database5.db";
-		String callQuery = "SELECT * FROM imag LIMIT 200 OFFSET ?";	
+		String callQuery = "SELECT * FROM imag WHERE hic_path = (?) AND resolution = ? LIMIT 200 OFFSET ?";	
 		
 		try {
 			MapListHandler beanListHandler = new MapListHandler();
 			QueryRunner queryrunner = new QueryRunner();
 			
 			connection = DriverManager.getConnection(databaseURI);
-			listOfMaps = queryrunner.query(connection, callQuery, beanListHandler, offset);
+//			listOfMaps = queryrunner.query(connection, callQuery, beanListHandler, offset);
+			System.out.println(offset + ", " + hic_path + ", " + resolution);
+			listOfMaps = queryrunner.query(connection, callQuery, beanListHandler, new Object[]{hic_path,resolution,offset});
 			
 		} catch (Exception e) {
 			 e.printStackTrace();
@@ -83,8 +85,7 @@ public class SqlController {
 		
 		System.out.println(readTableMemory());		
 		return new ResponseEntity<String>(new Gson().toJson(listOfMaps), HttpStatus.OK);
-	}
-
+	}	
 	
 	
 	

@@ -35,4 +35,7 @@ public class BindDatabase {
 //        return new Gson().toJson(listOfMaps);
 //    }
 	
+	public String runLengthDecode() {
+		return "imported";
+	}	
 }
