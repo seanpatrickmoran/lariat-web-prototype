@@ -1,14 +1,14 @@
 import Head from '../MainView/Head.jsx';
-import QueryBody from './QueryBody.jsx'
+import InspectBody from './InspectBody.jsx'
 import PasteBoard from '../PasteboardView/PasteboardView.jsx'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import './query.css';
+import './inspect.css';
 import '../style.css';
 import '../PasteboardView/popBoard.css';
 import useLocalStorage from './../CustomHooks/UseLocalStorage.js';
 
-export default function QueryView() {
+export default function InspectView() {
 
     const [tableMemory, setTableMemory] = useLocalStorage("tableMemory");
     // console.log("component did mount");
@@ -23,7 +23,7 @@ export default function QueryView() {
   return (
     <>
       <Head />
-      <QueryBody storetable={tableMemory}/>
+      <InspectBody storetable={tableMemory}/>
       <PasteBoard />
     </>
   )

@@ -8,6 +8,7 @@ import {
 
 import MainPage from './MainView/MainPage.jsx'
 import QueryPage from './QueryView/QueryView.jsx'
+import InspectPage from './InspectView/InspectView.jsx'
 import useLocalStorage from './CustomHooks/UseLocalStorage.js'
 
 
@@ -72,6 +73,11 @@ export function App() {
                         path="/query"
                         element={<QueryPage />}
                     />
+                    <Route
+                        exact
+                        path="/inspect"
+                        element={<InspectPage />}
+                    />                
                 </Routes>
             </BrowserRouter>
             {/*<button onClick={sendData}>Get data</button>*/}

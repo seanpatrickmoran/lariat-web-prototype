@@ -1,0 +1,144 @@
+/*#names-field {
+    border: 1px solid black;
+    margin: 3px;
+    width: 256px;
+    height: 442px;
+    overflow: auto;
+}*/
+
+#names-field{
+  width: 285px;
+  height: 200px;
+}
+
+#resolution-field-select{
+  width: 201px;
+}
+
+#field-select{
+  width: 201px;
+}
+
+#filter{
+  width: 50px;
+}
+
+#pop-rows{
+    margin-top: 0;
+}
+
+#resetfiltersBtn{
+  margin-top: 10px;
+}
+
+
+ul {
+  list-style-type: none;
+}
+
+.container {
+  display: flex;
+/*  justify-content: space-between; /* Space between the blocks */*/
+/*  gap: 20px;  Optional gap between blocks */
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin-right: 25px;
+}
+
+
+.row-container {
+  margin: 3px;
+  display: flex;
+  flex-direction: row;
+}
+
+.column-container {
+  margin: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+
+#query-left-legend {
+  margin-right: 20px;
+}
+#query-right-legend {
+  margin-left: 20px;
+  margin-right: 5px;
+}
+
+#sql-query-payload{
+  min-width: 225px;
+  max-width: 225px;
+      width: 12px;
+    background-image: #ddd;
+}
+
+/*-webkit-user-select: text;*/
+
+.title:before{
+  width: 45%;
+}
+
+.title:after{
+  width: 45%;
+}
+/*
+#viewPortWindow.hidden{
+    height: 18.5px;
+}*/
+
+#viewPortWindow {
+    width: 360px;
+    height: 460px;
+    left: 279px;
+    top: -10px;
+}
+
+#viewPortWindow .title:before{
+  width: 49%;
+  margin-right: 0px;
+}
+
+#viewPortWindow .title:after{
+  width: 49%;
+  margin-left: 0px;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+#canvas-pop {    
+    margin-left: 13px;
+    display: block;
+}
+
+#canvas-pop {    
+    margin-left: 13px;
+    display: block;
+}
+
+
+.content {
+    position: fixed;
+    left: 4px;
+    top: -66px;
+/*    z-index: 2;
+    font-size: 12px;
+    font-weight: normal;*/
+    width: 770px;
+    height: 520px;
+/*    margin: 100px auto 0;
+    border: 1px solid #111;
+    background: #ccc;
+    box-shadow:
+  1px 2px #111,
+  inset 1px 1px 0px 0px #fff,
+  inset -1px -1px 0px 0px #999;*/
+}

@@ -4,7 +4,9 @@ import React, {useEffect,useState} from 'react';
 // import { fetchTest } from './QueryView.jsx';
 import useLocalStorage from './../CustomHooks/UseLocalStorage.js'
 
-export default class QueryBody extends React.Component{
+
+
+export default class InspectBody extends React.Component{
          constructor(props){
             super(props);
             this.state = {selectValue: ''};  // initial state value
@@ -111,53 +113,72 @@ export default class QueryBody extends React.Component{
   onDrag={this.handleDrag}
   onStop={this.handleStop}>
 
-  <div id="content" className="content">
-  <div className="control-box close-box"><a className="control-box-inner"></a></div>
-  <div className="control-box zoom-box"><div className="control-box-inner"><div className="zoom-box-inner"></div></div></div>
-  <div className="control-box windowshade-box"><div className="control-box-inner"><div className="windowshade-box-inner"></div></div></div>
+      <div id="content" class="content">
+      <div class="control-box close-box"><a class="control-box-inner"></a></div>
+      <div class="control-box zoom-box">
+         <div class="control-box-inner">
+            <div class="zoom-box-inner"></div>
+         </div>
+      </div>
+      <div class="control-box windowshade-box">
+         <div class="control-box-inner">
+            <div class="windowshade-box-inner"></div>
+         </div>
+      </div>
+      <h1 class="title">Inspect</h1>
+      <section class="container">
+        <div class="block">
 
-    <h1 className="title">SQL Query</h1>
-    <div className="row-container">
-      <select name="fields" id="dataset-field-select" selected="dataset" onChange={this.handleDatasetChange}>
-        <option value="dataset">Dataset</option>
-        {
-          Object.keys(this.props.storetable).map((key) => {
-              return  <option value={key}>{key}</option>
-              })        
-        }
-      </select>
-    </div>
+          <div class="row-container">
+             <button type="button" id="inspectBtn">Inspect</button>
+             <button type="button" id="popViewBtn">PopView</button> 
+             <button type="button" id='tail-sql'>Filter</button>
+             <button type="button" id="selectToPopboard">Copy</button> 
+          </div>
 
-    <div className="row-container">
-      <select name="fields" id="resolution-field-select" selected="resolution" onChange={this.handleResolutionChange}>
-        <option value="resolution">Resolution</option>
-        {this.resolutionOptions}
-      </select>
-    </div>
 
-    <div className="row-container">
-      <select name="available" id="names-field-select" selected="all">
-        <option value="all">All</option>
-        {/*{this.offSetQueries}*/}
-      </select>
-    </div>
-    <div className="row-container">
-      <button type="button" id="queryBtn">Query</button>
-      <button type="button" id="inspectBtn">Inspect</button>
-      <button type="button" id="copyToPbBtn">Copy</button>
-    </div>
-    <div>
-      <select id="names" multiple size="10"></select>
-    </div>
+          <div class="row-container">
+            <div class="column-container">
+              <div class="row-container">
+               <label for="field-select">Dataset:</label>
+              </div>
+              <div class="row-container">
+                <label for="field-select">Resolution:</label>
+              </div>
 
-    <div className="row-container offset-navigation" >
-      <button type="button" id="offSetLeftButton" onClick={this.handleDecrement}>&#8592;</button>
-      <button type="button" id="offSetRightButton" onClick={this.handleIncrement}>&#8594;</button>
-    </div>
-    <div className="row-container offset-navigation">
-      <span id="offsetPage"></span>
-    </div>
-  </div>
+            </div>
+
+
+            <div class="column-container">
+              <div class="row-container">
+               <select name="fields" id="field-select" value="dataset"></select>
+              </div>
+
+              <div class="row-container">
+               <select id="resolution-field-select" value="resolution"></select>
+              </div>
+             </div>  
+          </div>
+
+         <div class="row-container">
+            <select id="names-field" size="12"></select>
+         </div>  
+
+          <div class="row-container">
+                      <div class="column-container">
+               <div id="sql-query-payload" class="column-container">
+               </div>
+             </div>
+          </div>
+
+         <div class="row-container offset-navigation" >
+            <button type="button" id="offSetLeftButton">&#8592;</button>
+            <button type="button" id="offSetRightButton">&#8594;</button>
+          </div>
+        </div>
+      </section>
+      </div>
+
   </Draggable>
   
   </>

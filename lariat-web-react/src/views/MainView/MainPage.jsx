@@ -1,5 +1,8 @@
 import Head from './Head.jsx'
 import MainContent from './MainContent.jsx'
+import PasteBoard from '../PasteboardView/PasteboardView.jsx'
+import '../PasteboardView/popBoard.css';
+
 import "../style.css";
 import "./index.css";
 import "../../../src/img/lariattmp.png"
@@ -38,6 +41,7 @@ export default function MainPage() {
     <>
       <Head />
       <MainContent />
+      <PasteBoard />
     </>
   )
 }
