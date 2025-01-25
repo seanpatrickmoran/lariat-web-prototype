@@ -123,12 +123,8 @@ componentDidMount(){
       fetchPromise.then(response => {
         return response.json();
             }).then(entries => {
-              console.log(entries);
-        // let names = [...entries.map(elem => elem.name)];
-        // if (names.length!=0){
-            // this.offset -= 200;
-            // let names = entries.map(elem => elem.name).join("<option />");
-            // node.innerHTML = "<option />" + names;
+              console.log(entries[0].rgbaArray);
+              //
           });
   
     }
