@@ -109,10 +109,28 @@ componentDidMount(){
               });
     }
 
-    handleResolutionChange = (event) => {
-      const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset-200}&hic_path=${storeHicPath}&resolution=${storeResolution}`);
+    handleInspect = (event) => {
 
-      
+      //on change, do this.
+      //when change resolution, propogate this
+      // when change dataset, bubble resolution, bubble this.
+      // when component mounts, bubble dataset, bubble resolution, bubble this.
+      console.log(event.target.value.replace("#","%23"))
+      const fetchPromise = fetch(`http://localhost:8080/api/getImageSingleton?name=${event.target.value.replace("#","%23")}`);
+      // the '#' may break, if so encode it with %23.
+      // http://localhost:8080/api/getImageSingleton?name=GM12878_5000_mustache_%234
+
+      fetchPromise.then(response => {
+        return response.json();
+            }).then(entries => {
+              console.log(entries);
+        // let names = [...entries.map(elem => elem.name)];
+        // if (names.length!=0){
+            // this.offset -= 200;
+            // let names = entries.map(elem => elem.name).join("<option />");
+            // node.innerHTML = "<option />" + names;
+          });
+  
     }
 
 
@@ -184,7 +202,7 @@ componentDidMount(){
           </div>
 
          <div className="row-container">
-            <select id="names-field" size="12" onChange={this.namesFieldToCanvas}></select>
+            <select id="names-field" size="12" onChange={this.handleInspect}></select>
          </div>  
 
           <div className="row-container">
