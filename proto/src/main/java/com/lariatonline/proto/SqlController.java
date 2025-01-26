@@ -170,16 +170,18 @@ public class SqlController {
 		// this was float32 arr -> base64 binary -> string :(
 		
 		String stringbase64 = (String) listOfMaps.get(0).get("numpyarr");
+		System.out.println(stringbase64);
 		byte[] bytes = Base64.getDecoder().decode(stringbase64);
+		
         FloatBuffer floatBuffer = ByteBuffer.wrap(bytes).asFloatBuffer();
         float[] floatArray = new float[floatBuffer.remaining()];
         floatBuffer.get(floatArray);
-        for (float f : floatArray) {
-            System.out.println(f);
-        }
+//        for (float f : floatArray) {
+//            System.out.println(f);
+//        }
         
         int limit = (int) listOfMaps.get(0).get("dimensions");
-        System.out.println(listOfMaps.get(0).get("viewing_vmax"));
+//        System.out.println(listOfMaps.get(0).get("viewing_vmax"));
 
         
         // this solves the bug with vmax solved being weird...
@@ -195,10 +197,40 @@ public class SqlController {
         	}
         }//        
         
+        
+        int dimension = (int) listOfMaps.get(0).get("dimensions");
+        int scaleFactor = (int) Math.ceil(450.0/dimension);
+        float[][] resizedArray = new float[dimension*scaleFactor][dimension*scaleFactor];
+        
+        for(int i = 0; i < dimension;i++) {
+        	for (int j = 0; j < dimension; j++) {
+        		float value = floatArray[i+j*dimension];
+        		for(int di = 0; di < scaleFactor; di++) {
+        			for(int dj = 0; dj < scaleFactor; dj++) {
+        				resizedArray[i*scaleFactor+di][j*scaleFactor+dj] = value;
+        			}
+        		}
+        	}
+        }
+        
+//        System.out.println(dimension);
+//        System.out.println(450.0/dimension);
+//        System.out.println(scaleFactor);
+//        System.out.println(dimension*scaleFactor);
+        
+        float[] flatarray = new float[dimension*dimension*scaleFactor*scaleFactor];
+        int index = 0;
+        for (float[] row : resizedArray) {
+          for (float element : row) {
+        	  flatarray[index] = (float) element;
+        	  index++;
+          }
+        }
+        
         //pre normalized flat RGBA array.
-        int[] rgbaArray = new int[limit*limit*4];
-        for (int i = 0; i < limit*limit; i++) {
-        	int normalValue = Math.round((floatArray[i]/vMaxSolved)*255);
+        int[] rgbaArray = new int[limit*limit*scaleFactor*scaleFactor*4];
+        for (int i = 0; i < dimension*dimension*scaleFactor*scaleFactor; i++) {
+        	int normalValue = (int) Math.round(flatarray[i]/vMaxSolved*255);
         	rgbaArray[i * 4] = normalValue;     // Red
         	rgbaArray[i * 4 + 1] = normalValue; // Green
         	rgbaArray[i * 4 + 2] = normalValue; // Blue
@@ -208,7 +240,7 @@ public class SqlController {
         listOfMaps.get(0).put("rgbaArray", rgbaArray);
         
         
-
+        //the values are still really messed up.
 		return new ResponseEntity<String>(new Gson().toJson(listOfMaps), HttpStatus.OK);
 	}	
 }

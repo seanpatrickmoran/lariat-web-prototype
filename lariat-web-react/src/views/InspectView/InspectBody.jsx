@@ -1,7 +1,7 @@
 import Draggable from 'react-draggable';
 import React, {useEffect,useState} from 'react';
 import useLocalStorage from './../CustomHooks/UseLocalStorage.js'
-
+import { kronecker } from './inspect.js';
 
 
 export default class InspectBody extends React.Component{
@@ -123,8 +123,26 @@ componentDidMount(){
       fetchPromise.then(response => {
         return response.json();
             }).then(entries => {
-              console.log(entries[0].rgbaArray);
-              //
+              console.log(entries[0]);
+              const canvas = document.getElementById("canvas-inspect");
+              canvas.width = 455;
+              canvas.height = 455;
+              // let finalarr = kronecker(entries[0].rgbaArray,Math.round(450/entries[0].dimensions),entries[0].dimensions)
+              const ctx = canvas.getContext("2d");
+
+              const rgbaSize = entries[0].dimensions*entries[0].dimensions*Math.ceil(450/entries[0].dimensions)*Math.ceil(450/entries[0].dimensions)*4;
+              console.log(rgbaSize)
+
+              var imageDataArray = new Uint8ClampedArray(rgbaSize);
+              for(var i=0;i<rgbaSize;i++){
+                imageDataArray[i] = entries[0].rgbaArray[i];
+                // console.log(entries[0].rgbaArray[i])
+              }           
+              console.log(imageDataArray)
+              const imageData = new ImageData(imageDataArray, 455, 455);
+              ctx.putImageData(imageData, 0, 0);
+
+                  //
           });
   
     }
