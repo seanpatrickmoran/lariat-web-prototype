@@ -116,7 +116,16 @@ componentDidMount(){
       // when change dataset, bubble resolution, bubble this.
       // when component mounts, bubble dataset, bubble resolution, bubble this.
       console.log(event.target.value.replace("#","%23"))
-      const fetchPromise = fetch(`http://localhost:8080/api/getImageSingleton?name=${event.target.value.replace("#","%23")}`);
+
+
+
+
+
+
+
+      const map = new Map([[":", "%3A"], [";", "%3B"], ["<","%3C"], ["=" , "%3D"],[">" , "%3E"],["?" , "%3F"],["@" , "%40"],["!" , "%21"],["\"" , "%22"],["#" , "%23"],["$" , "%24"],["%" , "%25"],["&" , "%26"],["'" , "%27"],["(" , "%28"],[")" , "%29"],["*" , "%2A"],["+" , "%2B"],["," , "%2C"],["-" , "%2D"],["." , "%2E"],["/" , "%2F"]]);
+      console.log(`http://localhost:8080/api/getImageSingleton?name=${[...event.target.value].map((char) => map.get(char) || char).join("")}`);
+      const fetchPromise = fetch(`http://localhost:8080/api/getImageSingleton?name=${[...event.target.value].map((char) => map.get(char) || char).join("")}`);
       // the '#' may break, if so encode it with %23.
       // http://localhost:8080/api/getImageSingleton?name=GM12878_5000_mustache_%234
 
