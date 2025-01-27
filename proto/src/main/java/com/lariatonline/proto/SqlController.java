@@ -19,8 +19,7 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 
 //import java.
-import java.io.*;
-
+//import java.io.*;
 import java.sql.*;
 
 
@@ -29,6 +28,8 @@ import java.sql.*;
 
 @RestController
 public class SqlController {
+	
+	private String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/databse6_binary.db";
 	
 	Map<String,List<String>> tableMemory = new HashMap<>();
 	BindDatabase binder = new BindDatabase();
@@ -40,8 +41,6 @@ public class SqlController {
         Connection connection = null;
         List<Map<String, Object>> listOfMaps = null;
         
-//		String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/Jan2025/012125_java2sqlite3/database5.db";
-        String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/databse6_binary.db";
 		String testQuery = "SELECT * FROM imag LIMIT 200 OFFSET 0";		
 		
 		try {
@@ -71,9 +70,6 @@ public class SqlController {
         Connection connection = null;
         List<Map<String, Object>> listOfMaps = null;		
 			
-//		String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/Jan2025/012125_java2sqlite3/database5.db";
-        String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/databse6_binary.db";
-
 		String callQuery = "SELECT * FROM imag WHERE hic_path = (?) AND resolution = ? LIMIT 200 OFFSET ?";	
 		
 		try {
@@ -97,11 +93,8 @@ public class SqlController {
 	
 	@GetMapping("/api/scanDB")
 	public void walkDatabase() {	
-//	public ResponseEntity<String> walkDatabase() {
-//		String url0 = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/Jan2025/012125_java2sqlite3/database5.db";
-        String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/databse6_binary.db";
+		//with a static DB, it isn't necessary to do this.
 		String query0 = "SELECT hic_path,resolution FROM imag";
-		
 		
 		try {
 			Connection connection = DriverManager.getConnection(databaseURI);
@@ -146,11 +139,8 @@ public class SqlController {
 	@GetMapping("/api/getImageSingleton")
 	public ResponseEntity<String> read_limiter(@RequestParam("name")String name) {
         Connection connection = null;
-        List<Map<String, Object>> listOfMaps = null;		
-			
-//		String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/Jan2025/012125_java2sqlite3/database5.db";
-        String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/databse6_binary.db";
-		String callQuery = "SELECT numpyarr, dimensions, viewing_vmax FROM imag WHERE name = ?";	
+        List<Map<String, Object>> listOfMaps = null;
+		String callQuery = "SELECT coordinates, numpyarr, dimensions, viewing_vmax FROM imag WHERE name = ?";	
 		
 		try {
 			MapListHandler beanListHandler = new MapListHandler();
@@ -170,21 +160,34 @@ public class SqlController {
 		byte[] bytes = (byte[])listOfMaps.get(0).get("numpyarr");
 
 		
+		float trueMax = -1.0f;
 	    float[] floatArray = new float[dimension*dimension];    
-	    
-//	    System.out.println(floatArray.length);
-		
-        for (int i = 0; i < bytes.length; i+=4) {
+
+
+	    for (int i = 0; i < bytes.length; i+=4) {
         	int floatBytes;
-        	floatBytes = (bytes[i] & 0xFF)|
-        			((bytes[i+1] & 0xFF) << 8)|
-        			((bytes[i+2] & 0xFF) << 16)
-        			|((bytes[i+3] & 0xFF) << 24);
+        	floatBytes = 
+        			((bytes[i]   & 0xFF) << 0 )|
+        			((bytes[i+1] & 0xFF) << 8 )|
+        			((bytes[i+2] & 0xFF) << 16)|
+        			((bytes[i+3] & 0xFF) << 24);
             
         	float asFloat = Float.intBitsToFloat(floatBytes);
+        	if(trueMax<asFloat) {
+        		trueMax = asFloat;
+        	}
         	floatArray[i/4] = asFloat;		
         }
 	
+        int[] histogram = new int[256];
+        for (int i=0; i < floatArray.length;i++) {
+        	int normalValue = (int) Math.round(floatArray[i]/trueMax*255);
+        	histogram[normalValue] += 1;     // Red
+        }    
+        listOfMaps.get(0).put("histogram", histogram);
+        
+        
+        
         float[][] resizedArray = new float[dimension*scaleFactor][dimension*scaleFactor];
 //        
         for(int i = 0; i < dimension;i++) {
@@ -207,18 +210,17 @@ public class SqlController {
         	  index++;
           }
         }
-////        
+
         int[] rgbaArray = new int[dimension*dimension*scaleFactor*scaleFactor*4];
         for (int i = 0; i < dimension*dimension*scaleFactor*scaleFactor; i++) {
         	int normalValue = (int) Math.round(flatarray[i]/vMax*255);
         	rgbaArray[i * 4] = normalValue;     // Red
         	rgbaArray[i * 4 + 1] = normalValue; // Green
         	rgbaArray[i * 4 + 2] = normalValue; // Blue
-        	rgbaArray[i * 4 + 3] = 255;   // Alpha
+        	rgbaArray[i * 4 + 3] = 255;   		// Alpha
         }    
-        
         listOfMaps.get(0).put("rgbaArray", rgbaArray);
-        
+
    		return new ResponseEntity<String>(new Gson().toJson(listOfMaps), HttpStatus.OK);
 	}	
 }

@@ -20,7 +20,7 @@ export default class Pasteboard extends React.Component{
 		    <div className="control-box close-box"><a className="control-box-inner"></a></div>
 		    <div className="control-box zoom-box"><div className="control-box-inner"><div className="zoom-box-inner"></div></div></div>
 		    <div className="control-box windowshade-box"><div className="control-box-inner"><div className="windowshade-box-inner"></div></div></div>
-		    <h1 className="title">Pasteboard</h1>
+		    <h1  id="pasteboardTitle" className="title">Pasteboard</h1>
 	<div className="row-container">		
 		<div>
       <table id="pasteboard-table" border="1">

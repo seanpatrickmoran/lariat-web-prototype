@@ -20,8 +20,8 @@ body {
 
 #pasteboardContainer.content {
     position: fixed;
-    left: 1000px;
-    top: -80px;
+    left: 1080px;
+    top: -66px;
     z-index: 2;
     font-size: 12px;
     font-weight: normal;
@@ -96,10 +96,9 @@ td.strname-ui-selectee {
 
 }
 
-.title:before{
+#pasteboardTitle.title:before{
   width: 36%;
 }
-
-.title:after{
+#pasteboardTitle.title:after{
   width: 36%;
 }

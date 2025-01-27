@@ -19,9 +19,16 @@
   width: 201px;
 }
 
-#filter{
-  width: 50px;
+#filter0{
+  margin-top: 10px; 
+  width: 65px;
 }
+
+#filter1{
+  margin-top: 10px; 
+  width: 65px;
+}
+
 
 #pop-rows{
     margin-top: 0;
@@ -29,6 +36,10 @@
 
 #resetfiltersBtn{
   margin-top: 10px;
+}
+
+#canvas-inspect{
+  margin-top: -3px;
 }
 
 
@@ -88,6 +99,8 @@ ul {
 .title:after{
   width: 45%;
 }
+
+
 /*
 #viewPortWindow.hidden{
     height: 18.5px;
@@ -127,7 +140,7 @@ ul {
 
 .content {
     position: fixed;
-    left: 4px;
+    left: 8px;
     top: -66px;
 /*    z-index: 2;
     font-size: 12px;
