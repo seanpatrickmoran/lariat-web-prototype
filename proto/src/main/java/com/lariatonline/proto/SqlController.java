@@ -15,20 +15,14 @@ import org.springframework.http.HttpStatus;
 import com.google.gson.Gson; 
 //import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.ResultSetHandler;
+//import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 
-import java.util.Base64;
 //import java.
 import java.io.*;
 
-import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
-
-//import java.sql.SQLException;
 import java.sql.*;
 
-import java.io.DataInputStream;
 
 //import com.lariatonline.proto.BindDatabase;
 
@@ -88,14 +82,14 @@ public class SqlController {
 			
 			connection = DriverManager.getConnection(databaseURI);
 //			listOfMaps = queryrunner.query(connection, callQuery, beanListHandler, offset);
-			System.out.println(offset + ", " + hic_path + ", " + resolution);
+//			System.out.println(offset + ", " + hic_path + ", " + resolution);
 			listOfMaps = queryrunner.query(connection, callQuery, beanListHandler, new Object[]{hic_path,resolution,offset});
 			
 		} catch (Exception e) {
 			 e.printStackTrace();
 		}
 		
-		System.out.println(readTableMemory());		
+//		System.out.println(readTableMemory());		
 		return new ResponseEntity<String>(new Gson().toJson(listOfMaps), HttpStatus.OK);
 	}	
 	
@@ -125,7 +119,7 @@ public class SqlController {
             	
             	if(!(tableMemory.get(hicResponse).contains(resolutionResponse))) {
             		tableMemory.get(hicResponse).add(resolutionResponse);
-            		System.out.println(hicResponse + ", " + resolutionResponse + " ..." );
+//            		System.out.println(hicResponse + ", " + resolutionResponse + " ..." );
             	}
             }
 
@@ -145,7 +139,7 @@ public class SqlController {
 		}
 		
 		Gson gson = new Gson(); 
-		System.out.println(gson.toJson(tableMemory));
+//		System.out.println(gson.toJson(tableMemory));
 		return gson.toJson(tableMemory); 
 	}	
 	
@@ -163,7 +157,7 @@ public class SqlController {
 			QueryRunner queryrunner = new QueryRunner();
 			
 			connection = DriverManager.getConnection(databaseURI);
-			System.out.println(name);
+//			System.out.println(name);
 			listOfMaps = queryrunner.query(connection, callQuery, beanListHandler, name);
 			
 		} catch (Exception e) {
@@ -178,13 +172,14 @@ public class SqlController {
 		
 	    float[] floatArray = new float[dimension*dimension];    
 	    
-	    System.out.println(floatArray.length);
+//	    System.out.println(floatArray.length);
 		
         for (int i = 0; i < bytes.length; i+=4) {
         	int floatBytes;
         	floatBytes = (bytes[i] & 0xFF)|
         			((bytes[i+1] & 0xFF) << 8)|
-        			((bytes[i+2] & 0xFF) << 16)|((bytes[i+3] & 0xFF) << 24);
+        			((bytes[i+2] & 0xFF) << 16)
+        			|((bytes[i+3] & 0xFF) << 24);
             
         	float asFloat = Float.intBitsToFloat(floatBytes);
         	floatArray[i/4] = asFloat;		
@@ -197,12 +192,11 @@ public class SqlController {
         		float value = floatArray[i+j*dimension];
         		for(int di = 0; di < scaleFactor; di++) {
         			for(int dj = 0; dj < scaleFactor; dj++) {
-        				resizedArray[i*scaleFactor+di][j*scaleFactor+dj] = value;
+        				resizedArray[j*scaleFactor+dj][i*scaleFactor+di] = value;
         			}
         		}
         	}
         }
-
 
         
         float[] flatarray = new float[dimension*dimension*scaleFactor*scaleFactor];
