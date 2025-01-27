@@ -11,6 +11,7 @@ export default class InspectBody extends React.Component{
             this.resolutionOptions = (this.props.storetable[Object.keys(this.props.storetable)[0]]).map((el) => <option value={el} key={el}>{el}</option>);
             this.offSetQueries = null;
             this.offset = 0;
+            this.storeImage;
            }
 
 componentDidMount(){
@@ -56,19 +57,18 @@ componentDidMount(){
 
   handleResolutionChange = (event) => {
     this.setState({selectValue: event.target.value});
-    if (event.target.value != "resolution" && document.getElementById("field-select").value!="dataset"){
-      const storeHicPath = document.getElementById("field-select").value;
-      console.log(storeHicPath)
-      const storeResolution = event.target.value;
-      const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset}&hic_path=${storeHicPath}&resolution=${event.target.value}`);
-      const node = document.getElementById("names-field");
+    if (event.target.value != "resolution" 
+      && document.getElementById("field-select").value!="dataset"){
+        const storeHicPath = document.getElementById("field-select").value;
+        const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset}&hic_path=${storeHicPath}&resolution=${event.target.value}`);
+        const node = document.getElementById("names-field");
 
-      fetchPromise.then(response => {
-              return response.json();
-                  }).then(entries => {
-              let names = entries.map(elem => elem.name).join("<option />");
-              node.innerHTML = "<option />" + names;
-              });
+        fetchPromise.then(response => {
+                return response.json();
+                    }).then(entries => {
+                let names = entries.map(elem => elem.name).join("<option />");
+                node.innerHTML = "<option />" + names;
+                });
       };
     };
 
@@ -110,25 +110,8 @@ componentDidMount(){
     }
 
     handleInspect = (event) => {
-
-      //on change, do this.
-      //when change resolution, propogate this
-      // when change dataset, bubble resolution, bubble this.
-      // when component mounts, bubble dataset, bubble resolution, bubble this.
-      console.log(event.target.value.replace("#","%23"))
-
-
-
-
-
-
-
       const map = new Map([[":", "%3A"], [";", "%3B"], ["<","%3C"], ["=" , "%3D"],[">" , "%3E"],["?" , "%3F"],["@" , "%40"],["!" , "%21"],["\"" , "%22"],["#" , "%23"],["$" , "%24"],["%" , "%25"],["&" , "%26"],["'" , "%27"],["(" , "%28"],[")" , "%29"],["*" , "%2A"],["+" , "%2B"],["," , "%2C"],["-" , "%2D"],["." , "%2E"],["/" , "%2F"]]);
-      console.log(`http://localhost:8080/api/getImageSingleton?name=${[...event.target.value].map((char) => map.get(char) || char).join("")}`);
       const fetchPromise = fetch(`http://localhost:8080/api/getImageSingleton?name=${[...event.target.value].map((char) => map.get(char) || char).join("")}`);
-      // the '#' may break, if so encode it with %23.
-      // http://localhost:8080/api/getImageSingleton?name=GM12878_5000_mustache_%234
-
       fetchPromise.then(response => {
         return response.json();
             }).then(entries => {
@@ -136,24 +119,35 @@ componentDidMount(){
               const canvas = document.getElementById("canvas-inspect");
               canvas.width = 455;
               canvas.height = 455;
-              // let finalarr = kronecker(entries[0].rgbaArray,Math.round(450/entries[0].dimensions),entries[0].dimensions)
               const ctx = canvas.getContext("2d");
 
-              const rgbaSize = entries[0].dimensions*entries[0].dimensions*Math.ceil(450/entries[0].dimensions)*Math.ceil(450/entries[0].dimensions)*4;
-              console.log(rgbaSize)
-
+              const rgbaSize = entries[0].dimensions*entries[0].dimensions*Math.ceil(455/entries[0].dimensions)*Math.ceil(455/entries[0].dimensions)*4;
               var imageDataArray = new Uint8ClampedArray(rgbaSize);
               for(var i=0;i<rgbaSize;i++){
                 imageDataArray[i] = entries[0].rgbaArray[i];
-                // console.log(entries[0].rgbaArray[i])
               }           
-              console.log(imageDataArray)
               const imageData = new ImageData(imageDataArray, 455, 455);
               ctx.putImageData(imageData, 0, 0);
+              // console.log( entries[0].histogram)
 
                   //
           });
   
+    }
+
+
+    inputHandleChange = (event) => {
+      vMax = document.getElementById("filter0");
+      vMin = document.getElementById("filter1");
+
+      const canvas = document.getElementById("canvas-inspect");
+      canvas.width = 455;
+      canvas.height = 455;
+      const ctx = canvas.getContext("2d");
+
+      //
+      // const rgbaSize = entries[0].dimensions*entries[0].dimensions*Math.ceil(450/entries[0].dimensions)*Math.ceil(450/entries[0].dimensions)*4;
+
     }
 
 
@@ -240,13 +234,38 @@ componentDidMount(){
           <button type="button" id="offSetRightButton" onClick={this.handleIncrement}>&#8594;</button>
           </div>
         </div>
-      <div class="block">
-         <div class="row-container">
-            <canvas id="canvas-inspect" width="450" height="450"></canvas>
+      <div className="block">
+
+        <div className="row-container">
+          <p align="right">Dataset<br/>Data Id#<br/>X1-X2<br/>Y1-Y2</p>
+        </div>
+
+         <div className="row-container">
+            <canvas id="canvas-inspect" width="455" height="455"></canvas>
          </div>
-       </div>
+
+
+         <div className="row-container">
+            <div id="query-left-legend" className="column-container">
+               <p align="right">pixelMin</p>
+            </div>
+            <div id="pMin" className="column-container">
+              <input type="text" id="filter0" defaultValue="0" name="filter0" onChange={this.inputHandleChange} />
+            </div>
+            <div id="query-right-legend" className="column-container">
+               <p align="right">pixelMax</p>
+            </div>
+            <div id="pMax" className="column-container">
+              <input type="text" id="filter1" defaultValue="dumb" name="filter1" onChange={this.inputHandleChange} />
+            </div>
+            <div className="column-container">
+               <button type="button" id="resetfiltersBtn">Reset Max</button>
+            </div>
+         </div>
+
       </div>
-      </div>
+    </div>
+  </div>
 
   </Draggable>
   
