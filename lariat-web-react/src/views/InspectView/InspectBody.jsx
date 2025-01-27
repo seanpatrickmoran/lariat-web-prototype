@@ -1,7 +1,10 @@
 import Draggable from 'react-draggable';
 import React, {useEffect,useState} from 'react';
 import useLocalStorage from './../CustomHooks/UseLocalStorage.js'
+import $ from 'jquery';
 import { kronecker } from './inspect.js';
+
+
 
 
 export default class InspectBody extends React.Component{
@@ -9,9 +12,10 @@ export default class InspectBody extends React.Component{
             super(props);
             this.state = {selectValue: ''};  // initial state value
             this.resolutionOptions = (this.props.storetable[Object.keys(this.props.storetable)[0]]).map((el) => <option value={el} key={el}>{el}</option>);
-            this.offSetQueries = null;
+            // this.offSetQueries = null;
             this.offset = 0;
             this.storeImage;
+            this.fetchMap = new Map([[":", "%3A"], [";", "%3B"], ["<","%3C"], ["=" , "%3D"],[">" , "%3E"],["?" , "%3F"],["@" , "%40"],["!" , "%21"],["\"" , "%22"],["#" , "%23"],["$" , "%24"],["%" , "%25"],["&" , "%26"],["'" , "%27"],["(" , "%28"],[")" , "%29"],["*" , "%2A"],["+" , "%2B"],["," , "%2C"],["-" , "%2D"],["." , "%2E"],["/" , "%2F"]]);
            }
 
 componentDidMount(){
@@ -22,10 +26,37 @@ componentDidMount(){
               return response.json();
                   }).then(entries => {
               let names = entries.map(elem => elem.name).join("<option />");
-              console.log(names)
               node.innerHTML = "<option />" + names;
-              });
+              $("#names-field")[0].selectedIndex = 0;
 
+              let selection = document.getElementById("names-field");
+              var value = selection;
+              var name_query = selection.options[selection.selectedIndex].value;
+
+
+              const inspectPromise = fetch(`http://localhost:8080/api/getImageSingleton?name=${[...name_query].map((char) => this.fetchMap.get(char) || char).join("")}`);
+              inspectPromise.then(response => {
+              return response.json();
+                  }).then(inspectEntries => {
+                    this.storeImage = inspectEntries[0].rgbaRawArray;
+                    const canvas = document.getElementById("canvas-inspect");
+                    const vMax = document.getElementById("filter1");
+                    vMax.value = inspectEntries[0].viewing_vmax;
+
+                    canvas.width = 455;
+                    canvas.height = 455;
+                    const ctx = canvas.getContext("2d");
+
+                    const rgbaSize = inspectEntries[0].dimensions*inspectEntries[0].dimensions*Math.ceil(455/inspectEntries[0].dimensions)*Math.ceil(455/inspectEntries[0].dimensions)*4;
+                    var imageDataArray = new Uint8ClampedArray(rgbaSize);
+                    for(var i=0;i<rgbaSize;i++){
+                      imageDataArray[i] = inspectEntries[0].rgbaArray[i];
+                    }           
+                    const imageData = new ImageData(imageDataArray, 455, 455);
+                    ctx.putImageData(imageData, 0, 0);
+
+                });
+            });
 
       }
 
@@ -68,6 +99,36 @@ componentDidMount(){
                     }).then(entries => {
                 let names = entries.map(elem => elem.name).join("<option />");
                 node.innerHTML = "<option />" + names;
+              $("#names-field")[0].selectedIndex = 0;
+              // const name_query = document.querySelector("#names-field")
+
+              let selection = document.getElementById("names-field");
+              var value = selection;
+              console.log(value)
+              var name_query = selection.options[selection.selectedIndex].value;
+              console.log(selection.options[selection.selectedIndex])
+
+
+              const inspectPromise = fetch(`http://localhost:8080/api/getImageSingleton?name=${[...name_query].map((char) => this.fetchMap.get(char) || char).join("")}`);
+              inspectPromise.then(response => {
+              return response.json();
+                  }).then(inspectEntries => {
+                    this.storeImage = inspectEntries[0].rgbaRawArray;
+                    const vMax = document.getElementById("filter1");
+                    vMax.value = inspectEntries[0].viewing_vmax;
+                    const canvas = document.getElementById("canvas-inspect");
+                    canvas.width = 455;
+                    canvas.height = 455;
+                    const ctx = canvas.getContext("2d");
+
+                    const rgbaSize = inspectEntries[0].dimensions*inspectEntries[0].dimensions*Math.ceil(455/inspectEntries[0].dimensions)*Math.ceil(455/inspectEntries[0].dimensions)*4;
+                    var imageDataArray = new Uint8ClampedArray(rgbaSize);
+                    for(var i=0;i<rgbaSize;i++){
+                      imageDataArray[i] = inspectEntries[0].rgbaArray[i];
+                    }           
+                    const imageData = new ImageData(imageDataArray, 455, 455);
+                    ctx.putImageData(imageData, 0, 0);
+                  });
                 });
       };
     };
@@ -110,13 +171,21 @@ componentDidMount(){
     }
 
     handleInspect = (event) => {
-      const map = new Map([[":", "%3A"], [";", "%3B"], ["<","%3C"], ["=" , "%3D"],[">" , "%3E"],["?" , "%3F"],["@" , "%40"],["!" , "%21"],["\"" , "%22"],["#" , "%23"],["$" , "%24"],["%" , "%25"],["&" , "%26"],["'" , "%27"],["(" , "%28"],[")" , "%29"],["*" , "%2A"],["+" , "%2B"],["," , "%2C"],["-" , "%2D"],["." , "%2E"],["/" , "%2F"]]);
-      const fetchPromise = fetch(`http://localhost:8080/api/getImageSingleton?name=${[...event.target.value].map((char) => map.get(char) || char).join("")}`);
+      const fetchPromise = fetch(`http://localhost:8080/api/getImageSingleton?name=${[...event.target.value].map((char) => this.fetchMap.get(char) || char).join("")}`);
       fetchPromise.then(response => {
         return response.json();
             }).then(entries => {
               console.log(entries[0]);
+
+              this.storeImage = entries[0].rgbaRawArray;
               const canvas = document.getElementById("canvas-inspect");
+              const names = document.getElementById("fields-payload");
+
+              const vMax = document.getElementById("filter1");
+              vMax.value = entries[0].viewing_vmax;
+
+              names.innerHTML = `${entries[0].dataset}<br/>${entries[0].name}<br/>${entries[0].coordinates}`
+
               canvas.width = 455;
               canvas.height = 455;
               const ctx = canvas.getContext("2d");
@@ -137,17 +206,37 @@ componentDidMount(){
 
 
     inputHandleChange = (event) => {
-      vMax = document.getElementById("filter0");
-      vMin = document.getElementById("filter1");
+      console.log(event.target.name);
+      var vMin = document.getElementById("filter0").value;
+      var vMax = document.getElementById("filter1").value;
 
+      if (event.target.name == "filter0"){
+        vMin = event.target.value;
+      } else if(event.target.name=="filter1"){
+        vMax = event.target.value;
+      } 
+      //try it here, try ping ponging it through serverside.
+      // console.log(this.storeImage);
+      var imageDataArray = new Uint8ClampedArray(this.storeImage.length);
+
+      for(var i=0;i<this.storeImage.length;i++){
+        // console.log(i/4);
+        if((i+1)%4==0){
+          imageDataArray[i] = 255;
+        } else {
+          const cVal = Math.round((this.storeImage[i] - vMin)/(vMax-vMin) * 255);
+          imageDataArray[i] = cVal>0 ? cVal : 0;
+        }
+        
+      }    
+      console.log(imageDataArray);
       const canvas = document.getElementById("canvas-inspect");
       canvas.width = 455;
       canvas.height = 455;
       const ctx = canvas.getContext("2d");
-
       //
-      // const rgbaSize = entries[0].dimensions*entries[0].dimensions*Math.ceil(450/entries[0].dimensions)*Math.ceil(450/entries[0].dimensions)*4;
-
+      const imageData = new ImageData(imageDataArray, 455, 455);
+      ctx.putImageData(imageData, 0, 0);
     }
 
 
@@ -223,9 +312,9 @@ componentDidMount(){
          </div>  
 
           <div className="row-container">
-                      <div className="column-container">
+            <div className="column-container">
                <div id="sql-query-payload" className="column-container">
-               </div>
+            </div>
              </div>
           </div>
 
@@ -237,7 +326,12 @@ componentDidMount(){
       <div className="block">
 
         <div className="row-container">
-          <p align="right">Dataset<br/>Data Id#<br/>X1-X2<br/>Y1-Y2</p>
+          <div className="column-container">
+            <p align="right">Dataset<br/>Data Id#<br/>Coordinates</p>
+          </div>
+          <div  className="column-container">
+            <p id = "fields-payload" align="left"></p>
+          </div>
         </div>
 
          <div className="row-container">
@@ -256,7 +350,7 @@ componentDidMount(){
                <p align="right">pixelMax</p>
             </div>
             <div id="pMax" className="column-container">
-              <input type="text" id="filter1" defaultValue="dumb" name="filter1" onChange={this.inputHandleChange} />
+              <input type="text" id="filter1" defaultValue="200" name="filter1" onChange={this.inputHandleChange} />
             </div>
             <div className="column-container">
                <button type="button" id="resetfiltersBtn">Reset Max</button>

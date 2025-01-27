@@ -140,7 +140,7 @@ public class SqlController {
 	public ResponseEntity<String> read_limiter(@RequestParam("name")String name) {
         Connection connection = null;
         List<Map<String, Object>> listOfMaps = null;
-		String callQuery = "SELECT coordinates, numpyarr, dimensions, viewing_vmax FROM imag WHERE name = ?";	
+		String callQuery = "SELECT name, dataset, coordinates, numpyarr, dimensions, viewing_vmax FROM imag WHERE name = ?";	
 		
 		try {
 			MapListHandler beanListHandler = new MapListHandler();
@@ -212,14 +212,24 @@ public class SqlController {
         }
 
         int[] rgbaArray = new int[dimension*dimension*scaleFactor*scaleFactor*4];
+        int[] rgbaRawArray = new int[dimension*dimension*scaleFactor*scaleFactor*4];
+
         for (int i = 0; i < dimension*dimension*scaleFactor*scaleFactor; i++) {
         	int normalValue = (int) Math.round(flatarray[i]/vMax*255);
         	rgbaArray[i * 4] = normalValue;     // Red
         	rgbaArray[i * 4 + 1] = normalValue; // Green
         	rgbaArray[i * 4 + 2] = normalValue; // Blue
         	rgbaArray[i * 4 + 3] = 255;   		// Alpha
+        	// for later.
+        	rgbaRawArray[i * 4] = (int) flatarray[i];
+        	rgbaRawArray[i * 4 + 1] = (int) flatarray[i];
+        	rgbaRawArray[i * 4 + 2] = (int) flatarray[i];
+        	rgbaRawArray[i * 4 + 3] = (int) 0;
+
         }    
         listOfMaps.get(0).put("rgbaArray", rgbaArray);
+        listOfMaps.get(0).put("rgbaRawArray", rgbaRawArray);
+
 
    		return new ResponseEntity<String>(new Gson().toJson(listOfMaps), HttpStatus.OK);
 	}	
