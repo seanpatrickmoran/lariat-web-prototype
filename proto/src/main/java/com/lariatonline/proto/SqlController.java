@@ -19,6 +19,8 @@ import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 
 import java.util.Base64;
+import java.io.*;
+
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
@@ -41,7 +43,8 @@ public class SqlController {
         Connection connection = null;
         List<Map<String, Object>> listOfMaps = null;
         
-		String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/Jan2025/012125_java2sqlite3/database5.db";
+//		String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/Jan2025/012125_java2sqlite3/database5.db";
+        String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/databse6_binary.db";
 		String testQuery = "SELECT * FROM imag LIMIT 200 OFFSET 0";		
 		
 		try {
@@ -71,7 +74,9 @@ public class SqlController {
         Connection connection = null;
         List<Map<String, Object>> listOfMaps = null;		
 			
-		String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/Jan2025/012125_java2sqlite3/database5.db";
+//		String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/Jan2025/012125_java2sqlite3/database5.db";
+        String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/databse6_binary.db";
+
 		String callQuery = "SELECT * FROM imag WHERE hic_path = (?) AND resolution = ? LIMIT 200 OFFSET ?";	
 		
 		try {
@@ -96,12 +101,13 @@ public class SqlController {
 	@GetMapping("/api/scanDB")
 	public void walkDatabase() {	
 //	public ResponseEntity<String> walkDatabase() {
-		String url0 = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/Jan2025/012125_java2sqlite3/database5.db";
+//		String url0 = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/Jan2025/012125_java2sqlite3/database5.db";
+        String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/databse6_binary.db";
 		String query0 = "SELECT hic_path,resolution FROM imag";
 		
 		
 		try {
-			Connection connection = DriverManager.getConnection(url0);
+			Connection connection = DriverManager.getConnection(databaseURI);
 			Statement statement = connection.createStatement();
 			ResultSet response = statement.executeQuery(query0);
 			
@@ -145,7 +151,8 @@ public class SqlController {
         Connection connection = null;
         List<Map<String, Object>> listOfMaps = null;		
 			
-		String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/Jan2025/012125_java2sqlite3/database5.db";
+//		String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/Jan2025/012125_java2sqlite3/database5.db";
+        String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/databse6_binary.db";
 		String callQuery = "SELECT numpyarr, dimensions, viewing_vmax FROM imag WHERE name = ?";	
 		
 		try {
@@ -161,6 +168,93 @@ public class SqlController {
 		}
 		
 		
+		/*
+		 * 
+		 * Takes in from CCCImage4 class (strainer python)
+		 * 
+		 * float32 flat -> bytes -> base64 worked
+		 * 
+		 * can't seem to get float32 -> bytes to work... **current**
+		 * 
+		 * if you can't figure this out just pass base64 from DB to JS, dont touch it here.
+		 * 
+		 * 
+		 * */
+		
+		
+		
+		
+		
+		
+		//this is a mess. 1, figure out what python actually writes. is it bbytes? is it bits? is it floats?
+		//	2. decode that.
+		byte[] bytes;
+		bytes = (byte[])listOfMaps.get(0).get("numpyarr");
+		
+//		ByteBuffer buffer = ByteBuffer.wrap(bytes);
+//		FloatBuffer floatBuffer = buffer.asFloatBuffer();        
+//		
+//		Float c;
+//		System.out.println(floatBuffer.length());
+//
+//        System.out.println("bb : ");
+//        while ((c = floatBuffer.get()) != 0)
+//            System.out.print(c + "  ");
+        
+        ByteArrayInputStream byteArrayInputStr
+        = new ByteArrayInputStream(bytes);
+
+	    int b = 0;
+	    while ((b = byteArrayInputStr.read()) != -1) {
+	        // Convert byte to character
+	        float ch = (float)b;
+	        System.out.println(ch);
+	    }
+//        FloatBuffer floatBuffer = buffer.asFloatBuffer();        
+        
+//        float[] floatArray = new float[floatBuffer.remaining()];
+//        Float c;
+       
+        // print the ByteBuffer
+//        System.out.println("FloatBuffer : ");
+//        while ((c = floatBuffer.get()) != 0)
+//            System.out.print(c + "  ");
+        
+//        System.out.println("FloatBuffer : EOF ");
+//        ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
+//        ArrayList<Float> receivedValues = new ArrayList<Float>();
+//	    int position = 0;
+//	    
+//	    while(byteBuffer.capacity() - position >= 4) {
+//	       receivedValues.add(byteBuffer.getFloat(position));
+//	       position += 4;
+//	     }
+
+//	    float[] result = new float[receivedValues.count];
+//	    receivedValues.toArray(new float[receivedValues.size()]);
+	    
+//
+//      for (float f : receivedValues) {
+//      	System.out.println(f);
+//      }           
+        
+        
+        
+        
+        
+        
+        
+//        
+//        floatBuffer.get(floatArray);
+//        for (float f : floatArray) {
+//        	System.out.println(f);
+//        }        
+        
+//        contenttype = (listOfMaps.get(0).get("numpyarr")).ToString();
+//		System.out.println(Integer.parseInt(bstring,2));
+		
+		
+		
 		// Java is very fast compared to JS but we hope to use the Min/Max clientside to handle rethresholding.
 		// So we can't use just the kronecker and renormalization here... we can only unwrap the encodings....
 		// maybe you just do the kronecker anyway?
@@ -168,76 +262,76 @@ public class SqlController {
 		
 		
 		// this was float32 arr -> base64 binary -> string :(
-		
-		String stringbase64 = (String) listOfMaps.get(0).get("numpyarr");
-		System.out.println(stringbase64);
-		byte[] bytes = Base64.getDecoder().decode(stringbase64);
-		
-        FloatBuffer floatBuffer = ByteBuffer.wrap(bytes).asFloatBuffer();
-        float[] floatArray = new float[floatBuffer.remaining()];
-        floatBuffer.get(floatArray);
-//        for (float f : floatArray) {
-//            System.out.println(f);
+//		
+//		String stringbase64 = (String) listOfMaps.get(0).get("numpyarr");
+//		System.out.println(stringbase64);
+//		byte[] bytes = Base64.getDecoder().decode(stringbase64);
+//		
+//        FloatBuffer floatBuffer = ByteBuffer.wrap(bytes).asFloatBuffer();
+//        float[] floatArray = new float[floatBuffer.remaining()];
+//        floatBuffer.get(floatArray);
+////        for (float f : floatArray) {
+////            System.out.println(f);
+////        }
+//        
+//        int limit = (int) listOfMaps.get(0).get("dimensions");
+////        System.out.println(listOfMaps.get(0).get("viewing_vmax"));
+//
+//        
+//        // this solves the bug with vmax solved being weird...
+//        float vMaxSolved = 1e-38f;
+//        int x = 0;
+//        for (int i = 0; i < limit; i++) {
+//        	for (int j = 0; j < limit; j++) {
+////          	int normalValue = ((int) (floatArray[x]/vMax))*255;
+//        		if(floatArray[x]>vMaxSolved) {
+//        			vMaxSolved = floatArray[x];
+//        		}
+//        			x++;
+//        	}
+//        }//        
+//        
+//        
+//        int dimension = (int) listOfMaps.get(0).get("dimensions");
+//        int scaleFactor = (int) Math.ceil(450.0/dimension);
+//        float[][] resizedArray = new float[dimension*scaleFactor][dimension*scaleFactor];
+//        
+//        for(int i = 0; i < dimension;i++) {
+//        	for (int j = 0; j < dimension; j++) {
+//        		float value = floatArray[i+j*dimension];
+//        		for(int di = 0; di < scaleFactor; di++) {
+//        			for(int dj = 0; dj < scaleFactor; dj++) {
+//        				resizedArray[i*scaleFactor+di][j*scaleFactor+dj] = value;
+//        			}
+//        		}
+//        	}
 //        }
-        
-        int limit = (int) listOfMaps.get(0).get("dimensions");
-//        System.out.println(listOfMaps.get(0).get("viewing_vmax"));
-
-        
-        // this solves the bug with vmax solved being weird...
-        float vMaxSolved = 1e-38f;
-        int x = 0;
-        for (int i = 0; i < limit; i++) {
-        	for (int j = 0; j < limit; j++) {
-//          	int normalValue = ((int) (floatArray[x]/vMax))*255;
-        		if(floatArray[x]>vMaxSolved) {
-        			vMaxSolved = floatArray[x];
-        		}
-        			x++;
-        	}
-        }//        
-        
-        
-        int dimension = (int) listOfMaps.get(0).get("dimensions");
-        int scaleFactor = (int) Math.ceil(450.0/dimension);
-        float[][] resizedArray = new float[dimension*scaleFactor][dimension*scaleFactor];
-        
-        for(int i = 0; i < dimension;i++) {
-        	for (int j = 0; j < dimension; j++) {
-        		float value = floatArray[i+j*dimension];
-        		for(int di = 0; di < scaleFactor; di++) {
-        			for(int dj = 0; dj < scaleFactor; dj++) {
-        				resizedArray[i*scaleFactor+di][j*scaleFactor+dj] = value;
-        			}
-        		}
-        	}
-        }
-        
-//        System.out.println(dimension);
-//        System.out.println(450.0/dimension);
-//        System.out.println(scaleFactor);
-//        System.out.println(dimension*scaleFactor);
-        
-        float[] flatarray = new float[dimension*dimension*scaleFactor*scaleFactor];
-        int index = 0;
-        for (float[] row : resizedArray) {
-          for (float element : row) {
-        	  flatarray[index] = (float) element;
-        	  index++;
-          }
-        }
-        
-        //pre normalized flat RGBA array.
-        int[] rgbaArray = new int[limit*limit*scaleFactor*scaleFactor*4];
-        for (int i = 0; i < dimension*dimension*scaleFactor*scaleFactor; i++) {
-        	int normalValue = (int) Math.round(flatarray[i]/vMaxSolved*255);
-        	rgbaArray[i * 4] = normalValue;     // Red
-        	rgbaArray[i * 4 + 1] = normalValue; // Green
-        	rgbaArray[i * 4 + 2] = normalValue; // Blue
-        	rgbaArray[i * 4 + 3] = 255;   // Alpha
-        }    
-        
-        listOfMaps.get(0).put("rgbaArray", rgbaArray);
+//        
+////        System.out.println(dimension);
+////        System.out.println(450.0/dimension);
+////        System.out.println(scaleFactor);
+////        System.out.println(dimension*scaleFactor);
+//        
+//        float[] flatarray = new float[dimension*dimension*scaleFactor*scaleFactor];
+//        int index = 0;
+//        for (float[] row : resizedArray) {
+//          for (float element : row) {
+//        	  flatarray[index] = (float) element;
+//        	  index++;
+//          }
+//        }
+//        
+//        //pre normalized flat RGBA array.
+//        int[] rgbaArray = new int[limit*limit*scaleFactor*scaleFactor*4];
+//        for (int i = 0; i < dimension*dimension*scaleFactor*scaleFactor; i++) {
+//        	int normalValue = (int) Math.round(flatarray[i]/vMaxSolved*255);
+//        	rgbaArray[i * 4] = normalValue;     // Red
+//        	rgbaArray[i * 4 + 1] = normalValue; // Green
+//        	rgbaArray[i * 4 + 2] = normalValue; // Blue
+//        	rgbaArray[i * 4 + 3] = 255;   // Alpha
+//        }    
+//        
+//        listOfMaps.get(0).put("rgbaArray", rgbaArray);
         
         
         //the values are still really messed up.
