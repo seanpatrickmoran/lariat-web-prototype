@@ -67,8 +67,19 @@ ul {
   flex-direction: row;
 }
 
+#inspect-labels{
+  margin-top: 19px;
+}
+
 .column-container {
   margin: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#fields-payload {
+  margin-left: 35px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -137,6 +148,20 @@ ul {
     display: block;
 }
 
+#histogram.content   {
+    left: 1080px;
+    top: 240px; 
+    width: 400px;
+    height: 300px;
+}
+
+#histogram.title:before{
+  width: 35%;
+}
+
+#histogram.title:after{
+  width: 35%;
+}
 
 .content {
     position: fixed;

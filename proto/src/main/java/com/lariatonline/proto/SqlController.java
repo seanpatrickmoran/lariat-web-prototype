@@ -179,10 +179,10 @@ public class SqlController {
         	floatArray[i/4] = asFloat;		
         }
 	
-        int[] histogram = new int[256];
+        int[] histogram = new int[dimension*dimension];    
         for (int i=0; i < floatArray.length;i++) {
         	int normalValue = (int) Math.round(floatArray[i]/trueMax*255);
-        	histogram[normalValue] += 1;     // Red
+        	histogram[i] = normalValue;
         }    
         listOfMaps.get(0).put("histogram", histogram);
         
