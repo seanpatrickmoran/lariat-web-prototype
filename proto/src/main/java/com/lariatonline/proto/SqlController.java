@@ -140,14 +140,13 @@ public class SqlController {
 	public ResponseEntity<String> read_limiter(@RequestParam("name")String name) {
         Connection connection = null;
         List<Map<String, Object>> listOfMaps = null;
-		String callQuery = "SELECT name, dataset, coordinates, numpyarr, dimensions, viewing_vmax FROM imag WHERE name = ?";	
+		String callQuery = "SELECT coordinates, numpyarr, dimensions, viewing_vmax FROM imag WHERE name = ?";	
 		
 		try {
 			MapListHandler beanListHandler = new MapListHandler();
 			QueryRunner queryrunner = new QueryRunner();
 			
 			connection = DriverManager.getConnection(databaseURI);
-//			System.out.println(name);
 			listOfMaps = queryrunner.query(connection, callQuery, beanListHandler, name);
 			
 		} catch (Exception e) {
@@ -160,48 +159,22 @@ public class SqlController {
 		byte[] bytes = (byte[])listOfMaps.get(0).get("numpyarr");
 
 		
-		float trueMax = -1.0f;
-	    float[] floatArray = new float[dimension*dimension];    
-
-
-	    for (int i = 0; i < bytes.length; i+=4) {
-        	int floatBytes;
-        	floatBytes = 
-        			((bytes[i]   & 0xFF) << 0 )|
-        			((bytes[i+1] & 0xFF) << 8 )|
-        			((bytes[i+2] & 0xFF) << 16)|
-        			((bytes[i+3] & 0xFF) << 24);
-            
-        	float asFloat = Float.intBitsToFloat(floatBytes);
-        	if(trueMax<asFloat) {
-        		trueMax = asFloat;
-        	}
-        	floatArray[i/4] = asFloat;		
-        }
+	    ByteArrToFloat32ArrayPair flatArrays = ImageMethods.byteArrToFloat32Array(bytes, dimension);
+	    float[] flatFloat32Arr = flatArrays.getFloatArr();
+	    Float trueMax = flatArrays.getTrueMax();
+	    
 	
         int[] histogram = new int[dimension*dimension];    
-        for (int i=0; i < floatArray.length;i++) {
-        	int normalValue = (int) Math.round(floatArray[i]/trueMax*255);
+        for (int i=0; i < flatFloat32Arr.length;i++) {
+        	int normalValue = (int) Math.round(flatFloat32Arr[i]/trueMax*255);
         	histogram[i] = normalValue;
-        }    
+        }       
         listOfMaps.get(0).put("histogram", histogram);
         
-        
-        
-        float[][] resizedArray = new float[dimension*scaleFactor][dimension*scaleFactor];
-//        
-        for(int i = 0; i < dimension;i++) {
-        	for (int j = 0; j < dimension; j++) {
-        		float value = floatArray[i+j*dimension];
-        		for(int di = 0; di < scaleFactor; di++) {
-        			for(int dj = 0; dj < scaleFactor; dj++) {
-        				resizedArray[j*scaleFactor+dj][i*scaleFactor+di] = value;
-        			}
-        		}
-        	}
-        }
 
         
+        float[][] resizedArray = ImageMethods.kroneckerExpansion(flatFloat32Arr, dimension, scaleFactor);
+
         float[] flatarray = new float[dimension*dimension*scaleFactor*scaleFactor];
         int index = 0;
         for (float[] row : resizedArray) {
@@ -210,23 +183,11 @@ public class SqlController {
         	  index++;
           }
         }
-
-        int[] rgbaArray = new int[dimension*dimension*scaleFactor*scaleFactor*4];
-        int[] rgbaRawArray = new int[dimension*dimension*scaleFactor*scaleFactor*4];
-
-        for (int i = 0; i < dimension*dimension*scaleFactor*scaleFactor; i++) {
-        	int normalValue = (int) Math.round(flatarray[i]/vMax*255);
-        	rgbaArray[i * 4] = normalValue;     // Red
-        	rgbaArray[i * 4 + 1] = normalValue; // Green
-        	rgbaArray[i * 4 + 2] = normalValue; // Blue
-        	rgbaArray[i * 4 + 3] = 255;   		// Alpha
-        	// for later.
-        	rgbaRawArray[i * 4] = (int) flatarray[i];
-        	rgbaRawArray[i * 4 + 1] = (int) flatarray[i];
-        	rgbaRawArray[i * 4 + 2] = (int) flatarray[i];
-        	rgbaRawArray[i * 4 + 3] = (int) 0;
-
-        }    
+        
+        RgbaPair rgbaRawAndProc = ImageMethods.rgbaRawAndProcArrayPair(flatarray, dimension, scaleFactor, vMax);
+        int[] rgbaArray = rgbaRawAndProc.getRgbaProcessed();
+		int[] rgbaRawArray = rgbaRawAndProc.getRgbaRAW();     
+		
         listOfMaps.get(0).put("rgbaArray", rgbaArray);
         listOfMaps.get(0).put("rgbaRawArray", rgbaRawArray);
 

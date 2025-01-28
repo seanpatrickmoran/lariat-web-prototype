@@ -16,8 +16,9 @@ import './PasteboardView/popBoard.css';
 
 export function App() {
 
+    const [pasteBoardProps, setPasteBoardProps] = useState({visibility: "hidden", contents: []});
 
-  return (
+    return (
         <>
             <BrowserRouter>
                 <Routes>
