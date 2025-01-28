@@ -3,6 +3,7 @@ import React, {useEffect,useState} from 'react';
 import useLocalStorage from './../CustomHooks/UseLocalStorage.js'
 import $ from 'jquery';
 import { kronecker } from './inspect.js';
+import { Histogram } from './histogram.jsx';
 
 
 
@@ -15,12 +16,12 @@ export default class InspectBody extends React.Component{
             // this.offSetQueries = null;
             this.offset = 0;
             this.storeImage;
+            this.histogram;
             this.fetchMap = new Map([[":", "%3A"], [";", "%3B"], ["<","%3C"], ["=" , "%3D"],[">" , "%3E"],["?" , "%3F"],["@" , "%40"],["!" , "%21"],["\"" , "%22"],["#" , "%23"],["$" , "%24"],["%" , "%25"],["&" , "%26"],["'" , "%27"],["(" , "%28"],[")" , "%29"],["*" , "%2A"],["+" , "%2B"],["," , "%2C"],["-" , "%2D"],["." , "%2E"],["/" , "%2F"]]);
            }
 
 componentDidMount(){
       const node = document.getElementById("names-field");
-      console.log(Object.keys(this.props.storetable)[0])
       const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset}&hic_path=${Object.keys(this.props.storetable)[0]}&resolution=${this.props.storetable[Object.keys(this.props.storetable)[0]][0]}`);
             fetchPromise.then(response => {
               return response.json();
@@ -39,9 +40,13 @@ componentDidMount(){
               return response.json();
                   }).then(inspectEntries => {
                     this.storeImage = inspectEntries[0].rgbaRawArray;
+                    this.props.OnHistChange({width:300, height:200, data: inspectEntries[0].histogram})
+
                     const canvas = document.getElementById("canvas-inspect");
                     const vMax = document.getElementById("filter1");
                     vMax.value = inspectEntries[0].viewing_vmax;
+                    const names = document.getElementById("fields-payload");
+                    names.innerHTML = `${inspectEntries[0].dataset}<br/>${inspectEntries[0].name}<br/>${inspectEntries[0].coordinates}`
 
                     canvas.width = 455;
                     canvas.height = 455;
@@ -73,7 +78,7 @@ componentDidMount(){
               return response.json();
                   }).then(entries => {
               let names = entries.map(elem => elem.name).join("<option />");
-              console.log(names)
+              // console.log(names)
               node.innerHTML = "<option />" + names;
               });
       }
@@ -104,9 +109,9 @@ componentDidMount(){
 
               let selection = document.getElementById("names-field");
               var value = selection;
-              console.log(value)
+              // console.log(value)
               var name_query = selection.options[selection.selectedIndex].value;
-              console.log(selection.options[selection.selectedIndex])
+              // console.log(selection.options[selection.selectedIndex])
 
 
               const inspectPromise = fetch(`http://localhost:8080/api/getImageSingleton?name=${[...name_query].map((char) => this.fetchMap.get(char) || char).join("")}`);
@@ -114,8 +119,14 @@ componentDidMount(){
               return response.json();
                   }).then(inspectEntries => {
                     this.storeImage = inspectEntries[0].rgbaRawArray;
+                    // this.histogram = Histogram(this.props.histProps);
+
+                    this.props.OnHistChange({width:300, height:200, data: inspectEntries[0].rgbaArray})
+                    const names = document.getElementById("fields-payload");
                     const vMax = document.getElementById("filter1");
                     vMax.value = inspectEntries[0].viewing_vmax;
+                    names.innerHTML = `${inspectEntries[0].dataset}<br/>${inspectEntries[0].name}<br/>${inspectEntries[0].coordinates}`
+
                     const canvas = document.getElementById("canvas-inspect");
                     canvas.width = 455;
                     canvas.height = 455;
@@ -175,15 +186,16 @@ componentDidMount(){
       fetchPromise.then(response => {
         return response.json();
             }).then(entries => {
-              console.log(entries[0]);
+              // console.log(entries[0]);
 
               this.storeImage = entries[0].rgbaRawArray;
+              this.props.OnHistChange({width:300, height:200, data: entries[0].histogram})
+              // Histogram(300,200,entries[0].histogram);
               const canvas = document.getElementById("canvas-inspect");
               const names = document.getElementById("fields-payload");
 
               const vMax = document.getElementById("filter1");
               vMax.value = entries[0].viewing_vmax;
-
               names.innerHTML = `${entries[0].dataset}<br/>${entries[0].name}<br/>${entries[0].coordinates}`
 
               canvas.width = 455;
@@ -206,7 +218,7 @@ componentDidMount(){
 
 
     inputHandleChange = (event) => {
-      console.log(event.target.name);
+      // console.log(event.target.name);
       var vMin = document.getElementById("filter0").value;
       var vMax = document.getElementById("filter1").value;
 
@@ -229,7 +241,7 @@ componentDidMount(){
         }
         
       }    
-      console.log(imageDataArray);
+      // console.log(imageDataArray);
       const canvas = document.getElementById("canvas-inspect");
       canvas.width = 455;
       canvas.height = 455;
@@ -325,7 +337,7 @@ componentDidMount(){
         </div>
       <div className="block">
 
-        <div className="row-container">
+        <div id="inspect-labels" className="row-container">
           <div className="column-container">
             <p align="right">Dataset<br/>Data Id#<br/>Coordinates</p>
           </div>
@@ -360,9 +372,9 @@ componentDidMount(){
       </div>
     </div>
   </div>
-
   </Draggable>
   
+
   </>
   }
 }
