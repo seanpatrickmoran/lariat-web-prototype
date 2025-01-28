@@ -6,57 +6,15 @@ import {
     Route,
 } from  "react-router";
 
+import Head from './MainView/Head.jsx';
 import MainPage from './MainView/MainPage.jsx'
 import QueryPage from './QueryView/QueryView.jsx'
 import InspectPage from './InspectView/InspectView.jsx'
 import useLocalStorage from './CustomHooks/UseLocalStorage.js'
-
+import PasteBoard from './PasteboardView/PasteboardView.jsx'
+import './PasteboardView/popBoard.css';
 
 export function App() {
-    // callTableMemory();
-  // const [_tMEM,set_tMEM] = useState(null);
-  // callTableMemory();
-
-
-  // useEffect(() => {
-  //       fetch(`http://localhost:8080/api/readTableMemory`, {
-  //         method: "GET"
-  //       })
-  //         .then((response) => response.json())
-  //         .then((data) => {
-  //           set_tMEM(data);
-  //         })
-  //         .catch((error) => console.log(error));;
-  //     }, []);
-  // const [tableMemory, setTableMemory] = useLocalStorage("tableMemory",_tMEM);
-
-
-
-  // const [data, setData] = useState();
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const response = await fetch(`http://localhost:8080/api/readTableMemory`, {
-  //         method: "GET"
-  //       });
-  //     setData(JSON.stringify(response));
-  //     console.log(JSON.stringify(response))
-  //   };
-
-  //   fetchData();
-  // }, [setData]);
-  // console.log(data)
-
-
-
-
-
-  // const [tableMemory, setTableMemory] = useLocalStorage("tableMemory",callTableMemory());
-  // });
-
-
-  // const [data, setData] = useState();
-
-
 
 
   return (
@@ -66,42 +24,53 @@ export function App() {
                     <Route
                         exact
                         path="/"
-                        element={<MainPage />}
+                        element={
+                            <>
+                                <Head />
+                                <MainPage />
+                                <PasteBoard />
+                            </>
+                        }
                     />
                     <Route
                         exact
                         path="/query"
-                        element={<QueryPage />}
+                        element={
+                            <>
+                                <Head />
+                                <QueryPage />
+                                <PasteBoard />
+                            </>
+                        }
                     />
                     <Route
                         exact
                         path="/inspect"
-                        element={<InspectPage />}
-                    />                
+                        element={
+                            <>
+                            <Head />
+                            <InspectPage />
+                            <PasteBoard />
+                        </>
+                    }
+                    />      
+
+{/*                    <Route
+                        exact
+                        path="/pairs"
+                        element={
+                            <>
+                            <Head />
+                            <PairsPage />
+                            <PasteBoard />
+                        </>
+                    }
+                    />   */}
+
                 </Routes>
             </BrowserRouter>
             {/*<button onClick={sendData}>Get data</button>*/}
         </>
     );
 }
-
-// export async 
-
-
-// export function callTableMemory(){
-//   const [test, setTest] = useState(null);
-//   useEffect(() => {
-//     fetch(`http://localhost:8080/api/readTableMemory`, {
-//       method: "GET"
-//     })
-//       .then((response) => response.json())
-//       .then((data) => {
-//         setTest(test);
-//         console.log(data);
-//       })
-//       .catch((error) => console.log(error));;
-//   }, []);
-// }
-
-
 

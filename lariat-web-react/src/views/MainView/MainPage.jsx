@@ -39,9 +39,7 @@ export default function MainPage() {
 
   return (
     <>
-      <Head />
       <MainContent />
-      <PasteBoard />
     </>
   )
 }

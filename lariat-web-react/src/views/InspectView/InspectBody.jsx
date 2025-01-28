@@ -40,7 +40,7 @@ componentDidMount(){
               return response.json();
                   }).then(inspectEntries => {
                     this.storeImage = inspectEntries[0].rgbaRawArray;
-                    this.props.OnHistChange({width:300, height:200, data: inspectEntries[0].histogram})
+                    this.props.OnHistChange({width:380, height:280, data: inspectEntries[0].histogram})
 
                     const canvas = document.getElementById("canvas-inspect");
                     const vMax = document.getElementById("filter1");
@@ -121,7 +121,7 @@ componentDidMount(){
                     this.storeImage = inspectEntries[0].rgbaRawArray;
                     // this.histogram = Histogram(this.props.histProps);
 
-                    this.props.OnHistChange({width:300, height:200, data: inspectEntries[0].rgbaArray})
+                    this.props.OnHistChange({width:380, height:280, data: inspectEntries[0].histogram})
                     const names = document.getElementById("fields-payload");
                     const vMax = document.getElementById("filter1");
                     vMax.value = inspectEntries[0].viewing_vmax;
@@ -189,13 +189,16 @@ componentDidMount(){
               // console.log(entries[0]);
 
               this.storeImage = entries[0].rgbaRawArray;
-              this.props.OnHistChange({width:300, height:200, data: entries[0].histogram})
+              this.props.OnHistChange({width:380, height:280, data: entries[0].histogram})
               // Histogram(300,200,entries[0].histogram);
               const canvas = document.getElementById("canvas-inspect");
               const names = document.getElementById("fields-payload");
 
+              const vMin = document.getElementById("filter0");
               const vMax = document.getElementById("filter1");
+              vMin.value = 0;
               vMax.value = entries[0].viewing_vmax;
+
               names.innerHTML = `${entries[0].dataset}<br/>${entries[0].name}<br/>${entries[0].coordinates}`
 
               canvas.width = 455;

@@ -14,6 +14,7 @@ export default function InspectView() {
 
     const [tableMemory, setTableMemory] = useLocalStorage("tableMemory");
     const [histogramProperties, sethistogramProperties] = useState({width: 1, height: 1, data: []});
+    // const [pasteBoardProps, setPasteBoardProps] = useState({visibility: "hidden", contents: []});
     // console.log("component did mount");
     // console.log(tableMemory);
 
@@ -25,9 +26,9 @@ export default function InspectView() {
 
   return (
     <>
-      <Head />
+      {/*<Head />*/}
       <InspectBody OnHistChange={sethistogramProperties} storetable={tableMemory}/>
-      <PasteBoard />
+      {/*<PasteBoard copiedToPasteBoard={pasteBoardProps}/>*/}
       <Histogram histProps={histogramProperties}/>
     </>
   )
