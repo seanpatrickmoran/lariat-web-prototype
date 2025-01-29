@@ -77,15 +77,12 @@ public class SqlController {
 			QueryRunner queryrunner = new QueryRunner();
 			
 			connection = DriverManager.getConnection(databaseURI);
-//			listOfMaps = queryrunner.query(connection, callQuery, beanListHandler, offset);
-//			System.out.println(offset + ", " + hic_path + ", " + resolution);
 			listOfMaps = queryrunner.query(connection, callQuery, beanListHandler, new Object[]{hic_path,resolution,offset});
 			
 		} catch (Exception e) {
 			 e.printStackTrace();
 		}
 		
-//		System.out.println(readTableMemory());		
 		return new ResponseEntity<String>(new Gson().toJson(listOfMaps), HttpStatus.OK);
 	}	
 	
@@ -93,7 +90,6 @@ public class SqlController {
 	
 	@GetMapping("/api/scanDB")
 	public void walkDatabase() {	
-		//with a static DB, it isn't necessary to do this.
 		String query0 = "SELECT hic_path,resolution FROM imag";
 		
 		try {
@@ -140,7 +136,7 @@ public class SqlController {
 	public ResponseEntity<String> read_limiter(@RequestParam("name")String name) {
         Connection connection = null;
         List<Map<String, Object>> listOfMaps = null;
-		String callQuery = "SELECT coordinates, numpyarr, dimensions, viewing_vmax FROM imag WHERE name = ?";	
+		String callQuery = "SELECT dataset,name,coordinates, numpyarr, dimensions, viewing_vmax FROM imag WHERE name = ?";	
 		
 		try {
 			MapListHandler beanListHandler = new MapListHandler();
@@ -152,6 +148,8 @@ public class SqlController {
 		} catch (Exception e) {
 			 e.printStackTrace();
 		}
+		
+		
 		
         double vMax = (double) listOfMaps.get(0).get("viewing_vmax");
         int dimension = (int) listOfMaps.get(0).get("dimensions");

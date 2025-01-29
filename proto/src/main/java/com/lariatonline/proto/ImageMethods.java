@@ -51,7 +51,6 @@ public class ImageMethods {
 	    
 	    RgbaPair twoRGBA = new RgbaPair(rgbaArray, rgbaRawArray);
 	    return twoRGBA;
-		
 
 	}
 	

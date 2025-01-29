@@ -186,7 +186,7 @@ componentDidMount(){
       fetchPromise.then(response => {
         return response.json();
             }).then(entries => {
-              // console.log(entries[0]);
+              console.log(entries[0]);
 
               this.storeImage = entries[0].rgbaRawArray;
               this.props.OnHistChange({width:380, height:280, data: entries[0].histogram})
