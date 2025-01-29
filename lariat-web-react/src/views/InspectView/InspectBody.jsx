@@ -254,7 +254,17 @@ componentDidMount(){
       ctx.putImageData(imageData, 0, 0);
     }
 
+copyToPasteboard = (event) => {
+    var fieldSelect = document.getElementById("names-field");
+    const optionsSelect = fieldSelect.selectedOptions;
+    let newEntry = optionsSelect[0].value;
+    let oldEntry = this.props.pasteBoardProps.contents;
+    this.props.pasteBoardPropsUpdate({visibility:"visibile", contents: oldEntry+","+newEntry});
+    localStorage.setItem('pasteBoardProps', JSON.stringify({visibility:"visibile", contents: oldEntry+","+newEntry}));
 
+    console.log(this.props.pasteBoardProps.contents)
+    // Object.assign(this.props.pasteBoardProps.contents);
+};
 
 	  render (){
   return <>
@@ -287,7 +297,7 @@ componentDidMount(){
              <button type="button" id="inspectBtn">Inspect</button>
              <button type="button" id="popViewBtn">PopView</button> 
              <button type="button" id='tail-sql'>Filter</button>
-             <button type="button" id="selectToPopboard">Copy</button> 
+             <button type="button" id="copyToPasteboard" onClick={this.copyToPasteboard}> Copy</button> 
           </div>
 
 

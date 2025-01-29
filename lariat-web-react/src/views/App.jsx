@@ -16,7 +16,25 @@ import './PasteboardView/popBoard.css';
 
 export function App() {
 
-    const [pasteBoardProps, setPasteBoardProps] = useState({visibility: "hidden", contents: []});
+    const [tableMemory, setTableMemory] = useLocalStorage("tableMemory");
+    useEffect(() => {
+        fetch(`http://localhost:8080/api/readTableMemory`, {
+          method: "GET"
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            setTableMemory(data);
+            localStorage.setItem('tableMemory', JSON.stringify(data));
+          })
+          .catch((error) => console.log(error));
+    }, []);
+
+    console.log(tableMemory);  
+
+
+    const [pasteBoardProps, setPasteBoardProps] = useLocalStorage("pasteBoardProps", {visibility: "hidden", contents: ""});
+    const storeEntries = {};
+
 
     return (
         <>
@@ -29,7 +47,7 @@ export function App() {
                             <>
                                 <Head />
                                 <MainPage />
-                                <PasteBoard />
+                                <PasteBoard pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
                             </>
                         }
                     />
@@ -39,7 +57,7 @@ export function App() {
                         element={
                             <>
                                 <Head />
-                                <QueryPage />
+                                <QueryPage pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
                                 <PasteBoard />
                             </>
                         }
@@ -49,24 +67,13 @@ export function App() {
                         path="/inspect"
                         element={
                             <>
-                            <Head />
-                            <InspectPage />
-                            <PasteBoard />
+                                <Head />
+                                <InspectPage pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
+                                <PasteBoard pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
                         </>
                     }
                     />      
 
-{/*                    <Route
-                        exact
-                        path="/pairs"
-                        element={
-                            <>
-                            <Head />
-                            <PairsPage />
-                            <PasteBoard />
-                        </>
-                    }
-                    />   */}
 
                 </Routes>
             </BrowserRouter>

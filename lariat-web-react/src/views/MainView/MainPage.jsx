@@ -19,21 +19,21 @@ import { useState, useEffect } from 'react';
 
 export default function MainPage() {
 
-  const [tableMemory, setTableMemory] = useLocalStorage("tableMemory");
-  useEffect(() => {
-    fetch(`http://localhost:8080/api/readTableMemory`, {
-      method: "GET"
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setTableMemory(data);
-        // const [tableMemory, setTableMemory] = useLocalStorage("tableMemory", data);
-        localStorage.setItem('tableMemory', JSON.stringify(data));
-      })
-      .catch((error) => console.log(error));;
-  }, []);
+  // const [tableMemory, setTableMemory] = useLocalStorage("tableMemory");
+  // useEffect(() => {
+  //   fetch(`http://localhost:8080/api/readTableMemory`, {
+  //     method: "GET"
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setTableMemory(data);
+  //       // const [tableMemory, setTableMemory] = useLocalStorage("tableMemory", data);
+  //       localStorage.setItem('tableMemory', JSON.stringify(data));
+  //     })
+  //     .catch((error) => console.log(error));;
+  // }, []);
 
-  console.log(tableMemory);
+  // console.log(tableMemory);
 
 
 

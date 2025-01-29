@@ -24,7 +24,6 @@ export default function QueryView() {
     <>
       <Head />
       <QueryBody storetable={tableMemory}/>
-      <PasteBoard />
     </>
   )
 }
