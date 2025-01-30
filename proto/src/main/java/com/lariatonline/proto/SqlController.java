@@ -104,11 +104,16 @@ public class SqlController {
             	if(!(tableMemory.containsKey(hicResponse))) {
             		List<String> resolutionMap = new ArrayList<>();
             		tableMemory.put(hicResponse, resolutionMap);
+//                	System.out.println(hicResponse);
+
             	}
+
             	
-            	if(!(tableMemory.get(hicResponse).contains(resolutionResponse))) {
-            		tableMemory.get(hicResponse).add(resolutionResponse);
-//            		System.out.println(hicResponse + ", " + resolutionResponse + " ..." );
+            	if(!(tableMemory.get(hicResponse).contains(resolutionResponse.toString()))) {
+            		tableMemory.get(hicResponse).add(resolutionResponse.toString());
+//                	System.out.println(hicResponse + ", " + resolutionResponse);
+//                	System.out.println(tableMemory.get(hicResponse));
+            		System.out.println(hicResponse + ", " + resolutionResponse + " ..." );
             	}
             }
 
@@ -148,7 +153,6 @@ public class SqlController {
 		} catch (Exception e) {
 			 e.printStackTrace();
 		}
-		
 		
 		
         double vMax = (double) listOfMaps.get(0).get("viewing_vmax");

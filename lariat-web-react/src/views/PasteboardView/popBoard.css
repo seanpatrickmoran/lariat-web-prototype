@@ -56,6 +56,13 @@ body {
     color: black; 
 }
 
+#pasteboard-fields{
+    cursor: default;
+    width: 380px;
+    border: 0px #999;
+    margin: 0px;
+}
+
 #pasteboard tr{
     cursor: default;
     width: 380px;
