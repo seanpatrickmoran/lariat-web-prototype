@@ -111,6 +111,7 @@ export default class Pasteboard extends React.Component{
 		this.setState({contentSet: _contentSet})
       this.props.pasteBoardPropsUpdate({visibility: this.state.visibility, contents: _contents});
 		}
+	}
 
 
     render(){
