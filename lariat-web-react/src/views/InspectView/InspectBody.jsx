@@ -9,16 +9,36 @@ import { Histogram } from './histogram.jsx';
 
 
 export default class InspectBody extends React.Component{
-         constructor(props){
-            super(props);
-            this.state = {selectValue: ''};  // initial state value
-            this.resolutionOptions = (this.props.storetable[Object.keys(this.props.storetable)[0]]).map((el) => <option value={el} key={el}>{el}</option>);
-            // this.offSetQueries = null;
-            this.offset = 0;
-            this.storeImage;
-            this.histogram;
-            this.fetchMap = new Map([[":", "%3A"], [";", "%3B"], ["<","%3C"], ["=" , "%3D"],[">" , "%3E"],["?" , "%3F"],["@" , "%40"],["!" , "%21"],["\"" , "%22"],["#" , "%23"],["$" , "%24"],["%" , "%25"],["&" , "%26"],["'" , "%27"],["(" , "%28"],[")" , "%29"],["*" , "%2A"],["+" , "%2B"],["," , "%2C"],["-" , "%2D"],["." , "%2E"],["/" , "%2F"]]);
-           }
+    constructor(props){
+      super(props);
+      this.state = {
+        selectValue: '',
+        visibility: '',
+        contents: ''
+                    };  // initial state value
+      this.resolutionOptions = (this.props.storetable[Object.keys(this.props.storetable)[0]]).map((el) => <option value={el} key={el}>{el}</option>);
+      // this.offSetQueries = null;
+      this.offset = 0;
+      this.storeImage;
+      this.histogram;
+      this.fetchMap = new Map([[":", "%3A"], [";", "%3B"], ["<","%3C"], ["=" , "%3D"],[">" , "%3E"],["?" , "%3F"],["@" , "%40"],["!" , "%21"],["\"" , "%22"],["#" , "%23"],["$" , "%24"],["%" , "%25"],["&" , "%26"],["'" , "%27"],["(" , "%28"],[")" , "%29"],["*" , "%2A"],["+" , "%2B"],["," , "%2C"],["-" , "%2D"],["." , "%2E"],["/" , "%2F"]]);
+     }
+
+    componentDidUpdate(prevProps, prevState) {
+      // console.log(this.props.pasteBoardProps.contents === prevProps.pasteBoardProps.contents);
+      if (this.props.pasteBoardProps.contents !== prevProps.pasteBoardProps.contents){
+        // this.state.livePasteBoard = this.props.pasteBoardProps.contents;
+        // this.props.pasteBoardPropsUpdate(oldState);
+        // console.log(this.state.contents);
+        // console.log(this.props.pasteBoardProps.contents)
+        // console.log(prevProps.pasteBoardProps.contents)
+        // console.log(this.props.pasteBoardProps.contents);
+        // console.log(this.props.pasteBoardPropsUpdate);
+        this.setState({visibility: "visible", contents: this.props.pasteBoardProps.contents});
+        this.props.pasteBoardPropsUpdate({visibility: this.state.visibility, contents: this.props.pasteBoardProps.contents});
+      }
+    }
+
 
 componentDidMount(){
       const node = document.getElementById("names-field");

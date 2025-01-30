@@ -58,7 +58,7 @@ export function App() {
                             <>
                                 <Head />
                                 <QueryPage pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
-                                <PasteBoard />
+                                <PasteBoard pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
                             </>
                         }
                     />

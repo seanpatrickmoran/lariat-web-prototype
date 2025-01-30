@@ -42,7 +42,6 @@ export function Histogram({histProps}){
 
   useEffect(() => {
     const svgElement = d3.select(axesRef.current);
-    console.log(svgElement);
     svgElement.selectAll("*").remove();
 
     const xAxisGenerator = d3.axisBottom(xScale);

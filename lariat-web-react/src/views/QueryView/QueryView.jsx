@@ -8,10 +8,10 @@ import '../style.css';
 import '../PasteboardView/popBoard.css';
 import useLocalStorage from './../CustomHooks/UseLocalStorage.js';
 
-export default function QueryView() {
+export default function QueryView({pasteBoardProps,pasteBoardPropsUpdate}) {
 
     const [tableMemory, setTableMemory] = useLocalStorage("tableMemory");
-    // console.log("component did mount");
+    const [pasteBoardPropsChild, setPasteBoardPropsChild] = useState(pasteBoardProps);
     // console.log(tableMemory);
 
     // for (var key in tableMemory) {
@@ -22,8 +22,7 @@ export default function QueryView() {
 
   return (
     <>
-      <Head />
-      <QueryBody storetable={tableMemory}/>
+      <QueryBody storetable={tableMemory} pasteBoardProps={pasteBoardPropsChild} pasteBoardPropsUpdate={setPasteBoardPropsChild}/>
     </>
   )
 }

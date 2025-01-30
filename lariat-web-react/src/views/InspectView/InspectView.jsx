@@ -14,15 +14,21 @@ export default function InspectView({pasteBoardProps,pasteBoardPropsUpdate}) {
 
     const [tableMemory, setTableMemory] = useLocalStorage("tableMemory");
     const [histogramProperties, sethistogramProperties] = useState({width: 1, height: 1, data: []});
-    const [pasteBoardPropsChild, setPasteBoardPropsChild] = useLocalStorage("pasteBoardProps");
+    // const [pasteBoardPropsChild, setPasteBoardPropsChild] = useLocalStorage("pasteBoardProps");
+    // const [pasteBoardPropsChild, setPasteBoardPropsChild] = useState(pasteBoardProps);
+
+    // pasteBoardPropsUpdate(pasteBoardPropsChild); //how to do... easiest would be to make tese the same level maybe. don't nest them deeply.
     // console.log(pasteBoardProps);
 
   return (
     <>
-      {/*<Head />*/}
-      <InspectBody histProps={histogramProperties} OnHistChange={sethistogramProperties} storetable={tableMemory} pasteBoardProps={pasteBoardPropsChild} pasteBoardPropsUpdate={setPasteBoardPropsChild}/>
-      {/*<PasteBoard copiedToPasteBoard={pasteBoardProps}/>*/}
-      <Histogram histProps={histogramProperties}/>
+      <InspectBody  histProps={histogramProperties} 
+                    OnHistChange={sethistogramProperties} 
+                    storetable={tableMemory} 
+                    pasteBoardProps={pasteBoardProps} 
+                    pasteBoardPropsUpdate={pasteBoardPropsUpdate}/>
+
+      <Histogram    histProps={histogramProperties}/>
     </>
   )
 }
