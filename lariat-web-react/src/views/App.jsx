@@ -15,6 +15,8 @@ import QueryPage from './QueryView/QueryView.jsx'
 import InspectPage from './InspectView/InspectView.jsx'
 import PairsPage from './PairsView/PairsView.jsx'
 
+import Error404 from './../Static/404.jsx'
+
 
 import useLocalStorage from './CustomHooks/UseLocalStorage.js'
 
@@ -89,7 +91,11 @@ export function App() {
                         </>
                     }
                     />      
-                </Routes>
+                    <Route 
+                        path='*' 
+                        element={<Error404 />}/>
+                        
+                    </Routes>
             </BrowserRouter>
         </>
     );
