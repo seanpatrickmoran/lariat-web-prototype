@@ -26,9 +26,30 @@ public class TalkTomcat {
             // SystemName stores the name of the system
             System.out.println("System Name : "
                                + SystemName);
-            return "You call out, " + SystemName + " replies:  Meow!";
-            
-        }
+//            return SystemName + " replies:  Meow!";
+    		return 
+    		  "    ＿_　　　　　　　/　　　　　　 ＼   {　　　　 ﾚ'　　　 　 }　　 　/:　:　　　　　|           \n"
+			+ " ／二  ￣ﾆ=- 、　　 {　　　 .　:　:　:ー､　   ＿_」　  r'⌒ヽ|　　 　/:　:　:　.　  {           \n"
+			+ ": : : : : : :.ヽ　 〉　　　　　　 /ヽ、　＼ﾍ ＼　7   　く二ｱﾌ　　 ／:　:　:　.r    |           \n"
+			+ ": : : : : : : : ＼　　r､　 /´　　|ﾚ'　￣￣ヽフ{　 　  　〈{ 　 /:　:　:　.　{  　〈           \n"
+			+ ": : : : : : : : : :ﾚ   ＼l　　　　　 　　 　} ヾ　r'´　 }ｦ　 /:　:　:　:　. ヽ　　＿＿        \n"
+			+ ": : : : : : : : : :＼　/^ヽ＿_ ／ｌ ヽ　r' ﾉ　 ｀ｰｧ=ｰ'_/ 　／:　:　:　　_,､-＝ー'￣　  ｀＼   \n"
+			+ ": : : : : : : : : : :V rﾍ　　　  {｀ｰ-rｰ'´ 　   /　ｧ――=' rへ:　: 　／　　　　　    　　  ｢ヽ \n"
+			+ ": rへ　　　　　 : : : : : : : : : |    {       / r'^Ｘ:::}  i　 　/:　:              　| }\n"
+			+ "_/　 >='ニ￣ﾆ=-､　　　　　　　 -､　,|  \\ \\       (_ｧｿ　{　　　 　   /:　:　:　       r'   レ'\n"
+			+ "　／　　　　　 　ヽ　　 ｢ヽ_　  ノl_ノ   \\_)            〉ｒ‐　_＿  /:　:　:　:　 ヽ　 {　　 }\n"
+			+ "∨　　　　　　 　 　｀ー'　　 ￣｀　ｸ 　                 ヽ＿_／ ＿_,ｽ:　:　:　:　 　}＿_ｲ　 /  \n"
+			+ "､　　　　　　　　　　　　 　 　 　 }　　　                   　＼　　　　￣７:　:ｒ' ￣|　 {    \n"
+			+ "　＼　　　　　　　 　　　　  }　  ﾉ　                          }　　　　 厂７　}　　 /　 |    \n"
+			+ "　　 }　　　ｒ､ 　　  ,ィ   ト=-\"　　　                       ヽ｀　'´ ﾉ　/　/　　 /　 /    \n"
+			+ "　　 {　　 〈　ﾄーr―-\"｛　　{　　     Help is on the way!      ｀ー‐´   （_,ノ　  ｀ー'    \n"
+			+ "　 　 ＼　 ＼＼_,)　　　＼　＼_　　　　　　　　　 　                 　　 〃                  \n"
+			+ "　　　　 ＼＿ﾌ　　　　　　 ヽ＿ｿ                                                           \n"
+			+ "                                                                                      \n"
+			+"";
+    		
+
+		}
         catch (Exception E) {
             System.err.println(E.getMessage());
             return Missed();

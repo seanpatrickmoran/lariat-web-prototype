@@ -26,6 +26,16 @@ export default class Error404 extends React.Component{
     if (this.state.visCallBox!=="visible"){
       this.setState({visCallBox: "visible"});
     }
+
+    const fetchPromise = fetch(`http://localhost:8080/api/talk`);
+    fetchPromise.then(response => {
+              return response.json();
+                  }).then(entries => {
+                    document.getElementById("talk").innerHTML = entries;
+                    // console.log(entries);
+                  });
+    console.log('meow!')
+
   }
 
   closeWindow(){
@@ -61,19 +71,19 @@ export default class Error404 extends React.Component{
 
       <div id="callBoxDiv">
 
-{/*        <Draggable
+        <Draggable
         handle=".title"
         position={null}
         scale={1}
         onStart={this.handleStart}
         onDrag={this.handleDrag}
-        onStop={this.handleStop}>*/}
+        onStop={this.handleStop}>
 
         <div id="callBoxContent" className="content" style={{
-          height: ' 25%',
-          width: '25%',
-          top: '25%',
-          left: '38%',
+          height: ' 42%',
+          width: '42%',
+          top: '15%',
+          left: '30%',
           backgroundColor: "#030300",
           visibility: this.state.visCallBox,
         }}>
@@ -84,7 +94,7 @@ export default class Error404 extends React.Component{
           <div className="control-box windowshade-box"><div className="control-box-inner"><div className="windowshade-box-inner"></div></div></div>
 
           <div>
-            <p id="talk" style={{backgroundColor: "Black", fontSize: "12px", color:"#666"}} />
+            <pre id="talk" style={{backgroundColor: "Black", fontSize: "12px", color:"#666"}} />
           </div>
           <div className="row-container">
             <input/>
@@ -96,7 +106,7 @@ export default class Error404 extends React.Component{
           </div>
         </div>
 
-        {/*</Draggable>*/}
+        </Draggable>
 
       </div>
 
