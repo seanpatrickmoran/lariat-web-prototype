@@ -37,8 +37,11 @@ export default class Error404 extends React.Component{
       <div align="center"><pre id="plasmaArea" style={{backgroundColor: "Black", fontSize: "12px", color:"#666"}}>ASCIIPlasma</pre></div>
 
       <h3 style={{backgroundColor: "Black", fontSize: "12px", color:"#666", textAlign: "center"}}> That's not good.</h3>
-      <a href="/" style={{backgroundColor: "Black", fontSize: "12px", color:"#666", textAlign: "center"}}>Go Home</a>
+      {/*<a href="/" style={{textAlign: "center", flex: 1}}>Go Home</a>*/}
 
+      <div style={{flex: 1, textAlign: 'center'}}>
+      <a href="/" style={{backgroundColor: "Black", fontSize: "12px", color:"#666"}}>Go Home</a>
+      </div>
 
       <p><br/><br/><br/><br/><br/><br/><br/><br/></p>
     </body>
