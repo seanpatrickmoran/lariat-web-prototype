@@ -4,7 +4,7 @@ import PasteBoard from '../PasteboardView/PasteboardView.jsx'
 import '../PasteboardView/popBoard.css';
 
 import "../style.css";
-import "./index.css";
+import "./main.css";
 import "../../../src/img/lariattmp.png"
 import useLocalStorage from './../CustomHooks/UseLocalStorage.js';
 import { useState, useEffect } from 'react';

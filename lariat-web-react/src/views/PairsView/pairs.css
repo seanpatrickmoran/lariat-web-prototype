@@ -1,0 +1,55 @@
+#field-rows {
+  margin: 3px;
+}
+
+.row-container {
+  margin: 0px;
+  display: flex;
+  flex-direction: row;
+}
+
+.row-selection{
+  width: 225px;
+}
+
+#names {
+    border: 1px solid black;
+    margin: 3px;
+    width: 580px;
+    height: 323px;
+    overflow: auto;
+}
+
+#pairsContent {
+    position: fixed;
+    width: 600px;
+    height: 436px;
+}
+
+.select {
+  width: 100px;
+  overflow: auto;
+}
+
+/*#names {
+    border: 1px solid black;
+    width: 500px;
+    height: 300px;
+    overflow: auto;
+}
+*/
+.column-container {
+  margin: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+
+.title:before{
+  width: 43%;
+}
+
+.title:after{
+  width: 43%;
+}

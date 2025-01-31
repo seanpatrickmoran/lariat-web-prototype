@@ -367,8 +367,8 @@ copyToPasteboard = (event) => {
           </div>
 
          <div className="row-container offset-navigation" >
-          <button type="button" id="offSetLeftButton" onClick={this.handleDecrement}>&#8592;</button>
-          <button type="button" id="offSetRightButton" onClick={this.handleIncrement}>&#8594;</button>
+          <button type="button" id="offSetLeftButton" onClick={this.handleDecrement}>&#8592; Prev</button>
+          <button type="button" id="offSetRightButton" onClick={this.handleIncrement}>Next &#8594;</button>
           </div>
         </div>
       <div className="block">

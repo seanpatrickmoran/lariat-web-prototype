@@ -45,10 +45,7 @@ select#field-select{
 input#sqlite3-query{
   height: 19px;
 }
-.content {
-    position: fixed;
-    left: 4px;
-    top: -66px;
+#queryContent {
 /*    z-index: 2;
     font-size: 12px;
     font-weight: normal;*/

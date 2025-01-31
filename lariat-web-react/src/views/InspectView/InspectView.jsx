@@ -1,11 +1,12 @@
+import { useState, useEffect } from 'react';
+
 import Head from '../MainView/Head.jsx';
 import InspectBody from './InspectBody.jsx'
 import PasteBoard from '../PasteboardView/PasteboardView.jsx'
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import './inspect.css';
+
 import '../style.css';
-import '../PasteboardView/popBoard.css';
+import './inspect.css';
+
 import useLocalStorage from './../CustomHooks/UseLocalStorage.js';
 import { Histogram } from './histogram.jsx';
 

@@ -1,14 +1,13 @@
 import Head from '../MainView/Head.jsx';
-import QueryBody from './QueryBody.jsx'
+import PairsBody from './PairsBody.jsx'
 import PasteBoard from '../PasteboardView/PasteboardView.jsx'
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-import './query.css';
+import './pairs.css';
 import '../style.css';
 import '../PasteboardView/popBoard.css';
 import useLocalStorage from './../CustomHooks/UseLocalStorage.js';
 
-export default function QueryView({pasteBoardProps,pasteBoardPropsUpdate}) {
+export default function PairsView({pasteBoardProps,pasteBoardPropsUpdate}) {
 
     const [tableMemory, setTableMemory] = useLocalStorage("tableMemory");
     // const [pasteBoardPropsChild, setPasteBoardPropsChild] = useState(pasteBoardProps);
@@ -22,8 +21,7 @@ export default function QueryView({pasteBoardProps,pasteBoardPropsUpdate}) {
 
   return (
     <>
-
-      <QueryBody    storetable={tableMemory} 
+      <PairsBody    storetable={tableMemory} 
                     pasteBoardProps={pasteBoardProps} 
                     pasteBoardPropsUpdate={pasteBoardPropsUpdate}/>
     </>

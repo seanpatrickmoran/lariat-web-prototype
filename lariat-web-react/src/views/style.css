@@ -59,8 +59,10 @@ p {
 */
 /* Window layout */
 .content {
-    position: relative;
-    left: 0px;
+/*    position: relative;*/
+    position: fixed;
+    left: 1%;
+    top: -7%;
     z-index: 2;
     font-size: 12px;
     font-weight: normal;

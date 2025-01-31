@@ -102,7 +102,7 @@ export default class Pasteboard extends React.Component{
 			if (delArr[index]) {
 			  pasteBoardSelectField.remove(index);
 			}
-
+		}
 		const _contentSet = new Set();
 		var _contents = "";
 		for (const child of pasteBoardSelectField.children) {
@@ -113,7 +113,41 @@ export default class Pasteboard extends React.Component{
     	this.setState({visibility: "visible", contents: _contents});
 		this.setState({contentSet: _contentSet})
       this.props.pasteBoardPropsUpdate({visibility: this.state.visibility, contents: _contents});
-		}
+
+	}
+
+	pbDump = (event) => {
+
+
+		/*
+			download files, indicate histograms if necessary...
+
+
+		*/
+		// const pasteBoardSelectField = document.getElementById("pasteboard-fields");
+		// const length = pasteBoardSelectField.options.length;
+	   //  let delArr = [];
+	   //  for (let i = 0; i < pasteBoardSelectField.options.length; i++) {
+	   //    delArr[i] = pasteBoardSelectField.options[i].selected;
+	   //  }
+
+		// let index = pasteBoardSelectField.options.length;
+		// while (index--) {
+		// 	if (delArr[index]) {
+		// 	  pasteBoardSelectField.remove(index);
+		// 	}
+
+		// const _contentSet = new Set();
+		// var _contents = "";
+		// for (const child of pasteBoardSelectField.children) {
+		// 	_contentSet.add(child.value);
+		// 	_contents+=","+child.value;
+		// }
+
+    	// this.setState({visibility: "visible", contents: _contents});
+		// this.setState({contentSet: _contentSet})
+      // this.props.pasteBoardPropsUpdate({visibility: this.state.visibility, contents: _contents});
+		// }
 	}
 
 
@@ -145,7 +179,7 @@ export default class Pasteboard extends React.Component{
 					<button className="command_button" id="pbSelect" onClick={this.pbSelectAll}>Select All</button>
 					<button className="command_button" id="pbRemove" onClick={this.pbRemove}>Remove</button>
 					<button className="command_button" id="pbPaste">Paste To</button>
-					<button className="command_button" id="pbDump">Dump</button>
+					<button className="command_button" id="pbDump" onClick={this.pbDump}>Dump</button>
 					{/*<button className="command_button" id="pbTalk" onClick={this.pbTalk}>Talk</button>*/}
 				</div>
 

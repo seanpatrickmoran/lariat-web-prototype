@@ -7,12 +7,16 @@ import {
 } from  "react-router";
 
 import Head from './MainView/Head.jsx';
+import PasteBoard from './PasteboardView/PasteboardView.jsx'
+import './PasteboardView/popBoard.css';
+
 import MainPage from './MainView/MainPage.jsx'
 import QueryPage from './QueryView/QueryView.jsx'
 import InspectPage from './InspectView/InspectView.jsx'
+import PairsPage from './PairsView/PairsView.jsx'
+
+
 import useLocalStorage from './CustomHooks/UseLocalStorage.js'
-import PasteBoard from './PasteboardView/PasteboardView.jsx'
-import './PasteboardView/popBoard.css';
 
 export function App() {
 
@@ -74,11 +78,19 @@ export function App() {
                         </>
                     }
                     />      
-
-
+                    <Route
+                        exact
+                        path="/pairs"
+                        element={
+                            <>
+                                <Head />
+                                <PairsPage pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
+                                <PasteBoard pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
+                        </>
+                    }
+                    />      
                 </Routes>
             </BrowserRouter>
-            {/*<button onClick={sendData}>Get data</button>*/}
         </>
     );
 }
