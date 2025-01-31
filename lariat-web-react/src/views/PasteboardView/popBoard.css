@@ -58,9 +58,10 @@ body {
 
 #pasteboard-fields{
     cursor: default;
-    width: 380px;
-    border: 0px #999;
-    margin: 0px;
+    width: 395px;
+    height: 245px;
+/*    border: 0px #999;*/
+/*    margin: 0px;*/
 }
 
 #pasteboard tr{

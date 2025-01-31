@@ -1,4 +1,4 @@
-package com.lariatonline.proto;
+package com.lariatonline.proto.Methods;
 
 //import com.lariatonline.proto.ByteArrToFloat32ArrayPair;
 //import com.lariatonline.proto.RgbaPair;

@@ -1,4 +1,4 @@
-package com.lariatonline.proto;
+package com.lariatonline.proto.Methods;
 
 public class ByteArrToFloat32ArrayPair {
     private float[] floatArr;

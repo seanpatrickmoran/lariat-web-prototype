@@ -25,14 +25,17 @@ export default class Pasteboard extends React.Component{
 		});
 
 		this.setState({visibility: "visible", contents: this.props.pasteBoardProps.contents});
-		console.log(_contentSet)
 		this.setState({contentSet: _contentSet})
 
 		// this.setState({visibility: "visible", contents: ","+_contentSet.forEach((v) => {return v}).join(",")});
 
  		const selectNode = document.querySelector("#pasteboard-fields");
-		   _contentSet.forEach((v) =>{
-		   // this doesnt work vvv
+		while (selectNode.firstChild) {
+			selectNode.removeChild(selectNode.lastChild);
+		}
+
+	   _contentSet.forEach((v) =>{
+
 		   // this.state.contents.split(",").slice(1).forEach((v) =>{
 			const childNode = document.createElement("option");
 			childNode.innerHTML = v;
@@ -54,7 +57,6 @@ export default class Pasteboard extends React.Component{
 			});	  
 			    	
        	this.setState({visibility: "visible", contents: _contents});
-			console.log(_contentSet)
 			this.setState({contentSet: _contentSet})
 
 			// pass upstream
@@ -76,6 +78,7 @@ export default class Pasteboard extends React.Component{
 
       }
     }
+
 
     pbSelectAll = (event) => {
     		const pasteBoardSelectField = document.getElementById("pasteboard-fields");
@@ -134,11 +137,7 @@ export default class Pasteboard extends React.Component{
 						    <tbody id="pasteboard">
 						    </tbody>
 						</table>*/}
-	               <select name="pasteboard-fields" id="pasteboard-fields" multiple size="10">
-
-
-{/*		                {names = this.props.pasteBoardProps.split(",");
-		                names.forEach((el) => <option value={el} key={el}>{el}</option>)}*/}
+	               <select name="pasteboard-fields" id="pasteboard-fields" multiple size="12">
 						</select>   
 				</div>
 
@@ -147,7 +146,7 @@ export default class Pasteboard extends React.Component{
 					<button className="command_button" id="pbRemove" onClick={this.pbRemove}>Remove</button>
 					<button className="command_button" id="pbPaste">Paste To</button>
 					<button className="command_button" id="pbDump">Dump</button>
-					<button className="command_button" id="pbTalk">Talk</button>
+					{/*<button className="command_button" id="pbTalk" onClick={this.pbTalk}>Talk</button>*/}
 				</div>
 
 				</div>

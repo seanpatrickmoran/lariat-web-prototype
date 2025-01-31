@@ -41,6 +41,8 @@ export default class InspectBody extends React.Component{
 
 
 componentDidMount(){
+
+  //bug is here.
       const node = document.getElementById("names-field");
       const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset}&hic_path=${Object.keys(this.props.storetable)[0]}&resolution=${this.props.storetable[Object.keys(this.props.storetable)[0]][0]}`);
             fetchPromise.then(response => {
@@ -88,6 +90,7 @@ componentDidMount(){
   handleDatasetChange = (event) => {
     this.setState({selectValue: event.target.value});
     if (event.target.value != "dataset"){
+      console.log(this.props.storetable[event.target.value])
       this.resolutionOptions = this.props.storetable[event.target.value].map((el) => <option value={el} key={el}>{el}</option>);
       const storeHicPath = document.getElementById("field-select").value;
       const storeResolution = document.getElementById("resolution-field-select").value;

@@ -23,6 +23,7 @@ export function App() {
         })
           .then((response) => response.json())
           .then((data) => {
+            console.log(tableMemory)
             setTableMemory(data);
             localStorage.setItem('tableMemory', JSON.stringify(data));
           })

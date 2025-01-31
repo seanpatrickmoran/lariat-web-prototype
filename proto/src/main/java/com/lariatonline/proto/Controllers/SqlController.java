@@ -1,4 +1,4 @@
-package com.lariatonline.proto;
+package com.lariatonline.proto.Controllers;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -6,13 +6,19 @@ import java.util.List;
 import java.util.ArrayList;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
-import com.google.gson.Gson; 
+import com.google.gson.Gson;
+import com.lariatonline.proto.Methods.ByteArrToFloat32ArrayPair;
+import com.lariatonline.proto.Methods.ImageMethods;
+import com.lariatonline.proto.Methods.RgbaPair;
+import com.lariatonline.proto.Methods.TalkTomcat;
+
 //import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.dbutils.QueryRunner;
 //import org.apache.commons.dbutils.ResultSetHandler;
@@ -32,8 +38,14 @@ public class SqlController {
 	private String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/databse6_binary.db";
 	
 	Map<String,List<String>> tableMemory = new HashMap<>();
-	BindDatabase binder = new BindDatabase();
+	TalkTomcat binder = new TalkTomcat();
 	
+
+	
+	@GetMapping("/api/talk")
+	public String TalkToHost() {
+		return TalkTomcat.GetHost();
+	}	
 	
 	@GetMapping("/api/test")
 	public ResponseEntity<String> test() {
@@ -97,7 +109,10 @@ public class SqlController {
 			Statement statement = connection.createStatement();
 			ResultSet response = statement.executeQuery(query0);
 			
+//			int ticker = 0;
+			
             while (response.next()) {
+//            	System.out.println(ticker++);
             	String hicResponse = response.getString("hic_path");
             	String resolutionResponse = response.getString("resolution");
             	
@@ -109,8 +124,9 @@ public class SqlController {
             	}
 
             	
-            	if(!(tableMemory.get(hicResponse).contains(resolutionResponse.toString()))) {
-            		tableMemory.get(hicResponse).add(resolutionResponse.toString());
+            	if(!(tableMemory.get(hicResponse).contains(resolutionResponse))) {
+            		System.out.println(tableMemory.get(hicResponse).contains(resolutionResponse));
+            		tableMemory.get(hicResponse).add(resolutionResponse);
 //                	System.out.println(hicResponse + ", " + resolutionResponse);
 //                	System.out.println(tableMemory.get(hicResponse));
             		System.out.println(hicResponse + ", " + resolutionResponse + " ..." );
