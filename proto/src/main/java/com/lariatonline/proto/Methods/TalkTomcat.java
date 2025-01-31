@@ -26,7 +26,7 @@ public class TalkTomcat {
             // SystemName stores the name of the system
             System.out.println("System Name : "
                                + SystemName);
-            return SystemName + " meows: Meow! ";
+            return "You call out, " + SystemName + " replies:  Meow!";
             
         }
         catch (Exception E) {
