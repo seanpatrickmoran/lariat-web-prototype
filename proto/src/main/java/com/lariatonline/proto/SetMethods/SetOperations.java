@@ -91,7 +91,7 @@ public class SetOperations {
 
 			for(int j=0; i<list1.size(); j++) {
 				Row row2 = list2.get(j);
-				String name2 = row2.getName();
+//				String  name2 = row2.getName();
 				Integer x2Start = Integer.parseInt(row2.getX1());
 				Integer x2End =  Integer.parseInt(row2.getX2());
 				Integer y2Start = Integer.parseInt(row2.getY1());
@@ -115,14 +115,28 @@ public class SetOperations {
 	}	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	public static List<String> intersectingRows(List<Map<String, Object>> sqlRows1, List<Map<String, Object>> sqlRows2){
+		List<String> namedIntersections = new ArrayList<>();
+		
+		Map<String,List<Row>> chromosomeRowMap1 = chromosomeRowToMap(sqlRows1);
+		Map<String,List<Row>> chromosomeRowMap2 = chromosomeRowToMap(sqlRows2);
+		
+		List<String> ckeys = new ArrayList<>();
+		for(int i = 0; i<23; i++) {
+			ckeys.add("chr"+String.valueOf(i));
+		}
+		ckeys.add("chrX");
+		
+		ckeys.forEach(key -> {
+			if(((chromosomeRowMap1.containsKey(key))&&(chromosomeRowMap2.containsKey(key)))) {
+				namedIntersections.addAll(intersectingIntervals(chromosomeRowMap1.get(key), chromosomeRowMap2.get(key)));
+			}
+		});
+		
+		return namedIntersections;
+		
+		
+	}
 	
 	
 }

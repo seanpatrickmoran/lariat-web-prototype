@@ -3,40 +3,143 @@ import Draggable from 'react-draggable';
 import React, {useEffect,useState} from 'react';
 // import { fetchTest } from './QueryView.jsx';
 import useLocalStorage from './../CustomHooks/UseLocalStorage.js'
+import { intersectingRows, nonIntersectingRows} from './Pairs.js';
+
 
 
 export default class PairsBody extends React.Component{
-         constructor(props){
-            super(props);
-      this.state = {
-        selectValue: '',
-        visibility: '',
-        contents: ''
-                    };  // initial state value
-            this.resolutionOptions = null;
-            this.offSetQueries = null;
-            this.offset = 0;
-           }
+        constructor(props){
+          super(props);
+          this.state = {
+            selectValue: '',
+            visibility: '',
+            contents: '',
+            dataSetOptionsLeft: '',
+            dataSetOptionsRight: '',
+                        };  // initial state value
+          this.resolutionOptions = {
+            left: '',
+            right: '',
+          };
+
+          this.offSetQueries = null;
+          this.offset = 0;
+        }
+
+
+    componentDidMount(){
+      this.state.dataSetOptionsLeft = Object.keys(this.props.storetable).map((key) => {
+        return  <option value={key}>{key}</option>
+          })
+      this.state.dataSetOptionsRight = Object.keys(this.props.storetable).map((key) => {
+        return  <option value={key}>{key}</option>
+          })
+
+      this.setState({dataSetOptionsLeft: Object.keys(this.props.storetable).map((key) => {
+              return  <option value={key}>{key}</option>
+            })})
+
+      this.setState({dataSetOptionsRight: Object.keys(this.props.storetable).map((key) => {
+              return  <option value={key}>{key}</option>
+            })})
+
+      const datasetHandle = Object.keys(this.props.storetable)[0];
+      this.resolutionOptions.left = this.props.storetable[datasetHandle].map((el) => {
+        return <option value={el} key={el}>{el}</option>
+      });
+      this.resolutionOptions.right = this.props.storetable[datasetHandle].map((el) => {
+        return <option value={el} key={el}>{el}</option>
+      });
+    }
 
 
     componentDidUpdate(prevProps, prevState) {
       // console.log(this.props.pasteBoardProps.contents === prevProps.pasteBoardProps.contents);
       if (this.props.pasteBoardProps.contents !== prevProps.pasteBoardProps.contents){
-        // this.state.livePasteBoard = this.props.pasteBoardProps.contents;
-        // this.props.pasteBoardPropsUpdate(oldState);
-        // console.log(this.state.contents);
-        // console.log(this.props.pasteBoardProps.contents)
-        // console.log(prevProps.pasteBoardProps.contents)
-        // console.log(this.props.pasteBoardProps.contents);
-        // console.log(this.props.pasteBoardPropsUpdate);
+
         this.setState({visibility: "visible", contents: this.props.pasteBoardProps.contents});
         this.props.pasteBoardPropsUpdate({visibility: this.state.visibility, contents: this.props.pasteBoardProps.contents});
       }
     }
 
 
+  handleDatasetChange = (event) => {
+    const bubbleDownHandle =  event.target.name.split("-")[1];
+    console.log(bubbleDownHandle);
+    this.setState({selectValue: event.target.value});
+    if (event.target.value != "dataset"){
+      this.resolutionOptions[bubbleDownHandle] = this.props.storetable[event.target.value].map((el) => {
+       return <option value={el} key={el}>{el}</option>
+     });
+
+      }
+  };
+
+
+
+  async parallelFetch(baseString, offsetInt){
+    console.log(baseString)
+    const array = []
+    for(var i = 0; i<6; i++){
+      array.push(fetch(`http://localhost:8080/api/read_limiter?offset=${offsetInt+i*200}` + baseString));
+    }
+
+    const response = await Promise.allSettled(array);
+    const resolvedArray = [];
+
+    response.map(repl => {
+      if (repl.status==="fulfilled"){
+        resolvedArray.push(repl.value)
+      }
+    })
+
+    const responseBody = await Promise.all(resolvedArray.map((item) => {
+      return item.json();
+    }))
+
+    console.log(await responseBody);
+    return await responseBody
+  };
+
+
+  setOperatorAND = () =>{
+    const datasetA = document.getElementById("dataset-left").value;
+    const resolutionA = document.getElementById("resolution-left").value;
+    const datasetB = document.getElementById("dataset-right").value;
+    const resolutionB = document.getElementById("resolution-right").value;
+
+    if ((resolutionA==="resolution")||(resolutionB==="resolution")){
+      return;
+    }
+
+
+    var ptrSQL = ['1'];
+    // var page = 0;
+    const sqlRowsA = new Array()
+    const sqlRowsB = new Array()
+    // sqlRowsA.push(this.parallelFetch(`&hic_path=${datasetA}&resolution=${resolutionA}`, 0).then().then());
+
+    console.log(sqlRowsA)
+
+    //while sqlRowsA is divisible by 6, and not equal to its last state..
+    var page = 0;
+    var prevLen = -1;
+    while((page<400)&&(sqlRowsA.length!=prevLen)){
+      console.log(prevLen, sqlRowsA.length)
+      prevLen = sqlRowsA.length;
+      const check = this.parallelFetch(`&hic_path=${datasetA}&resolution=${resolutionA}`, page);
+      console.log(check);
+      sqlRowsA.push(check);
+      page += 6;
+    }
+
+    console.log(sqlRowsA)
+    }
 
     render (){
+
+  
+
   return <>
 
   <Draggable
@@ -56,27 +159,42 @@ export default class PairsBody extends React.Component{
     <div className="row-container" id="field-rows">
       <div className="column-container">
           <div className="row-container">
-            <select className="row-selection" name="dataset-left" id="dataset-left"></select>
+            <select className="row-selection" name="dataset-left" id="dataset-left" onChange={this.handleDatasetChange}>
+              {
+                this.state.dataSetOptionsLeft      
+              }
+              </select>
           </div>
           <div className="row-container">
-            <select className="row-selection" name="resolution-left" id="resolution-left"></select>
+            <select className="row-selection" name="resolution-left" id="resolution-left">
+              <option value="resolution">Resolution</option>
+              {this.resolutionOptions.left}
+            </select>
           </div>
       </div>
 
     <div className="row-container">
     <div className="column-container">
       <div className="row-container">
-        <select className="row-selection" name="dataset-right" id="dataset-right"></select>
+        <select className="row-selection" name="dataset-right" id="dataset-right" onChange={this.handleDatasetChange}>
+          {
+            this.state.dataSetOptionsRight      
+          }          
+        </select>
       </div>
       <div className="row-container">
-        <select className="row-selection" name="resolution-right" id="resolution-right"></select>
+        <select className="row-selection" name="resolution-right" id="resolution-right">
+          
+          <option value="resolution">Resolution</option>
+          {this.resolutionOptions.right}
+        </select>
       </div>
     </div>
     </div>
     </div>
 
     <div className="row-container">
-      <button type="button" id="intersectBtn">a AND b</button>
+      <button type="button" id="intersectBtn" onClick={this.setOperatorAND}>a AND b</button>
       <button type="button" id="aNotbBtn">a NOT b</button>
       <button type="button" id="bNotaBtn">b NOT a</button>
       <button type="button" id="inspectBtn">FUSE</button>

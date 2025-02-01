@@ -54,7 +54,7 @@ export function App() {
                             <>
                                 <Head />
                                 <MainPage />
-                                <PasteBoard pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
+                                {/*<PasteBoard pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>*/}
                             </>
                         }
                     />
