@@ -38,7 +38,6 @@ public class SqlController {
 	
 	Map<String,List<String>> tableMemory = new HashMap<>();
 //	TalkTomcat binder = new TalkTomcat();
-	
 
 	
 	@GetMapping("/api/talk")
@@ -102,6 +101,32 @@ public class SqlController {
 	}	
 	
 	
+	@GetMapping("/api/readDatasetAtResolution")
+	public ResponseEntity<String> readDatasetAtResolution(
+			@RequestParam("hic_path")String hic_path,
+			@RequestParam("resolution")String resolution) {
+		
+        Connection connection = null;
+        List<Map<String, Object>> listOfMaps = null;		
+			
+		String callQuery = "SELECT * FROM imag WHERE hic_path = (?) AND resolution = (?)";	
+		
+		try {
+			MapListHandler beanListHandler = new MapListHandler();
+			QueryRunner queryrunner = new QueryRunner();
+			
+			connection = DriverManager.getConnection(databaseURI);
+			listOfMaps = queryrunner.query(connection, callQuery, beanListHandler, new Object[]{hic_path,resolution});
+			
+		} catch (Exception e) {
+			 e.printStackTrace();
+		}
+		
+		return new ResponseEntity<String>(new Gson().toJson(listOfMaps), HttpStatus.OK);
+	}	
+	
+	
+	
 	
 	@GetMapping("/api/scanDB")
 	public void walkDatabase() {	
@@ -112,7 +137,6 @@ public class SqlController {
 			Statement statement = connection.createStatement();
 			ResultSet response = statement.executeQuery(query0);
 			
-//			int ticker = 0;
 			
             while (response.next()) {
 //            	System.out.println(ticker++);
