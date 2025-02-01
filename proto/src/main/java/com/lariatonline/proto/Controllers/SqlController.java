@@ -17,6 +17,7 @@ import com.lariatonline.proto.Methods.ByteArrToFloat32ArrayPair;
 import com.lariatonline.proto.Methods.ImageMethods;
 import com.lariatonline.proto.Methods.RgbaPair;
 import com.lariatonline.proto.Methods.TalkTomcat;
+import com.lariatonline.proto.SetMethods.SetOperations;
 
 //import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.dbutils.QueryRunner;
@@ -101,28 +102,50 @@ public class SqlController {
 	}	
 	
 	
-	@GetMapping("/api/readDatasetAtResolution")
+	@GetMapping("/api/captureIntersect")
 	public ResponseEntity<String> readDatasetAtResolution(
-			@RequestParam("hic_path")String hic_path,
-			@RequestParam("resolution")String resolution) {
+			@RequestParam("hic_path1")String hic_path1,
+			@RequestParam("resolution1")String resolution1,
+			@RequestParam("hic_path2")String hic_path2,
+			@RequestParam("resolution2")String resolution2
+			){	
 		
+		int guard = 2;
         Connection connection = null;
-        List<Map<String, Object>> listOfMaps = null;		
-			
-		String callQuery = "SELECT * FROM imag WHERE hic_path = (?) AND resolution = (?)";	
+        List<Map<String, Object>> response1 = null;		
+        List<Map<String, Object>> response2 = null;		
+		String query1 = "SELECT * FROM imag WHERE hic_path = (?) AND resolution = (?)";	
+		String query2 = "SELECT * FROM imag WHERE hic_path = (?) AND resolution = (?)";	
+
 		
 		try {
 			MapListHandler beanListHandler = new MapListHandler();
 			QueryRunner queryrunner = new QueryRunner();
 			
 			connection = DriverManager.getConnection(databaseURI);
-			listOfMaps = queryrunner.query(connection, callQuery, beanListHandler, new Object[]{hic_path,resolution});
-			
+			response1 = queryrunner.query(connection, query1, beanListHandler, new Object[]{hic_path1,resolution1});
+			guard -= 1;
 		} catch (Exception e) {
 			 e.printStackTrace();
 		}
 		
-		return new ResponseEntity<String>(new Gson().toJson(listOfMaps), HttpStatus.OK);
+		try {
+			MapListHandler beanListHandler = new MapListHandler();
+			QueryRunner queryrunner = new QueryRunner();
+			
+			connection = DriverManager.getConnection(databaseURI);
+			response2 = queryrunner.query(connection, query2, beanListHandler, new Object[]{hic_path2,resolution2});
+			guard -= 1;
+		} catch (Exception e) {
+			 e.printStackTrace();
+		}
+		
+		if(guard!=0) {
+			return new ResponseEntity<String>(new Gson().toJson(""), HttpStatus.EXPECTATION_FAILED);
+		}
+		
+		List<String> result = SetOperations.intersectingRows(response1, response2);
+		return new ResponseEntity<String>(new Gson().toJson(result), HttpStatus.OK);
 	}	
 	
 	
@@ -139,23 +162,18 @@ public class SqlController {
 			
 			
             while (response.next()) {
-//            	System.out.println(ticker++);
             	String hicResponse = response.getString("hic_path");
             	String resolutionResponse = response.getString("resolution");
             	
             	if(!(tableMemory.containsKey(hicResponse))) {
             		List<String> resolutionMap = new ArrayList<>();
             		tableMemory.put(hicResponse, resolutionMap);
-//                	System.out.println(hicResponse);
-
             	}
 
             	
             	if(!(tableMemory.get(hicResponse).contains(resolutionResponse))) {
             		System.out.println(tableMemory.get(hicResponse).contains(resolutionResponse));
             		tableMemory.get(hicResponse).add(resolutionResponse);
-//                	System.out.println(hicResponse + ", " + resolutionResponse);
-//                	System.out.println(tableMemory.get(hicResponse));
             		System.out.println(hicResponse + ", " + resolutionResponse + " ..." );
             	}
             }

@@ -3,7 +3,7 @@ import Draggable from 'react-draggable';
 import React, {useEffect,useState} from 'react';
 // import { fetchTest } from './QueryView.jsx';
 import useLocalStorage from './../CustomHooks/UseLocalStorage.js'
-import { intersectingRows, nonIntersectingRows} from './Pairs.js';
+// import { intersectingRows, nonIntersectingRows} from './Pairs.js';
 
 
 
@@ -111,30 +111,41 @@ export default class PairsBody extends React.Component{
     if ((resolutionA==="resolution")||(resolutionB==="resolution")){
       return;
     }
-
-
-    var ptrSQL = ['1'];
+    const fetchPromise = fetch(`http://localhost:8080/api/captureIntersect?hic_path1=${datasetA}&hic_path2=${datasetB}&resolution1=${resolutionA}&resolution2=${resolutionB}`);
+    fetchPromise.then(response => {
+            return response.json();
+                }).then(entries => {
+                  console.log(entries)
+            // names = [...entries.map(elem => elem.name)];
+            // if (names.length!=0){
+            //     this.offset += 200;
+            //     const names = entries.map(elem => elem.name).join("<option />");
+            //     node.innerHTML = "<option />" + names;
+            //   }
+            });
+    }
+    // var ptrSQL = ['1'];
     // var page = 0;
-    const sqlRowsA = new Array()
-    const sqlRowsB = new Array()
-    // sqlRowsA.push(this.parallelFetch(`&hic_path=${datasetA}&resolution=${resolutionA}`, 0).then().then());
+    // const sqlRowsA = new Array()
+    // const sqlRowsB = new Array()
+    // // sqlRowsA.push(this.parallelFetch(`&hic_path=${datasetA}&resolution=${resolutionA}`, 0).then().then());
 
-    console.log(sqlRowsA)
+    // console.log(sqlRowsA)
 
-    //while sqlRowsA is divisible by 6, and not equal to its last state..
-    var page = 0;
-    var prevLen = -1;
-    while((page<400)&&(sqlRowsA.length!=prevLen)){
-      console.log(prevLen, sqlRowsA.length)
-      prevLen = sqlRowsA.length;
-      const check = this.parallelFetch(`&hic_path=${datasetA}&resolution=${resolutionA}`, page);
-      console.log(check);
-      sqlRowsA.push(check);
-      page += 6;
-    }
+    // //while sqlRowsA is divisible by 6, and not equal to its last state..
+    // var page = 0;
+    // var prevLen = -1;
+    // while((page<400)&&(sqlRowsA.length!=prevLen)){
+    //   console.log(prevLen, sqlRowsA.length)
+    //   prevLen = sqlRowsA.length;
+    //   const check = this.parallelFetch(`&hic_path=${datasetA}&resolution=${resolutionA}`, page);
+    //   console.log(check);
+    //   sqlRowsA.push(check);
+    //   page += 6;
+    // }
 
-    console.log(sqlRowsA)
-    }
+    // console.log(sqlRowsA)
+    // }
 
     render (){
 
