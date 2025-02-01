@@ -129,14 +129,74 @@ public class SetOperations {
 		
 		ckeys.forEach(key -> {
 			if(((chromosomeRowMap1.containsKey(key))&&(chromosomeRowMap2.containsKey(key)))) {
-				namedIntersections.addAll(intersectingIntervals(chromosomeRowMap1.get(key), chromosomeRowMap2.get(key)));
+				namedIntersections.addAll(
+						intersectingIntervals(chromosomeRowMap1.get(key), chromosomeRowMap2.get(key)));
 			}
 		});
 		
 		return namedIntersections;
 		
-		
 	}
 	
 	
+	
+	
+	//flipped source/target.
+	public static List<String> nonIntersectingRows(List<Map<String, Object>> sqlRows1, List<Map<String, Object>> sqlRows2){
+		List<String> doesNotIntersect = new ArrayList<>();
+		
+		Map<String,List<Row>> chromosomeRowMap1 = chromosomeRowToMap(sqlRows2);
+		Map<String,List<Row>> chromosomeRowMap2 = chromosomeRowToMap(sqlRows1);
+		
+		List<String> ckeys = new ArrayList<>();
+		for(int i = 0; i<23; i++) {
+			ckeys.add("chr"+String.valueOf(i));
+		}
+		ckeys.add("chrX");
+		
+		ckeys.forEach(key -> {
+			if(((chromosomeRowMap1.containsKey(key))&&(chromosomeRowMap2.containsKey(key)))) {
+				doesNotIntersect.addAll(
+						filterNonIntersecting(chromosomeRowMap1.get(key), chromosomeRowMap2.get(key)));
+			}
+		});
+		
+		return doesNotIntersect;
+	}	
+	
+	public static List<String> nonIntersectingRows(List<Map<String, Object>> sqlRows1, List<Map<String, Object>> sqlRows2, int intersectionBit){
+		List<String> doesNotIntersect = new ArrayList<>();
+		
+		Map<String,List<Row>> chromosomeRowMap1 = chromosomeRowToMap(sqlRows1);
+		Map<String,List<Row>> chromosomeRowMap2 = chromosomeRowToMap(sqlRows2);
+		
+		List<String> ckeys = new ArrayList<>();
+		for(int i = 0; i<23; i++) {
+			ckeys.add("chr"+String.valueOf(i));
+		}
+		ckeys.add("chrX");
+		
+		ckeys.forEach(key -> {
+			
+			if(!(chromosomeRowMap1.containsKey(key))) {
+				return;
+			}
+			
+			if(!(chromosomeRowMap2.containsKey(key))) {
+				List<Row> cRows = chromosomeRowMap1.get(key);
+				cRows.forEach(row -> {
+					doesNotIntersect.add(row.getName());
+				});
+			return;
+			};
+
+			if(((chromosomeRowMap1.containsKey(key))&&(chromosomeRowMap2.containsKey(key)))) {
+				doesNotIntersect.addAll(
+						filterNonIntersecting(chromosomeRowMap1.get(key), chromosomeRowMap2.get(key))
+						);
+			}
+		});
+		
+		return doesNotIntersect;		
+	}
 }
