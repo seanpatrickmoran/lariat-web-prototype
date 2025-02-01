@@ -111,42 +111,23 @@ export default class PairsBody extends React.Component{
     if ((resolutionA==="resolution")||(resolutionB==="resolution")){
       return;
     }
+    console.log()
     const fetchPromise = fetch(`http://localhost:8080/api/captureIntersect?hic_path1=${datasetA}&hic_path2=${datasetB}&resolution1=${resolutionA}&resolution2=${resolutionB}`);
     fetchPromise.then(response => {
+            console.log(response);
             return response.json();
                 }).then(entries => {
-                  console.log(entries)
-            // names = [...entries.map(elem => elem.name)];
-            // if (names.length!=0){
-            //     this.offset += 200;
-            //     const names = entries.map(elem => elem.name).join("<option />");
-            //     node.innerHTML = "<option />" + names;
-            //   }
+                  // console.log(entries)
+                  const selectNode = document.getElementById("names");
+                  // var payload;
+                  const names = entries.map((el) => {
+                    return el
+                  }).join("<option/>");
+                  selectNode.innerHTML = <option/> + names;
+                  console.log(names);
             });
     }
-    // var ptrSQL = ['1'];
-    // var page = 0;
-    // const sqlRowsA = new Array()
-    // const sqlRowsB = new Array()
-    // // sqlRowsA.push(this.parallelFetch(`&hic_path=${datasetA}&resolution=${resolutionA}`, 0).then().then());
-
-    // console.log(sqlRowsA)
-
-    // //while sqlRowsA is divisible by 6, and not equal to its last state..
-    // var page = 0;
-    // var prevLen = -1;
-    // while((page<400)&&(sqlRowsA.length!=prevLen)){
-    //   console.log(prevLen, sqlRowsA.length)
-    //   prevLen = sqlRowsA.length;
-    //   const check = this.parallelFetch(`&hic_path=${datasetA}&resolution=${resolutionA}`, page);
-    //   console.log(check);
-    //   sqlRowsA.push(check);
-    //   page += 6;
-    // }
-
-    // console.log(sqlRowsA)
-    // }
-
+    
     render (){
 
   
@@ -216,7 +197,9 @@ export default class PairsBody extends React.Component{
     </div>
 
     <div>
-      <select id="names" multiple size="16"> </select>
+      <select id="names" multiple size="16">
+      </select>
+      
     </div>
   </div>
 
