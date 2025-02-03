@@ -26,8 +26,8 @@ export default class Downloading extends React.Component{
               this.state = {
                 downloadActive: true,
                 status: "Ready",
-                maxAmount: "9000",
-                progress: "0"
+                maxAmount: 9000,
+                progress: 0,
               }
 
               // this.blobMap = new Map();
@@ -51,6 +51,9 @@ export default class Downloading extends React.Component{
   }
 
     componentDidUpdate(prevProps, prevState) {
+      if(prevState.maxAmount!=this.state.maxAmount){
+        this.setState({maxAmount: this.props.contentSet.size});
+      }
       if(prevProps.contentSet!=this.props.contentSet){
         this.setState({maxAmount: this.props.contentSet.size});
         const parentNode = document.getElementById("download-names");
@@ -105,7 +108,7 @@ export default class Downloading extends React.Component{
 
       const reply = [];
       data.forEach(obj => reply.push(obj.value))
-      this.setState({progress: toString(parseInt(this.state.progress) + 6)});
+      // this.setState({progress: toString(parseInt(this.state.progress) + 6)});
       return reply;
 
     } catch {
@@ -144,9 +147,7 @@ export default class Downloading extends React.Component{
           }
 
           const storeVal = await this.makeRequests(fetchArr);
-          // console.log(this.state.progress + storeVal.length);
-          // this.setState({progress: this.state.progress + storeVal.length});
-
+          this.setState({progress: this.state.progress + storeVal.length});
           answer.push(...storeVal)
         }
 
@@ -167,20 +168,20 @@ export default class Downloading extends React.Component{
           return readableStream.pipeTo(fileStream)
             .then(() => {
               console.log('done writing')
-              this.setState({status: "Ready", downloadActive: true, progress: "0"})
+              this.setState({status: "Ready", downloadActive: true, progress: 0})
               console.log('here!!!')
       })
         }
 
         // Write (pipe) manually
-        window.writer = fileStream.getWriter()
-        const reader = readableStream.getReader()
-        const pump = () => reader.read()
-          .then(res => res.done
-            ? writer.close()
-            : writer.write(res.value).then(pump))
+        // window.writer = fileStream.getWriter()
+        // const reader = readableStream.getReader()
+        // const pump = () => reader.read()
+        //   .then(res => res.done
+        //     ? writer.close()
+        //     : writer.write(res.value).then(pump))
 
-        pump()
+        // pump()
 
 
 
@@ -299,7 +300,11 @@ export default class Downloading extends React.Component{
           <div className="control-box zoom-box"><div className="control-box-inner"><div className="zoom-box-inner"></div></div></div>
           <div className="control-box windowshade-box"><div className="control-box-inner"><div className="windowshade-box-inner"></div></div></div>
 
-          <BasicProgressBarWithLabel currentValue={this.state.progress} label={this.state.status} max={this.state.maxAmount} />
+          {/*<BasicProgressBarWithLabel currentValue={this.state.progress} label={this.state.status} max={this.state.maxAmount} />*/}
+          <div id="idCOMPT">
+          <label for="progress-bar">{this.state.status}</label>
+          <progress id="progress-bar" value={this.state.progress} max={this.state.maxAmount}>{toString(this.state.progress)}%</progress>
+          </div>
 
 
           <div className="row-container">
