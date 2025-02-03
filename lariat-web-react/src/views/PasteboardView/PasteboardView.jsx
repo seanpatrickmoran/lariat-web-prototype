@@ -1,8 +1,9 @@
 import Draggable from 'react-draggable';
 import React, {useEffect,useState} from 'react';
-import useLocalStorage from './../CustomHooks/UseLocalStorage.js'
+
 import "./popBoard.css";
 
+import Downloading from "./Downloading.jsx";
 
 
 
@@ -13,9 +14,10 @@ export default class Pasteboard extends React.Component{
 		contents: "",
 		contentSet: new Set(),
 		visibility: "",
-		}
+		isDownloading: "hidden",
+		};
+		this.handleIsDownloadingChange = this.handleIsDownloadingChange.bind(this);
 	}
-
 
 	componentDidMount() {
 		const _contentSet = new Set(this.props.pasteBoardProps.contents.split(",").slice(1));
@@ -24,10 +26,11 @@ export default class Pasteboard extends React.Component{
 			_contents += "," + elem;
 		});
 
-		this.setState({visibility: "visible", contents: this.props.pasteBoardProps.contents});
-		this.setState({contentSet: _contentSet})
-
-		// this.setState({visibility: "visible", contents: ","+_contentSet.forEach((v) => {return v}).join(",")});
+		this.setState({	visibility: "visible", 
+								contents: this.props.pasteBoardProps.contents, 
+								isDownloading: "hidden",
+								contentSet: _contentSet
+							});
 
  		const selectNode = document.querySelector("#pasteboard-fields");
 		while (selectNode.firstChild) {
@@ -35,8 +38,6 @@ export default class Pasteboard extends React.Component{
 		}
 
 	   _contentSet.forEach((v) =>{
-
-		   // this.state.contents.split(",").slice(1).forEach((v) =>{
 			const childNode = document.createElement("option");
 			childNode.innerHTML = v;
 			childNode.value = v;
@@ -49,20 +50,20 @@ export default class Pasteboard extends React.Component{
     componentDidUpdate(prevProps, prevState) {
 
       if (this.props.pasteBoardProps !== prevProps.pasteBoardProps){
-      	// update who's there
+
+
+      	console.log(this.props.pasteBoardProps,prevProps.pasteBoardProps)
 			const _contentSet = new Set(this.props.pasteBoardProps.contents.split(",").slice(1));
 			var _contents = "";
 			_contentSet.forEach((elem) => {
 				_contents += "," + elem;
 			});	  
 			    	
-       	this.setState({visibility: "visible", contents: _contents});
-			this.setState({contentSet: _contentSet})
+       	this.setState({	visibility: "visible", 
+       							contents: _contents,
+									contentSet: _contentSet,
+								});
 
-			// pass upstream
-        // this.props.pasteBoardPropsUpdate({visibility: this.state.visibility, contents: this.props.pasteBoardProps.contents});
-
-			// rerender component.. faster to ignore if key already in set?
     		const selectNode = document.querySelector("#pasteboard-fields");
 			while (selectNode.firstChild) {
 				selectNode.removeChild(selectNode.lastChild);
@@ -77,6 +78,7 @@ export default class Pasteboard extends React.Component{
 			})
 
       }
+
     }
 
 
@@ -117,10 +119,17 @@ export default class Pasteboard extends React.Component{
 	}
 
 	pbDump = (event) => {
-
-
+		this.setState({isDownloading : "visible"})		
 		/*
-			download files, indicate histograms if necessary...
+			Does the following:
+				1. Popup menu. this new component will allow us to DL
+					*From here, customize what we want.
+						.notable, the Images (truesize or @ 455px)
+							-> these get zipped https://stuk.github.io/jszip/documentation/examples.html
+						.Histograms
+							-> these get a separate zip: https://stuk.github.io/jszip/documentation/examples.html
+						.later, other analyses...
+				2. From the popup menu, use the DL trick
 
 
 		*/
@@ -150,6 +159,14 @@ export default class Pasteboard extends React.Component{
 		// }
 	}
 
+	handleIsDownloadingChange(){
+		if(this.state.isDownloading=="hidden"){
+			this.setState({isDownloading: "visible"})
+		} else{
+		this.setState({isDownloading: "hidden"})
+		}
+	}	
+
 
     render(){
 	return <>
@@ -166,25 +183,23 @@ export default class Pasteboard extends React.Component{
 					    <div className="control-box zoom-box"><div className="control-box-inner"><div className="zoom-box-inner"></div></div></div>
 					    <div className="control-box windowshade-box"><div className="control-box-inner"><div className="windowshade-box-inner"></div></div></div>
 					    <h1  id="pasteboardTitle" className="title">Pasteboard</h1>
-				<div className="row-container">		
-{/*					   <table id="pasteboard-table" border="1">
-						    <tbody id="pasteboard">
-						    </tbody>
-						</table>*/}
-	               <select name="pasteboard-fields" id="pasteboard-fields" multiple size="12">
-						</select>   
-				</div>
 
-				<div id="pasteboard-commands" className="row-container">
-					<button className="command_button" id="pbSelect" onClick={this.pbSelectAll}>Select All</button>
-					<button className="command_button" id="pbRemove" onClick={this.pbRemove}>Remove</button>
-					<button className="command_button" id="pbPaste">Paste To</button>
-					<button className="command_button" id="pbDump" onClick={this.pbDump}>Dump</button>
-					{/*<button className="command_button" id="pbTalk" onClick={this.pbTalk}>Talk</button>*/}
-				</div>
+						<div className="row-container">		
+			               <select name="pasteboard-fields" id="pasteboard-fields" multiple size="12">
+								</select>   
+						</div>
 
-				</div>
+						<div id="pasteboard-commands" className="row-container">
+							<button className="command_button" id="pbSelect" onClick={this.pbSelectAll}>Select All</button>
+							<button className="command_button" id="pbRemove" onClick={this.pbRemove}>Remove</button>
+							<button className="command_button" id="pbPaste">Paste To</button>
+							<button className="command_button" id="pbDump" onClick={this.pbDump}>Dump</button>
+						</div>
+
+					</div>
 				</Draggable>
-  			</>
+
+				<Downloading isDownloading={this.state.isDownloading} handleIsDownloadingChange={this.handleIsDownloadingChange} contentSet={this.state.contentSet}/>
+		</>
 	}
 }

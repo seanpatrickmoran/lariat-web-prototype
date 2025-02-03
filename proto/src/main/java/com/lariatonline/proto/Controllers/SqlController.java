@@ -19,13 +19,9 @@ import com.lariatonline.proto.Methods.RgbaPair;
 import com.lariatonline.proto.Methods.TalkTomcat;
 import com.lariatonline.proto.SetMethods.SetOperations;
 
-//import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.dbutils.QueryRunner;
-//import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 
-//import java.
-//import java.io.*;
 import java.sql.*;
 
 

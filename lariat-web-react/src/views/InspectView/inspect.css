@@ -47,6 +47,10 @@ ul {
   list-style-type: none;
 }
 
+button {
+  margin: 1px;
+}
+
 .container {
   display: flex;
 /*  justify-content: space-between; /* Space between the blocks */*/
@@ -68,11 +72,20 @@ ul {
 }
 
 #inspect-labels{
-  margin-top: 19px;
+  margin-top: 0px;
+}
+
+#datasetLabels.column-container {
+  margin-top: 4px;
+  margin-left: 10px;
+  margin-right: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
 }
 
 .column-container {
-  margin: 0px;
+  margin: 2px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -116,7 +129,7 @@ ul {
 #viewPortWindow.hidden{
     height: 18.5px;
 }*/
-
+/*
 #viewPortWindow {
     width: 360px;
     height: 460px;
@@ -132,12 +145,12 @@ ul {
 #viewPortWindow .title:after{
   width: 49%;
   margin-left: 0px;
-}
+}*/
 
 .hidden {
   visibility: hidden;
 }
-
+/*
 #canvas-pop {    
     margin-left: 13px;
     display: block;
@@ -146,7 +159,7 @@ ul {
 #canvas-pop {    
     margin-left: 13px;
     display: block;
-}
+}*/
 
 #histogram.content   {
     left: 1080px;
@@ -165,16 +178,6 @@ ul {
 
 .content {
     position: fixed;
-/*    z-index: 2;
-    font-size: 12px;
-    font-weight: normal;*/
-    width: 1064px;
-    height: 768px;
-/*    margin: 100px auto 0;
-    border: 1px solid #111;
-    background: #ccc;
-    box-shadow:
-  1px 2px #111,
-  inset 1px 1px 0px 0px #fff,
-  inset -1px -1px 0px 0px #999;*/
+    width: 900px;
+    height: 650px;
 }

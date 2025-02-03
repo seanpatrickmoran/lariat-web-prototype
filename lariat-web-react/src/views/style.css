@@ -12,6 +12,59 @@
     src: url('../fonts/ChicagoFLF.ttf') format('truetype'); /* Safari, Android, iOS */
 }
 
+
+
+/*@media (prefers-color-scheme: light) {
+  body {
+    background: #FFF;
+    color: #333;
+    background-image: url("../img/patterns/22348.png");
+    font-size: 12px;
+  }
+
+  .content {
+    background: #ccc;
+    font-size: 14px;
+  }
+
+  .content .inner {
+    background-color: #ddd;
+  }
+  
+  .title {
+    background-color: #f0f0f0;
+  }
+
+  a{
+    color: #f5f6f7;
+  }
+
+
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #161618;
+    color: #FFF;
+    font-size: 12px;
+  }
+
+    .content {
+    background: #212124;
+    font-size: 14px;
+  }
+
+  .content .inner {
+    background-color: #fff;
+  }
+
+  .title {
+    background-color: #212124;
+  }
+
+  a{
+    color: #f5f6f7;
+  }
+}*/
 :root {
     --button-box-shadow:
   inset -1px -1px 0px 0px #777,
@@ -32,8 +85,11 @@ body {
     background-repeat: repeat;
     margin: 0;
     height: 100%;
-    font-family: 'ChicagoFLF', 'Times New Roman', 'Georgia', serif;
-    font-size: 12px;
+/*    font-family: 'ChicagoFLF', 'Times New Roman', 'Georgia', serif;*/
+  font-family: ui-sans-serif,system-ui,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+  font-feature-settings: normal;
+  font-variation-settings: normal;
+    font-size: 13px;
     font-weight: normal;
     overflow: hidden;
 }
@@ -64,7 +120,7 @@ p {
     left: 1%;
     top: -7%;
     z-index: 2;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: normal;
     width: 260px;
     margin: 100px auto 0;
@@ -100,7 +156,7 @@ p {
   user-select: none;
   app-region: drag;
   text-align: center;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: normal;
   padding: 1px 0;
   margin: 1px 0 0 0;
@@ -123,7 +179,7 @@ p {
     width: 400px;
     text-align: center;
     margin: 2em auto 0;
-    font-size: 12px;
+    font-size: 13px;
 }
 .control-box {
     position: absolute;

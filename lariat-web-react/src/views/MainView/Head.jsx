@@ -12,11 +12,14 @@ export default function Head() {
 
   return (
     <>
-			<nav className="row-container">
-      <button id="backBtn" onClick={navToMain}>Main Menu</button>
-      <button id="viewToQueryBtn" onClick={navToQuery}> Query </button>
-      <button id="viewToInspectBtn" onClick={navToInspect}> Inspect </button>
-      <button id="viewToPairsBtn" onClick={navToPairs}> Pairs </button>
+			<nav className="row-container" style={{
+      backgroundColor: "#f0f0f0",
+      borderBottom: "1px solid black"
+      }}>
+      <button className="command_button" id="backBtn" onClick={navToMain}>Main Menu</button>
+      <button className="command_button" id="viewToQueryBtn" onClick={navToQuery}> Query </button>
+      <button className="command_button" id="viewToInspectBtn" onClick={navToInspect}> Inspect </button>
+      <button className="command_button" id="viewToPairsBtn" onClick={navToPairs}> Pairs </button>
 	    </nav>
     </>
   )

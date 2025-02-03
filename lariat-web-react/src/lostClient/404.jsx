@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Draggable from 'react-draggable';
 import { Plasma } from "./plasma.js"
 
-// import { CallBox } from "./CallBox.jsx";
+import { CallBox } from "./CallBox.jsx";
 // import { ipcRenderer } from 'electron';
 
 
@@ -10,11 +10,12 @@ export default class Error404 extends React.Component{
            constructor(props){
               super(props);
               this.getTheBoys = this.getTheBoys.bind(this);
-              this.closeWindow = this.closeWindow.bind(this);
+              // this.closeWindow = this.closeWindow.bind(this);
               this.state = {
-                visCallBox: "hidden",
-                toggled: false,
+                isCalling: "hidden",
               };
+              this.handleCallChange = this.handleCallChange.bind(this);
+
            }
 
   componentDidMount() {
@@ -23,9 +24,7 @@ export default class Error404 extends React.Component{
 
 
   getTheBoys(){
-    if (this.state.visCallBox!=="visible"){
-      this.setState({visCallBox: "visible"});
-    }
+    this.setState({isCalling : "visible"})    
 
     const fetchPromise = fetch(`http://localhost:8080/api/talk`);
     fetchPromise.then(response => {
@@ -38,8 +37,13 @@ export default class Error404 extends React.Component{
 
   }
 
-  closeWindow(){
-    this.setState({visCallBox: "hidden"});
+
+  handleCallChange(){
+    if(this.state.isCalling=="hidden"){
+      this.setState({isCalling: "visible"})
+    } else{
+    this.setState({isCalling: "hidden"})
+    }  
   }
 
 
@@ -70,8 +74,9 @@ export default class Error404 extends React.Component{
       </div>
 
       <div id="callBoxDiv">
+        <CallBox isCalling={this.state.isCalling} handleCallChange={this.handleCallChange}/>
 
-        <Draggable
+{/*        <Draggable
         handle=".title"
         position={null}
         scale={1}
@@ -106,7 +111,7 @@ export default class Error404 extends React.Component{
           </div>
         </div>
 
-        </Draggable>
+        </Draggable>*/}
 
       </div>
 

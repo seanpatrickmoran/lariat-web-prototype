@@ -282,8 +282,8 @@ copyToPasteboard = (event) => {
     const optionsSelect = fieldSelect.selectedOptions;
     let newEntry = optionsSelect[0].value;
     let oldEntry = this.props.pasteBoardProps.contents;
-    this.props.pasteBoardPropsUpdate({visibility:"visibile", contents: oldEntry+","+newEntry});
-    localStorage.setItem('pasteBoardProps', JSON.stringify({visibility:"visibile", contents: oldEntry+","+newEntry}));
+    this.props.pasteBoardPropsUpdate({visibility:"visible", contents: oldEntry+","+newEntry});
+    // localStorage.setItem('pasteBoardProps', JSON.stringify({visibility:"visibile", contents: oldEntry+","+newEntry}));
 
     console.log(this.props.pasteBoardProps.contents)
     // Object.assign(this.props.pasteBoardProps.contents);
@@ -325,7 +325,7 @@ copyToPasteboard = (event) => {
 
 
           <div className="row-container">
-            <div className="column-container">
+            <div className="column-container" id="datasetLabels">
               <div className="row-container">
                <label for="field-select">Dataset:</label>
               </div>

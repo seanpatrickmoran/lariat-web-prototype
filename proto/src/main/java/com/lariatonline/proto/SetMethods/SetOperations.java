@@ -30,7 +30,6 @@ public class SetOperations {
 			Row entry = new Row(name, chromosome, x1, x2, y1, y2);
 			outMap.get(chromosome).add(entry);
 
-			
 		}
 	    return outMap;
 	}
@@ -62,10 +61,11 @@ public class SetOperations {
 
 
 			if(xOverlaps||yOverlaps) {
-				intersectingCoordinates.add(name1 + ":" + name2);
+				intersectingCoordinates.add(name1 + "–––" + name2);
 			}
 		
 			if(x1End<x2End) {
+				
 				i++;
 			}else {
 				j++;

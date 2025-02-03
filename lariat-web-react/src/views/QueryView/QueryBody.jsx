@@ -133,8 +133,8 @@ export default class QueryBody extends React.Component{
         });
 
         // console.log(newEntry)
-        this.props.pasteBoardPropsUpdate({visibility:"visibile", contents: entries});
-        localStorage.setItem('pasteBoardProps', JSON.stringify({visibility:"visibile", contents: entries}));
+        this.props.pasteBoardPropsUpdate({visibility:"visible", contents: entries});
+        // localStorage.setItem('pasteBoardProps', JSON.stringify({visibility:"visible", contents: entries}));
 
         console.log(this.props.pasteBoardProps.contents)
     };
