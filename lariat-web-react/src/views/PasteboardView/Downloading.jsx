@@ -82,23 +82,23 @@ export default class Downloading extends React.Component{
         const zip = new JSZip()
 
         let setArray = [...this.props.contentSet];
-        for(var i = 0; i<setArray.length/6;i+=1){
+        for(var i = 0; i<setArray.length/6;i++){
 
           // array limit error here ^^^
 
 
-          
+
           //do this for as much as it fits.
           var fetchArr = [];
           var j = 0;
-          while((j+i*6<setArray.length)&&(j<i+6)){
-            // console.log(i*6+j + ", " + i)
+          while((j+i*6<setArray.length)&&(j<6)){
+            console.log(i*6+j)
             // console.log(setArray[i+j])
-            // console.log(`http://localhost:8080/api/getImageSingleton?name=${[...setArray[i*6+j]].map((char) => 
-            //   this.fetchMap.get(char) || char).join("")}`);
+            console.log(`http://localhost:8080/api/getImageSingleton?name=${[...setArray[i*6+j]].map((char) => 
+              this.fetchMap.get(char) || char).join("")}`);
             fetchArr.push(            
               fetch(
-              `http://localhost:8080/api/getImageSingleton?name=${[...setArray[i+j]].map((char) => 
+              `http://localhost:8080/api/getImageSingleton?name=${[...setArray[i*6+j]].map((char) => 
               this.fetchMap.get(char) || char).join("")}`
               )
             )
