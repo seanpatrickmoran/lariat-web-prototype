@@ -8,3 +8,25 @@ div .column-container{
 div #downloadRow.row-container{
     margin-top: 8px;
 }
+
+select#download-names{
+    width: 340px;
+}
+
+#downloadBlock{
+    margin-left: 0px;
+}
+
+#idCOMPT {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap:10px;
+    position: fixed;
+    margin-top: 19%;
+    margin-left: 26%;
+    width: 300px;
+    height: 50px;
+/*    background: #000;*/
+
+}

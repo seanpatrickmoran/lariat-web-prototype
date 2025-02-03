@@ -4,6 +4,7 @@ import JSZip from 'jszip'
 // import { CallBox } from "./CallBox.jsx";
 import "./Downloading.css"
 import streamSaver from 'streamsaver'
+import { BasicProgressBarWithLabel } from './ProgressExt.jsx'
 import { Jimp } from 'jimp';
 
 
@@ -23,38 +24,69 @@ export default class Downloading extends React.Component{
               // this.filename = "";
 
               this.state = {
-                progress: 0,
+                downloadActive: true,
+                status: "Ready",
+                maxAmount: "9000",
+                progress: "0"
               }
 
               // this.blobMap = new Map();
            }
 
   componentDidMount() {
+    const parentNode = document.getElementById("download-names");
+    while (parentNode.firstChild) {
+      parentNode.removeChild(parentNode.lastChild);
+    }
+
+    this.setState({maxAmount: this.props.contentSet.size});
+
+    this.props.contentSet.forEach((v) =>{
+      const childNode = document.createElement("option");
+      childNode.innerHTML = v;
+      childNode.value = v;
+      childNode.key = v;
+      parentNode.appendChild(childNode);
+    })
   }
+
+    componentDidUpdate(prevProps, prevState) {
+      if(prevProps.contentSet!=this.props.contentSet){
+        this.setState({maxAmount: this.props.contentSet.size});
+        const parentNode = document.getElementById("download-names");
+        while (parentNode.firstChild) {
+          parentNode.removeChild(parentNode.lastChild);
+        }
+
+        this.props.contentSet.forEach((v) =>{
+          const childNode = document.createElement("option");
+          childNode.innerHTML = v;
+          childNode.value = v;
+          childNode.key = v;
+          parentNode.appendChild(childNode);
+        })
+      }
+
+  }
+
 
   closeWindow(){
     this.props.handleIsDownloadingChange("hidden");
+
+    const parentNode = document.getElementById("download-names");
+    while (parentNode.firstChild) {
+      parentNode.removeChild(parentNode.lastChild);
+    }
+
+    this.props.contentSet.forEach((v) =>{
+      const childNode = document.createElement("option");
+      childNode.innerHTML = v;
+      childNode.value = v;
+      childNode.key = v;
+      parentNode.appendChild(childNode);
+    })
   }
 
-// const fetchImage = async url => {
-//   const response = await fetch(url)
-//   const blob = await response.blob()
-  
-//   return blob
-// }
-  // processDownloadWrite(){
-
-  //       let writetoFile = createWriteStream(result.filePath) 
-  //       // const selectWindow = BrowserWindow.getFocusedWindow()
-
-  //       data.forEach((elem) => {   
-
-  //           console.log(elem.name)
-  //           writetoFile.write(`${elem.name},${elem.coordinates},${elem.dataset},${elem.condition},${elem.hic_path},${elem.PUB_ID},${elem.resolution},${elem.dimensions},${elem.viewing_vmax},${elem.numpyarr},${elem.meta}\n`);
-  //       })
-
-
-  //   }
 
   async makeRequests(promiseSixArray) {
     try{
@@ -73,6 +105,7 @@ export default class Downloading extends React.Component{
 
       const reply = [];
       data.forEach(obj => reply.push(obj.value))
+      this.setState({progress: toString(parseInt(this.state.progress) + 6)});
       return reply;
 
     } catch {
@@ -82,11 +115,12 @@ export default class Downloading extends React.Component{
 
   async dumpWithOptions(){
 
-    // <progress value={currentValue} max={maxValue}>{currentValue}%</progress>;
-
     
     const filename = document.getElementById("filename").value.split(".csv")[0];
     console.log('here')
+    this.setState({status: "Running", downloadActive: false})
+
+    console.log(this.state.maxAmount)
     var answer = [];
       // let setArray = [...this.props.contentSet];
       const handleZipDownload = async () => {
@@ -108,10 +142,11 @@ export default class Downloading extends React.Component{
             )
             j++;
           }
-          // console.log("i, " + i)
-
 
           const storeVal = await this.makeRequests(fetchArr);
+          // console.log(this.state.progress + storeVal.length);
+          // this.setState({progress: this.state.progress + storeVal.length});
+
           answer.push(...storeVal)
         }
 
@@ -130,7 +165,11 @@ export default class Downloading extends React.Component{
 
         if (window.WritableStream && readableStream.pipeTo) {
           return readableStream.pipeTo(fileStream)
-            .then(() => console.log('done writing'))
+            .then(() => {
+              console.log('done writing')
+              this.setState({status: "Ready", downloadActive: true, progress: "0"})
+              console.log('here!!!')
+      })
         }
 
         // Write (pipe) manually
@@ -142,6 +181,7 @@ export default class Downloading extends React.Component{
             : writer.write(res.value).then(pump))
 
         pump()
+
 
 
 
@@ -197,6 +237,46 @@ export default class Downloading extends React.Component{
     //   saveAs(zipped, 'archive file name')
     }
     handleZipDownload();
+    // this.setState({status: "Ready", downloadActive: true, progress: "0"})
+  }
+
+
+
+    pbSelectAll = (event) => {
+
+      const pasteBoardSelectField = document.getElementById("download-names");
+      const length = pasteBoardSelectField.options.length;
+      for(var i = 0;i<length;i++){
+      pasteBoardSelectField.options[i].selected = "selected";
+      }
+   }
+
+
+  pbRemove = (event) => {
+    const pasteBoardSelectField = document.getElementById("download-names");
+    const length = pasteBoardSelectField.options.length;
+      let delArr = [];
+      for (let i = 0; i < pasteBoardSelectField.options.length; i++) {
+        delArr[i] = pasteBoardSelectField.options[i].selected;
+      }
+
+    let index = pasteBoardSelectField.options.length;
+    while (index--) {
+      if (delArr[index]) {
+        pasteBoardSelectField.remove(index);
+      }
+    }
+  //   const _contentSet = new Set();
+  //   var _contents = "";
+  //   for (const child of pasteBoardSelectField.children) {
+  //     _contentSet.add(child.value);
+  //     _contents+=","+child.value;
+  //   }
+
+  //   this.setState({visibility: "visible", contents: _contents});
+  //   this.setState({contentSet: _contentSet})
+  //   this.props.pasteBoardPropsUpdate({visibility: this.state.visibility, contents: _contents});
+
   }
 
 
@@ -219,29 +299,28 @@ export default class Downloading extends React.Component{
           <div className="control-box zoom-box"><div className="control-box-inner"><div className="zoom-box-inner"></div></div></div>
           <div className="control-box windowshade-box"><div className="control-box-inner"><div className="windowshade-box-inner"></div></div></div>
 
+          <BasicProgressBarWithLabel currentValue={this.state.progress} label={this.state.status} max={this.state.maxAmount} />
+
 
           <div className="row-container">
-            <div className="column-container">
-                <div id="downloadRow" className="row-container">
-                  <label for="vehicle1"> CSV </label>
-                  <input type="checkbox" id="CSV" value="CSV"/>
-                </div>
-                <div id="downloadRow" className="row-container">
-                  <label for="vehicle1"> CSV </label>
-                  <input type="checkbox" id="CSV" value="CSV"/>
-                </div>
-                <div id="downloadRow" className="row-container">
-                  <label for="vehicle1"> CSV </label>
-                  <input type="checkbox" id="CSV" value="CSV"/>
-                </div>
-                <div id="downloadRow" className="row-container">
-                  <label for="vehicle1"> CSV </label>
-                  <input type="checkbox" id="CSV" value="CSV"/>
-                </div>
+          <div className="column-container">
+            <select id="download-names" multiple size="14">
+              
+            </select>
 
-            </div>
+          <div className="row-container">
+            <button className="command_button" id="pbSelect" onClick={this.pbSelectAll}>Select All</button>
+            <button className="command_button" id="pbRemove" onClick={this.pbRemove}>Remove</button>
+          </div>
+
+          </div>
+
 
           <div className="column-container">
+
+        <div className="row-container">
+
+          <div id="downloadBlock" className="column-container">
             <div id="downloadRow" className="row-container">
               <p>Set a filename</p>
             </div>
@@ -250,12 +329,39 @@ export default class Downloading extends React.Component{
             </div>
 
             <div id="downloadRow" className="row-container">
-              <button className="command-button" value="Download" onClick={this.dumpWithOptions}>Download</button>
+              <button disabled={!this.state.downloadActive} className="command-button" value="Download" onClick={this.dumpWithOptions}>Download</button>
+              <button disabled={this.state.downloadActive} className="command-button" value="Cancel" >Cancel</button>
             </div>
+          </div>
+
+        </div>
+
+
+
+
+            <div id="downloadRow" className="row-container">
+              <input type="checkbox" id="CSV" value="CSV" checked/>
+              <label for="vehicle1"> Table as CSV </label>
             </div>
+            <div id="downloadRow" className="row-container">
+              <input type="checkbox" id="Image" value="True Image"/>
+              <label for="vehicle1"> Images </label>
+            </div>
+            <div id="downloadRow" className="row-container">
+              <input type="checkbox" id="Histogram" value="Histogram"/>
+              <label for="vehicle1"> Histograms </label>
+            </div>
+
+
+
+        </div>
+
+
+
 
         </div>
         </div>
+
 
         </>
   }
