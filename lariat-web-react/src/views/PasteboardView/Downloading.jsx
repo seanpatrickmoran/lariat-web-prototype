@@ -20,13 +20,19 @@ export default class Downloading extends React.Component{
                 ["&" , "%26"],["'" , "%27"],["(" , "%28"],[")" , "%29"],
                 ["*" , "%2A"],["+" , "%2B"],["," , "%2C"],["-" , "%2D"],
                 ["." , "%2E"],["/" , "%2F"]]);
+              // this.filename = "";
+
+              this.state = {
+                progress: 0,
+              }
+
+              // this.blobMap = new Map();
            }
 
   componentDidMount() {
   }
 
   closeWindow(){
-    console.log('closing')
     this.props.handleIsDownloadingChange("hidden");
   }
 
@@ -74,7 +80,12 @@ export default class Downloading extends React.Component{
     }
   }
 
-  dumpWithOptions(){
+  async dumpWithOptions(){
+
+    // <progress value={currentValue} max={maxValue}>{currentValue}%</progress>;
+
+    
+    const filename = document.getElementById("filename").value.split(".csv")[0];
     console.log('here')
     var answer = [];
       // let setArray = [...this.props.contentSet];
@@ -82,20 +93,13 @@ export default class Downloading extends React.Component{
         const zip = new JSZip()
 
         let setArray = [...this.props.contentSet];
-        for(var i = 0; i<setArray.length/6;i++){
+        for(var i = 0; i<setArray.length/6+1;i++){
 
           // array limit error here ^^^
-
-
-
           //do this for as much as it fits.
           var fetchArr = [];
           var j = 0;
           while((j+i*6<setArray.length)&&(j<6)){
-            console.log(i*6+j)
-            // console.log(setArray[i+j])
-            console.log(`http://localhost:8080/api/getImageSingleton?name=${[...setArray[i*6+j]].map((char) => 
-              this.fetchMap.get(char) || char).join("")}`);
             fetchArr.push(            
               fetch(
               `http://localhost:8080/api/getImageSingleton?name=${[...setArray[i*6+j]].map((char) => 
@@ -104,19 +108,45 @@ export default class Downloading extends React.Component{
             )
             j++;
           }
-          console.log("i, " + i)
+          // console.log("i, " + i)
 
 
-          const storeVal = this.makeRequests(fetchArr);
-          storeVal.then((response) => {
-            answer.push(...response);
-          })
-          console.log(answer)
-
-          // console.log(storeVal)
-          // answer.push(storeVal);
+          const storeVal = await this.makeRequests(fetchArr);
+          answer.push(...storeVal)
         }
-          console.log(answer)
+
+        var stringForBuffer= "Dataset,Name,Chr1,X1,X2,Chr2,Y1,Y2,Resolution,WindowDimensions,MaxViewingVal\n";
+        answer.forEach((element) => {
+          stringForBuffer += element[0].dataset+","+element[0].name+","
+                            +element[0].coordinates+","+element[0].resolution+","
+                            +element[0].dimensions+","+element[0].viewing_vmax+"\n";
+        })
+
+        const blob = new Blob([stringForBuffer])
+
+        const fileStream = streamSaver.createWriteStream(`${filename||"outputfile"}.csv`, {size: blob.size
+        })
+        const readableStream = blob.stream()
+
+        if (window.WritableStream && readableStream.pipeTo) {
+          return readableStream.pipeTo(fileStream)
+            .then(() => console.log('done writing'))
+        }
+
+        // Write (pipe) manually
+        window.writer = fileStream.getWriter()
+        const reader = readableStream.getReader()
+        const pump = () => reader.read()
+          .then(res => res.done
+            ? writer.close()
+            : writer.write(res.value).then(pump))
+
+        pump()
+
+
+
+
+        // console.log(answer)
 
 
 //         this.props.contentSet.forEach(name_query => {
@@ -167,7 +197,6 @@ export default class Downloading extends React.Component{
     //   saveAs(zipped, 'archive file name')
     }
     handleZipDownload();
-    console.log("DONE")
   }
 
 
@@ -214,10 +243,10 @@ export default class Downloading extends React.Component{
 
           <div className="column-container">
             <div id="downloadRow" className="row-container">
-              <p>1) Set a filename</p>
+              <p>Set a filename</p>
             </div>
             <div id="downloadRow" className="row-container">
-              <input type="text" id="$filename" value="sample.txt"/>
+              <input type="text" id="filename" placeholder="OutfileName.csv" />
             </div>
 
             <div id="downloadRow" className="row-container">

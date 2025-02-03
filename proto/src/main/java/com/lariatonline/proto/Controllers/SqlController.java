@@ -198,7 +198,7 @@ public class SqlController {
 	public ResponseEntity<String> read_limiter(@RequestParam("name")String name) {
         Connection connection = null;
         List<Map<String, Object>> listOfMaps = null;
-		String callQuery = "SELECT dataset,name,coordinates, numpyarr, dimensions, viewing_vmax FROM imag WHERE name = ?";	
+		String callQuery = "SELECT dataset,name,coordinates, numpyarr, resolution, dimensions, viewing_vmax FROM imag WHERE name = ?";	
 		
 		try {
 			MapListHandler beanListHandler = new MapListHandler();
