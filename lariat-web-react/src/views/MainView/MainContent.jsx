@@ -3,6 +3,11 @@ import Draggable from 'react-draggable';
 // import { ipcRenderer } from 'electron';
 
 export default class MainContent extends React.Component{
+  constructor(props){
+    super(props);
+    this.closeWindow = this.closeWindow.bind(this);
+  }
+
   eventLogger = (e, data) => {
     console.log('Event: ', e);
     console.log('Data: ', data);
@@ -12,7 +17,9 @@ export default class MainContent extends React.Component{
       //     console.log('hello');
       // }, 10);
   }
-
+  closeWindow(){
+    this.props.handleCallChange("hidden");
+  }
   render (){
 
   function closeMosaicWindow(){
@@ -20,10 +27,17 @@ export default class MainContent extends React.Component{
   }
     return  <>
   <div id="main_docs" className="content">
-      <div className="control-box close-box"><a className="control-box-inner"></a></div>
-      <div className="control-box zoom-box"><div className="control-box-inner"><div className="zoom-box-inner"></div></div></div>
-      <div className="control-box windowshade-box"><div className="control-box-inner"><div className="windowshade-box-inner"></div></div></div>
-      <h1 id = "main_title" className="title">Lariat Documentation</h1>
+    <div className="headerTitle">
+      <div className="titleLines"></div>
+      <div className="titleLines"></div>
+      <div className="titleLines"></div>
+      <div className="titleLines"></div>
+      <div className="titleLines"></div>
+      <div className="titleLines"></div>
+      <div className="callTitle">DOCS</div>
+      <div className="control-box close-box" onClick={this.closeWindow} ><a className="control-box-inner"></a></div>
+    </div>
+
     <ul>
       <li>Welcome to Lariat! A toolkit for architectural chromatin analysis.</li>
       <li>DOCUMENTATION</li>
@@ -51,7 +65,7 @@ export default class MainContent extends React.Component{
     combine data from many experiments from publically availible 3C-type data. By default, the database
     entries are written in exactly the same way via Ingest to the following schema:</p>
 
-    <pre>
+{/*    <pre>
          imag(name, 
               dataset, 
               condition, 
@@ -62,7 +76,7 @@ export default class MainContent extends React.Component{
               hic_path, 
               PUB_ID, 
               resolution, 
-              meta)</pre>
+              meta)</pre>*/}
 
     <p className="main-document">
     Lariat supports simplistic calling to the underlying SQLite database. SQL queries rely on the user
@@ -144,7 +158,7 @@ export default class MainContent extends React.Component{
   </div>
 
   <Draggable
-    handle=".title"
+    handle="#showStartMosaic"
     // defaultPosition={{x: 0, y: 0}}
     position={null}
     // grid={[25, 25]}
@@ -152,17 +166,31 @@ export default class MainContent extends React.Component{
     onStart={this.handleStart}
     onDrag={this.handleDrag}
     onStop={this.handleStop}>
+
   <div id="showStartMosaic" className="content">
-      <div className="control-box close-box" onClick={closeMosaicWindow}><a className="control-box-inner"></a></div>
-      <div className="control-box zoom-box"><div className="control-box-inner"><div className="zoom-box-inner"></div></div></div>
-      <div className="control-box windowshade-box"><div className="control-box-inner"><div className="windowshade-box-inner"></div></div></div>
-      <h1 id="mosaic" className="title">Welcome!</h1>
-      <div className="icon"><img src="./src/img/lariattmp.png" height={75} /></div>
+    <div className="headerTitle">
+      <div className="titleLines"></div>
+      <div className="titleLines"></div>
+      <div className="titleLines"></div>
+      <div className="titleLines"></div>
+      <div className="titleLines"></div>
+      <div className="titleLines"></div>
+      <div id="welcomeTitleHandle" className="callTitle">Welcome!</div>
+      <div id="welcomeCloseBox" className="control-box close-box" onClick={this.closeWindow} >
+      <a id="welcomeCloseInner" className="control-box-inner"></a>
+      </div>
+    </div>
+
+    <div className="icon"><img src="./src/img/lariattmp.png" height={75} /></div>
     <ul>
       <li>Made by Sean Moran</li><br/>
       <li>MIT License, Lariat 2024, University of Michigan. All rights reserved.</li>
     </ul>
-  </div>
+      <div>
+        <p id="talk" style={{backgroundColor: "Black", fontSize: "12px", color:"#666"}} />
+      </div>
+    </div>
+
   </Draggable>
 
     </>

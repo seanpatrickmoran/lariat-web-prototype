@@ -1,10 +1,33 @@
-/*#names-field {
-    border: 1px solid black;
-    margin: 3px;
-    width: 256px;
-    height: 442px;
-    overflow: auto;
-}*/
+#inspectBoardTitleHandle{
+  margin-top: -1.9%;
+}
+
+#inspectBoardTitleCloseBox{
+  margin-top: -2.35%;  
+  margin-left: -94.5%; 
+  }
+
+#inspectBoardTitleCloseInner{
+/*    padding-left: 3px;*/
+  }
+
+
+
+#histogramBoardTitleHandle{
+  margin-top: -4.5%;
+}
+
+#histogramBoardTitleCloseBox{
+  margin-top: -5.15%;  
+  margin-left: -87%; 
+  }
+
+#histogramBoardTitleCloseInner{
+/*    padding-left: 3px;*/
+  }
+
+
+
 
 #names-field{
   width: 360px;
@@ -162,8 +185,8 @@ button {
 }*/
 
 #histogram.content   {
-    left: 1080px;
-    top: 240px; 
+    left: 65%;
+    top: 35%; 
     width: 400px;
     height: 300px;
 }

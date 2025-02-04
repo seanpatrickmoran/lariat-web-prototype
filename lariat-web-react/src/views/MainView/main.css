@@ -14,7 +14,7 @@
 }
 
 .main-document{
-  margin: 15px;
+/*  margin: 15px;*/
   align-content: justify;
 }
 
@@ -32,7 +32,7 @@
   cursor: move;
 }
 
-#main_title.title:before{
+/*#main_title.title:before{
   width: 31%;
 }
 
@@ -48,3 +48,4 @@
 #mosaic.title:after {
   width: 28%;
 }
+*/

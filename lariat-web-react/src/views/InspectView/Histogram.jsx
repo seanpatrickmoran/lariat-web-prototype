@@ -58,7 +58,7 @@ export function Histogram({histProps}){
     return (
       <rect
         key={i}
-        fill="#69b3a2"
+        fill={"#69b3a2"}
         x={xScale(bucket.x0) + BUCKET_PADDING / 2}
         width={xScale(bucket.x1) - xScale(bucket.x0) - BUCKET_PADDING}
         y={yScale(bucket.length)}
@@ -71,7 +71,7 @@ export function Histogram({histProps}){
   return (
     <>
     <Draggable
-    handle=".title"
+    handle="#histogram"
     position={null}
     scale={1}
     // onStart={this.handleStart}
@@ -79,35 +79,35 @@ export function Histogram({histProps}){
     // onStop={this.handleStop}>
     >
         <div id="histogram" className="content">
-          <div className="control-box close-box"><a className="control-box-inner"></a></div>
-          <div className="control-box zoom-box">
-            <div className="control-box-inner">
-              <div className="zoom-box-inner"></div>
+          <div className="headerTitle">
+            <div className="titleLines"></div>
+            <div className="titleLines"></div>
+            <div className="titleLines"></div>
+            <div className="titleLines"></div>
+            <div className="titleLines"></div>
+            <div className="titleLines"></div>
+            <div id="histogramBoardTitleHandle" className="callTitle">Histogram</div>
+            <div id="histogramBoardTitleCloseBox" className="control-box close-box">
+            <a id="histogramBoardTitleCloseInner" className="control-box-inner"></a>
             </div>
           </div>
-          <div className="control-box windowshade-box">
-            <div className="control-box-inner">
-              <div className="windowshade-box-inner"></div>
-            </div>
-          </div>
-          <h1 id="histogram" className="title">Histogram</h1>
             <div className="block">
               <div id="svg" className="row-container">
-    <svg width={width} height={height}>
-      <g
-        width={boundsWidth}
-        height={boundsHeight}
-        transform={`translate(${[MARGIN.left, MARGIN.top].join(",")})`}
-      >
-        {allRects}
-      </g>
-      <g
-        width={boundsWidth}
-        height={boundsHeight}
-        ref={axesRef}
-        transform={`translate(${[MARGIN.left, MARGIN.top].join(",")})`}
-      />
-    </svg>
+                <svg width={width} height={height}>
+                  <g
+                    width={boundsWidth}
+                    height={boundsHeight}
+                    transform={`translate(${[MARGIN.left, MARGIN.top].join(",")})`}
+                  >
+                    {allRects}
+                  </g>
+                  <g
+                    width={boundsWidth}
+                    height={boundsHeight}
+                    ref={axesRef}
+                    transform={`translate(${[MARGIN.left, MARGIN.top].join(",")})`}
+                  />
+                </svg>
     
               </div>
             </div>

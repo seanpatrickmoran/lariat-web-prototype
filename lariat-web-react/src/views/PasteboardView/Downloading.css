@@ -1,4 +1,26 @@
 
+
+#downloadTitleHandle{
+  margin-top: -2.5%;
+}
+
+#downloadTitleCloseBox{
+  margin-top: -3.75%;  
+  margin-left: -91.725%; 
+  }
+
+#downloadCloseInner{
+/*    padding-left: 3px;*/
+  }
+
+
+
+
+
+
+
+
+
 div .column-container{
     margin: 8px;
     margin-left: 24px;
@@ -16,7 +38,7 @@ select#download-names{
 #downloadBlock{
     margin-left: 0px;
 }
-
+/*
 #idCOMPT {
     display: flex;
     flex-direction: row;
@@ -29,4 +51,4 @@ select#download-names{
     height: 50px;
 /*    background: #000;*/
 
-}
+}*/

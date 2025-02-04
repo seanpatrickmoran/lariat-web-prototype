@@ -20,13 +20,6 @@ export default class QueryBody extends React.Component{
     componentDidUpdate(prevProps, prevState) {
       // console.log(this.props.pasteBoardProps.contents === prevProps.pasteBoardProps.contents);
       if (this.props.pasteBoardProps.contents !== prevProps.pasteBoardProps.contents){
-        // this.state.livePasteBoard = this.props.pasteBoardProps.contents;
-        // this.props.pasteBoardPropsUpdate(oldState);
-        // console.log(this.state.contents);
-        // console.log(this.props.pasteBoardProps.contents)
-        // console.log(prevProps.pasteBoardProps.contents)
-        // console.log(this.props.pasteBoardProps.contents);
-        // console.log(this.props.pasteBoardPropsUpdate);
         this.setState({visibility: "visible", contents: this.props.pasteBoardProps.contents});
         this.props.pasteBoardPropsUpdate({visibility: this.state.visibility, contents: this.props.pasteBoardProps.contents});
       }
@@ -39,7 +32,7 @@ export default class QueryBody extends React.Component{
       const storeHicPath = document.getElementById("dataset-field-select").value;
       const storeResolution = document.getElementById("resolution-field-select").value;
       const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset}&hic_path=${storeHicPath}&resolution=${storeResolution}`);
-      const node = document.getElementById("names");
+      const node = document.getElementById("queryNames");
 
       fetchPromise.then(response => {
               return response.json();
@@ -51,7 +44,7 @@ export default class QueryBody extends React.Component{
 
     else {
       this.resolutionOptions = "";
-      const node = document.getElementById("names");
+      const node = document.getElementById("queryNames");
       node.innerHTML = "";
     }
   };
@@ -63,7 +56,7 @@ export default class QueryBody extends React.Component{
       const storeHicPath = document.getElementById("dataset-field-select").value;
       const storeResolution = event.target.value;
       const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset}&hic_path=${storeHicPath}&resolution=${storeResolution}`);
-      const node = document.getElementById("names");
+      const node = document.getElementById("queryNames");
 
       fetchPromise.then(response => {
               return response.json();
@@ -78,16 +71,17 @@ export default class QueryBody extends React.Component{
 
 
     handleIncrement = (event) => {
+      console.log('hey')
       const storeHicPath = document.getElementById("dataset-field-select").value;
       const storeResolution = document.getElementById("resolution-field-select").value;
       const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset+200}&hic_path=${storeHicPath}&resolution=${storeResolution}`);
-      const node = document.getElementById("names");
+      const node = document.getElementById("queryNames");
 
       fetchPromise.then(response => {
               return response.json();
                   }).then(entries => {
-              names = [...entries.map(elem => elem.name)];
-              if (names.length!=0){
+              const queryNames = [...entries.map(elem => elem.name)];
+              if (queryNames.length!=0){
                   this.offset += 200;
                   const names = entries.map(elem => elem.name).join("<option />");
                   node.innerHTML = "<option />" + names;
@@ -100,13 +94,13 @@ export default class QueryBody extends React.Component{
       const storeHicPath = document.getElementById("dataset-field-select").value;
       const storeResolution = document.getElementById("resolution-field-select").value;
       const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset-200}&hic_path=${storeHicPath}&resolution=${storeResolution}`);
-      const node = document.getElementById("names");
+      const node = document.getElementById("queryNames");
 
       fetchPromise.then(response => {
               return response.json();
                   }).then(entries => {
-              names = [...entries.map(elem => elem.name)];
-              if (names.length!=0){
+              const queryNames = [...entries.map(elem => elem.name)];
+              if (queryNames.length!=0){
                   this.offset -= 200;
                   const names = entries.map(elem => elem.name).join("<option />");
                   node.innerHTML = "<option />" + names;
@@ -115,7 +109,7 @@ export default class QueryBody extends React.Component{
     }
 
     copyToPasteboard = (event) => {
-        var fieldSelect = document.getElementById("names");
+        var fieldSelect = document.getElementById("queryNames");
         const optionsSelect = fieldSelect.selectedOptions;
         const dumpArr = new Array(optionsSelect.length);
         for (var i = 0; i < optionsSelect.length; i++) {
@@ -142,7 +136,7 @@ export default class QueryBody extends React.Component{
 
     qvSelectAll = (event) => {
       console.log("hello!")
-      const fieldSelect = document.getElementById("names");
+      const fieldSelect = document.getElementById("queryNames");
       console.log(fieldSelect);
       const length = fieldSelect.options.length;
       for(var i = 0;i<length;i++){
@@ -174,19 +168,34 @@ export default class QueryBody extends React.Component{
   return <>
 
   <Draggable
-  handle=".title"
+  handle="#queryTitle"
   position={null}
   scale={1}
   onStart={this.handleStart}
   onDrag={this.handleDrag}
   onStop={this.handleStop}>
 
-  <div id="queryContent" className="content">
-  <div className="control-box close-box"><a className="control-box-inner"></a></div>
-  <div className="control-box zoom-box"><div className="control-box-inner"><div className="zoom-box-inner"></div></div></div>
-  <div className="control-box windowshade-box"><div className="control-box-inner"><div className="windowshade-box-inner"></div></div></div>
+  {/*<div id="queryContent" className="content">*/}
+  {/*<div className="control-box close-box"><a className="control-box-inner"></a></div>*/}
 
-    <h1 className="title">SQL Query</h1>
+  <div id="queryContent" className="content">
+    <div id="queryTitle" className="headerTitle">
+      <div className="titleLines"></div>
+      <div className="titleLines"></div>
+      <div className="titleLines"></div>
+      <div className="titleLines"></div>
+      <div className="titleLines"></div>
+      <div className="titleLines"></div>
+      <div id="queryTitleHandle" className="callTitle">Query</div>
+      <div id="queryTitleCloseBox" className="control-box close-box" onClick={this.closeWindow} >
+      <a id="queryTitleCloseInner" className="control-box-inner"></a>
+      </div>
+    </div>
+
+
+
+
+    {/*<h1 className="title">SQL Query</h1>*/}
     <div className="row-container">
       <select name="fields" id="dataset-field-select" selected="dataset" onChange={this.handleDatasetChange}>
         <option value="dataset">Dataset</option>
@@ -215,8 +224,8 @@ export default class QueryBody extends React.Component{
       <button type="button" id="selectAll" onClick={this.qvSelectAll}>Select All</button>
       <button type="button" id="copyToPbBtn" onClick={this.copyToPasteboard}>Copy</button>
     </div>
-    <div>
-      <select id="names" multiple size="10"></select>
+    <div id="queryNamesDiv">
+      <select id="queryNames" multiple size="10"></select>
     </div>
 
     <div className="row-container offset-navigation" >

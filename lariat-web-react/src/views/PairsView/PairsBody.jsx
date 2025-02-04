@@ -24,6 +24,7 @@ export default class PairsBody extends React.Component{
 
           this.offSetQueries = null;
           this.offset = 0;
+          this.pairsSelectAll=this.pairsSelectAll.bind(this);
         }
 
 
@@ -102,6 +103,17 @@ export default class PairsBody extends React.Component{
   };
 
 
+  pairsSelectAll = (event) => {
+    console.log("hello!")
+    const fieldSelect = document.getElementById("pairNames");
+    console.log(fieldSelect);
+    const length = fieldSelect.options.length;
+    for(var i = 0;i<length;i++){
+      fieldSelect.options[i].selected = "selected";
+    }
+  }
+
+
   setOperatorAND = () =>{
     const datasetA = document.getElementById("dataset-left").value;
     const resolutionA = document.getElementById("resolution-left").value;
@@ -118,7 +130,7 @@ export default class PairsBody extends React.Component{
             return response.json();
                 }).then(entries => {
                   // console.log(entries)
-                  const selectNode = document.getElementById("names");
+                  const selectNode = document.getElementById("pairNames");
                   // var payload;
                   const names = entries.map((el) => {
                     return el
@@ -135,7 +147,7 @@ export default class PairsBody extends React.Component{
   return <>
 
   <Draggable
-  handle=".title"
+  handle="#pairsTitle"
   position={null}
   scale={1}
   onStart={this.handleStart}
@@ -143,10 +155,24 @@ export default class PairsBody extends React.Component{
   onStop={this.handleStop}>
 
   <div id="pairsContent" className="content">
-    <h1 className="title">Pairs</h1>
+  <div id="pairsTitle" className="headerTitle">
+    <div className="titleLines"></div>
+    <div className="titleLines"></div>
+    <div className="titleLines"></div>
+    <div className="titleLines"></div>
+    <div className="titleLines"></div>
+    <div className="titleLines"></div>
+    <div id="pairsTitleHandle" className="callTitle">Pairs</div>
+    <div id="pairsTitleCloseBox" className="control-box close-box" onClick={this.closeWindow} >
+    <a id="pairsTitleCloseInner" className="control-box-inner"></a>
+    </div>
+  </div>
+
+
+{/*    <h1 className="title">Pairs</h1>
     <div className="control-box close-box"><a className="control-box-inner"></a></div>
     <div className="control-box zoom-box"><div className="control-box-inner"><div className="zoom-box-inner"></div></div></div>
-    <div className="control-box windowshade-box"><div className="control-box-inner"><div className="windowshade-box-inner"></div></div></div>
+    <div className="control-box windowshade-box"><div className="control-box-inner"><div className="windowshade-box-inner"></div></div></div>*/}
 
     <div className="row-container" id="field-rows">
       <div className="column-container">
@@ -191,13 +217,13 @@ export default class PairsBody extends React.Component{
       <button type="button" id="bNotaBtn">b NOT a</button>
       <button type="button" id="inspectBtn">FUSE</button>
       <button type="button" id="inspectBtn">PART</button>
-      <button type="button" id="selectAllBtn">Select All</button>
+      <button type="button" id="selectAllBtn" onClick={this.pairsSelectAll}>Select All</button>
       <button type="button" id="copyAButton">Copy A</button>
       <button type="button" id="copyBButton">Copy B</button>
     </div>
 
     <div>
-      <select id="names" multiple size="16">
+      <select id="pairNames" multiple size="16">
       </select>
       
     </div>

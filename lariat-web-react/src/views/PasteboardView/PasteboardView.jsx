@@ -171,18 +171,26 @@ export default class Pasteboard extends React.Component{
     render(){
 	return <>
 				<Draggable
-				handle=".title"
+				handle="#pasteboardTitle"
 				position={null}
 				scale={1}
 				onStart={this.handleStart}
 				onDrag={this.handleDrag}
 				onStop={this.handleStop}>
 
-					<div id="pasteboardContainer" className="content">
-					    <div className="control-box close-box"><a className="control-box-inner"></a></div>
-					    <div className="control-box zoom-box"><div className="control-box-inner"><div className="zoom-box-inner"></div></div></div>
-					    <div className="control-box windowshade-box"><div className="control-box-inner"><div className="windowshade-box-inner"></div></div></div>
-					    <h1  id="pasteboardTitle" className="title">Pasteboard</h1>
+			  <div id="pasteboard" className="content">
+			    <div id="pasteboardTitle" className="headerTitle">
+			      <div className="titleLines"></div>
+			      <div className="titleLines"></div>
+			      <div className="titleLines"></div>
+			      <div className="titleLines"></div>
+			      <div className="titleLines"></div>
+			      <div className="titleLines"></div>
+			      <div id="pasteBoardTitleHandle" className="callTitle">Pasteboard</div>
+			      <div id="pasteBoardTitleCloseBox" className="control-box close-box" onClick={this.closeWindow} >
+			      <a id="pasteBoardTitleCloseInner" className="control-box-inner"></a>
+			      </div>
+			    </div>
 
 						<div className="row-container">		
 			               <select name="pasteboard-fields" id="pasteboard-fields" multiple size="12">
@@ -190,10 +198,10 @@ export default class Pasteboard extends React.Component{
 						</div>
 
 						<div id="pasteboard-commands" className="row-container">
-							<button className="command_button" id="pbSelect" onClick={this.pbSelectAll}>Select All</button>
-							<button className="command_button" id="pbRemove" onClick={this.pbRemove}>Remove</button>
-							<button className="command_button" id="pbPaste">Paste To</button>
-							<button className="command_button" id="pbDump" onClick={this.pbDump}>Dump</button>
+							<button className="button" id="pbSelect" onClick={this.pbSelectAll}>Select All</button>
+							<button className="button" id="pbRemove" onClick={this.pbRemove}>Remove</button>
+							<button className="button" id="pbPaste">Paste To</button>
+							<button className="button" id="pbDump" onClick={this.pbDump}>Dump</button>
 						</div>
 
 					</div>

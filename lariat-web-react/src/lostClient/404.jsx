@@ -58,19 +58,17 @@ export default class Error404 extends React.Component{
                                   `
     return  <>
 
-    <body style={{
-        backgroundColor: "Black",
-        backgroundImage: "none"}}>
-      <pre style={{backgroundColor: "Black", fontSize: "12px", color:"#666", textAlign: "center"}}>{code}</pre>
-      <div align="center"><pre id="plasmaArea" style={{backgroundColor: "Black", fontSize: "12px", color:"#666"}}>ASCIIPlasma</pre></div>
+    <body>
+      <pre style={{backgroundColor: "transparent", fontSize: "12px", color:"#666", textAlign: "center"}}>{code}</pre>
+      <div align="center"><pre id="plasmaArea" style={{backgroundColor: "transparent", fontSize: "12px", color:"#666"}}>ASCIIPlasma</pre></div>
 
-      <h3 style={{backgroundColor: "Black", fontSize: "12px", color:"#666", textAlign: "center"}}> That's not good.</h3>
+      <h3 style={{backgroundColor: "transparent", fontSize: "12px", color:"#666", textAlign: "center"}}> That's not good.</h3>
       {/*<a href="/" style={{textAlign: "center", flex: 1}}>Go Home</a>*/}
 
       <div style={{flex: 1, textAlign: 'center'}}>
-      <a href="javascript: void(0)" style={{backgroundColor: "Black", fontSize: "12px", color:"#666"}} onClick={this.getTheBoys}>Call for help</a>
+      <a href="javascript: void(0)" style={{backgroundColor: "transparent", fontSize: "12px", color:"#666"}} onClick={this.getTheBoys}>Call for help</a>
       <p/>
-      <a href="/" style={{backgroundColor: "Black", fontSize: "12px", color:"#666"}}>Go Home</a>
+      <a href="/" style={{backgroundColor: "transparent", fontSize: "12px", color:"#666"}}>Go Home</a>
       </div>
 
       <div id="callBoxDiv">
@@ -114,9 +112,6 @@ export default class Error404 extends React.Component{
         </Draggable>*/}
 
       </div>
-
-
-      <p><br/><br/><br/><br/><br/><br/><br/><br/></p>
     </body>
     </>
   }

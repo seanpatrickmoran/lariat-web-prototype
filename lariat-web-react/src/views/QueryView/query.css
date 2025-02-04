@@ -1,8 +1,29 @@
-#names {
+
+#queryTitleHandle{
+  margin-top: -3%;
+}
+
+#queryTitleCloseBox{
+  transform: translate();
+  margin-top: -3.5%;  
+  margin-left: -91.725%; 
+  }
+
+#queryCloseInner{
+/*    padding-left: 3px;*/
+  }
+
+
+
+
+
+
+
+#queryNames {
     border: 1px solid black;
-    margin: 3px;
-    width: 762px;
-    height: 370px;
+    margin: 4px;
+    width: 98.5%;
+    height: 320px;
     overflow: auto;
 }
 
@@ -21,12 +42,11 @@
   margin-left: 4px;
 }
 
-select {
-/*  padding: 5px;*/
+/*select {
   width: 200px;
   overflow: auto;
 }
-
+*/
 /*
 select#field-select{
   width: 95px;
@@ -49,8 +69,10 @@ input#sqlite3-query{
 /*    z-index: 2;
     font-size: 12px;
     font-weight: normal;*/
-    width: 770px;
-    height: 520px;
+    width: 40%;
+    height: 60%;
+    min-width:600px;
+    min-height: 500px;
 /*    margin: 100px auto 0;
     border: 1px solid #111;
     background: #ccc;
@@ -60,14 +82,7 @@ input#sqlite3-query{
   inset -1px -1px 0px 0px #999;*/
 }
 
-.title:before{
-  width: 42%;
-}
-
-.title:after{
-  width: 42%;
-}
-
+/*
 .pbcontent {
     position: relative;
     top: 10px;
@@ -83,4 +98,4 @@ input#sqlite3-query{
   1px 2px #111,
   inset 1px 1px 0px 0px #fff,
   inset -1px -1px 0px 0px #999;
-}
+}*/

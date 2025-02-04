@@ -4,7 +4,7 @@ import JSZip from 'jszip'
 // import { CallBox } from "./CallBox.jsx";
 import "./Downloading.css"
 import streamSaver from 'streamsaver'
-import { BasicProgressBarWithLabel } from './ProgressExt.jsx'
+
 import { Jimp } from 'jimp';
 
 
@@ -286,25 +286,50 @@ export default class Downloading extends React.Component{
 
     return  <>
 
-        <div id="isDownloading" className="content" style={{
-          height: ' 42%',
+
+
+      <Draggable
+      handle="#downloadTitle"
+      position={null}
+      scale={1}
+      onStart={this.handleStart}
+      onDrag={this.handleDrag}
+      onStop={this.handleStop}>
+
+        <div id="downloadContent" className="content" style={{
+          height: ' 45%',
           width: '42%',
           top: '0%',
           left: '28%',
+          minWidth:635,
+          minHeight:360,
+          maxHeight:370,
           // backgroundColor: "#ccc",
           visibility: this.props.isDownloading,
         }}>
+        {/*<div id="downloadContent" className="content">*/}
+          <div id="downloadTitle" className="headerTitle">
+            <div className="titleLines"></div>
+            <div className="titleLines"></div>
+            <div className="titleLines"></div>
+            <div className="titleLines"></div>
+            <div className="titleLines"></div>
+            <div className="titleLines"></div>
+            <div id="downloadTitleHandle" className="callTitle">Download</div>
+            <div id="downloadTitleCloseBox" className="control-box close-box" onClick={this.closeWindow} >
+            <a id="downloadTitleCloseInner" className="control-box-inner"></a>
+            </div>
+          </div>
 
+
+
+{/*
           <h1 className="title">Download</h1>
           <div className="control-box close-box" onClick={this.closeWindow} ><a className="control-box-inner"></a></div>
           <div className="control-box zoom-box"><div className="control-box-inner"><div className="zoom-box-inner"></div></div></div>
           <div className="control-box windowshade-box"><div className="control-box-inner"><div className="windowshade-box-inner"></div></div></div>
-
+*/}
           {/*<BasicProgressBarWithLabel currentValue={this.state.progress} label={this.state.status} max={this.state.maxAmount} />*/}
-          <div id="idCOMPT">
-          <label for="progress-bar">{this.state.status}</label>
-          <progress id="progress-bar" value={this.state.progress} max={this.state.maxAmount}>{toString(this.state.progress)}%</progress>
-          </div>
 
 
           <div className="row-container">
@@ -356,16 +381,23 @@ export default class Downloading extends React.Component{
               <input type="checkbox" id="Histogram" value="Histogram"/>
               <label for="vehicle1"> Histograms </label>
             </div>
+            <div id="downloadRow" className="row-container">
+          <div id="idCOMPT">
+          <label for="progress-bar">{this.state.status}</label>
+          <progress id="progress-bar" value={this.state.progress} max={this.state.maxAmount}>{toString(this.state.progress)}%</progress>
+          </div>
+            </div>
 
 
-
+        </div>
         </div>
 
 
 
 
         </div>
-        </div>
+        {/*</div>*/}
+  </Draggable>
 
 
         </>

@@ -20,8 +20,20 @@
   align-content: justify;
 }
 
+#welcomeTitleHandle{
+  margin-top: -8%;
+}
 
-#main_title.title:before{
+#welcomeCloseBox{
+  margin-top: -7.75%;  
+  margin-left: -85%; 
+  }
+
+#welcomeCloseInner{
+/*    padding-left: 3px;*/
+  }
+
+/*#main_title.title:before{
   width: 31%;
 }
 
@@ -37,3 +49,4 @@
 #mosaic.title:after {
   width: 28%;
 }
+*/

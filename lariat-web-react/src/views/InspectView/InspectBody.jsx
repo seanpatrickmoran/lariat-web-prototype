@@ -289,30 +289,32 @@ copyToPasteboard = (event) => {
     // Object.assign(this.props.pasteBoardProps.contents);
 };
 
-	  render (){
+    render (){
   return <>
 
   <Draggable
-  handle=".title"
+  handle="#inspect"
   position={null}
   scale={1}
   onStart={this.handleStart}
   onDrag={this.handleDrag}
   onStop={this.handleStop}>
 
-      <div id="content" className="content">
-      <div className="control-box close-box"><a className="control-box-inner"></a></div>
-      <div className="control-box zoom-box">
-         <div className="control-box-inner">
-            <div className="zoom-box-inner"></div>
-         </div>
+  <div id="inspect" className="content">
+    <div className="headerTitle">
+      <div className="titleLines"></div>
+      <div className="titleLines"></div>
+      <div className="titleLines"></div>
+      <div className="titleLines"></div>
+      <div className="titleLines"></div>
+      <div className="titleLines"></div>
+      <div id="inspectBoardTitleHandle" className="callTitle">Inspect</div>
+      <div id="inspectBoardTitleCloseBox" className="control-box close-box" onClick={this.closeWindow} >
+      <a id="inspectBoardTitleCloseInner" className="control-box-inner"></a>
       </div>
-      <div className="control-box windowshade-box">
-         <div className="control-box-inner">
-            <div className="windowshade-box-inner"></div>
-         </div>
-      </div>
-      <h1 className="title">Inspect</h1>
+    </div>
+
+
       <div className="container">
         <div className="block">
 
@@ -359,12 +361,11 @@ copyToPasteboard = (event) => {
             <select id="names-field" size="12" onChange={this.handleInspect}></select>
          </div>  
 
-          <div className="row-container">
+{/*          <div className="row-container">
             <div className="column-container">
-               <div id="sql-query-payload" className="column-container">
-            </div>
-             </div>
-          </div>
+               <div id="sql-query-payload" className="column-container"></div>
+           </div>
+          </div>*/}
 
          <div className="row-container offset-navigation" >
           <button type="button" id="offSetLeftButton" onClick={this.handleDecrement}>&#8592; Prev</button>
@@ -406,7 +407,7 @@ copyToPasteboard = (event) => {
          </div>
 
       </div>
-    </div>
+  </div>
   </div>
   </Draggable>
   

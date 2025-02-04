@@ -1,49 +1,44 @@
-body {
-/*    -moz-user-select: none;
-    -webkit-user-select: none;*/
-    background-image: url("img/patterns/139.png");
-    background-repeat: repeat;
-    margin: 0;
-    height: 100%;
-    font-family: 'ChicagoFLF', 'Times New Roman', 'Georgia', serif;
-    font-size: 12px;
-    font-weight: normal;
-    overflow: hidden;
+#pasteBoardTitleHandle{
+  margin-top: -4.5%;
 }
 
-.row-container {
-  margin: 3px;
-  display: flex;
-  flex-direction: row;
-}
+#pasteBoardTitleCloseBox{
+  margin-top: -5.15%;  
+  margin-left: -87%; 
+  }
+
+#pasteBoardCloseInner{
+/*    padding-left: 3px;*/
+  }
 
 
-#pasteboardContainer.content {
+
+#pasteboard.content {
     position: fixed;
-    left: 1080px;
-    top: -66px;
+    left: 65%;
+    top: -5%;
     z-index: 2;
     font-size: 12px;
     font-weight: normal;
     width: 400px;
-    height: 300px;
-    margin: 100px auto 0;
-    border: 1px solid #111;
-    background: #ccc;
-    box-shadow:
-  1px 2px #111,
-  inset 1px 1px 0px 0px #fff,
-  inset -1px -1px 0px 0px #999;
+    height: 320px;
+/*    margin: 100px auto 0;*/
+/*    border: 1px solid #111;*/
+/*    background: #ccc;*/
+/*    box-shadow:*/
+/*  1px 2px #111,*/
+/*  inset 1px 1px 0px 0px #fff,*/
+/*  inset -1px -1px 0px 0px #999;*/
 }
 
 #pasteboard {
-    border: 1px solid black;
+/*    border: 1px solid black;*/
 /*    margin: 3px;*/
     width: 380px;
     height: 240px;
-    display: inline-block;
-    overflow: auto;
-    background-color: #fff;
+/*    display: inline-block;*/
+/*    overflow: auto;*/
+/*    background-color: #fff;*/
 }
 
 #pasteboard .ui-selecting { 
@@ -99,14 +94,3 @@ td.strname-ui-selectee {
 }
 
 
-
-#pasteboard-commands{
-
-}
-
-#pasteboardTitle.title:before{
-  width: 36%;
-}
-#pasteboardTitle.title:after{
-  width: 36%;
-}
