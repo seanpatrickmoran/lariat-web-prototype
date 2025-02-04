@@ -54,6 +54,7 @@ export function Histogram({histProps}){
     svgElement.append("g").call(yAxisGenerator);
   }, [xScale, yScale, boundsHeight]);
 
+  // const colorMode = window.matchMedia('(prefers-color-scheme: dark)') ? "#69b3a2": "#e15759"
   const allRects = buckets.map((bucket, i) => {
     return (
       <rect

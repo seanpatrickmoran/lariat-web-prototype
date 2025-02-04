@@ -2,7 +2,7 @@ import Draggable from 'react-draggable';
 import React, {useEffect,useState} from 'react';
 import useLocalStorage from './../CustomHooks/UseLocalStorage.js'
 import $ from 'jquery';
-import { kronecker } from './inspect.js';
+import { kronecker, formImage } from './inspect.js';
 import { Histogram } from './histogram.jsx';
 
 
@@ -21,6 +21,7 @@ export default class InspectBody extends React.Component{
       this.offset = 0;
       this.storeImage;
       this.histogram;
+      this.colorMap = "GreyScale";
       this.fetchMap = new Map([[":", "%3A"], [";", "%3B"], ["<","%3C"], ["=" , "%3D"],[">" , "%3E"],["?" , "%3F"],["@" , "%40"],["!" , "%21"],["\"" , "%22"],["#" , "%23"],["$" , "%24"],["%" , "%25"],["&" , "%26"],["'" , "%27"],["(" , "%28"],[")" , "%29"],["*" , "%2A"],["+" , "%2B"],["," , "%2C"],["-" , "%2D"],["." , "%2E"],["/" , "%2F"]]);
      }
 
@@ -254,19 +255,20 @@ componentDidMount(){
         vMax = event.target.value;
       } 
       //try it here, try ping ponging it through serverside.
-      // console.log(this.storeImage);
-      var imageDataArray = new Uint8ClampedArray(this.storeImage.length);
+      // var imageDataArray = new Uint8ClampedArray(this.storeImage.length);
+      var imageDataArray = formImage(this.storeImage, vMin, vMax, "REDMAP");
+      console.log(imageDataArray)
 
-      for(var i=0;i<this.storeImage.length;i++){
-        // console.log(i/4);
-        if((i+1)%4==0){
-          imageDataArray[i] = 255;
-        } else {
-          const cVal = Math.round((this.storeImage[i] - vMin)/(vMax-vMin) * 255);
-          imageDataArray[i] = cVal>0 ? cVal : 0;
-        }
+      // for(var i=0;i<this.storeImage.length;i++){
+      //   // console.log(i/4);
+      //   if((i+1)%4==0){
+      //     imageDataArray[i] = 255;
+      //   } else {
+      //     const cVal = Math.round((this.storeImage[i] - vMin)/(vMax-vMin) * 255);
+      //     imageDataArray[i] = cVal>0 ? cVal : 0;
+      //   }
         
-      }    
+      // }    
       // console.log(imageDataArray);
       const canvas = document.getElementById("canvas-inspect");
       canvas.width = 455;
@@ -293,7 +295,7 @@ copyToPasteboard = (event) => {
   return <>
 
   <Draggable
-  handle="#inspect"
+  handle="#inspectTitle"
   position={null}
   scale={1}
   onStart={this.handleStart}
@@ -301,7 +303,7 @@ copyToPasteboard = (event) => {
   onStop={this.handleStop}>
 
   <div id="inspect" className="content">
-    <div className="headerTitle">
+    <div id="inspectTitle" className="headerTitle">
       <div className="titleLines"></div>
       <div className="titleLines"></div>
       <div className="titleLines"></div>
