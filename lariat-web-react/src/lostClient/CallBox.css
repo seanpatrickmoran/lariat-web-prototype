@@ -1,0 +1,75 @@
+#callBoxTitleHandle{
+  margin-top: -2.5%;
+}
+
+#callBoxTitleCloseBox{
+  margin-top: -3.55%;  
+  margin-left: -90%; 
+  }
+
+#callBoxCloseInner{
+/*    padding-left: 3px;*/
+  }
+
+#talk{
+    margin-left:1%;
+    width: 98%;
+    height: 390px;
+    overflow: scroll;
+/*    color: FF;*/
+}
+
+pre{
+    color: rgba(255, 255, 255, 1.0);
+    white-space: pre-wrap; 
+    word-break: keep-all;
+}
+
+input{
+    margin-left:1%;
+    width: 98%;
+    border: none;
+    outline: none;
+/*    margin: 0;*/
+    background-color: transparent;
+    font-size: 14px;
+}
+
+
+.blink {
+    animation: blink-animation 1s infinite;
+  }
+  
+  @keyframes blink-animation {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+
+#callBox.content {
+    position: absolute;
+/*    transform: translateX(640px);*/
+/*    transform: translateY(-1480px);*/
+    left: 30%;
+    top: 10%;
+    z-index: 2;
+    font-size: 14px;
+    color: #FFF;
+    font-weight: normal;
+    width: 640px;
+    height: 480px;
+/*    margin: 100px auto 0;*/
+/*    border: 1px solid #111;*/
+/*    background: #ccc;*/
+/*    box-shadow:*/
+/*  1px 2px #111,*/
+/*  inset 1px 1px 0px 0px #fff,*/
+/*  inset -1px -1px 0px 0px #999;*/
+}

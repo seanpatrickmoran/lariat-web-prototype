@@ -186,9 +186,9 @@ export default class MainContent extends React.Component{
       <li>Made by Sean Moran</li><br/>
       <li>MIT License, Lariat 2024, University of Michigan. All rights reserved.</li>
     </ul>
-      <div>
+{/*      <div>
         <p id="talk" style={{backgroundColor: "Black", fontSize: "12px", color:"#666"}} />
-      </div>
+      </div>*/}
     </div>
 
   </Draggable>

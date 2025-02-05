@@ -2,7 +2,7 @@ import Draggable from 'react-draggable';
 import React, {useEffect,useState} from 'react';
 import useLocalStorage from './../CustomHooks/UseLocalStorage.js'
 import $ from 'jquery';
-import { kronecker, formImage } from './inspect.js';
+import { kronecker, formImage, fillImageArray } from './inspect.js';
 import { Histogram } from './histogram.jsx';
 
 
@@ -14,30 +14,33 @@ export default class InspectBody extends React.Component{
       this.state = {
         selectValue: '',
         visibility: '',
-        contents: ''
-                    };  // initial state value
+        contents: '',
+        colorMap: "GreyScale",
+                    };
       this.resolutionOptions = (this.props.storetable[Object.keys(this.props.storetable)[0]]).map((el) => <option value={el} key={el}>{el}</option>);
-      // this.offSetQueries = null;
       this.offset = 0;
       this.storeImage;
       this.histogram;
-      this.colorMap = "GreyScale";
       this.fetchMap = new Map([[":", "%3A"], [";", "%3B"], ["<","%3C"], ["=" , "%3D"],[">" , "%3E"],["?" , "%3F"],["@" , "%40"],["!" , "%21"],["\"" , "%22"],["#" , "%23"],["$" , "%24"],["%" , "%25"],["&" , "%26"],["'" , "%27"],["(" , "%28"],[")" , "%29"],["*" , "%2A"],["+" , "%2B"],["," , "%2C"],["-" , "%2D"],["." , "%2E"],["/" , "%2F"]]);
      }
 
     componentDidUpdate(prevProps, prevState) {
-      // console.log(this.props.pasteBoardProps.contents === prevProps.pasteBoardProps.contents);
       if (this.props.pasteBoardProps.contents !== prevProps.pasteBoardProps.contents){
-        // this.state.livePasteBoard = this.props.pasteBoardProps.contents;
-        // this.props.pasteBoardPropsUpdate(oldState);
-        // console.log(this.state.contents);
-        // console.log(this.props.pasteBoardProps.contents)
-        // console.log(prevProps.pasteBoardProps.contents)
-        // console.log(this.props.pasteBoardProps.contents);
-        // console.log(this.props.pasteBoardPropsUpdate);
         this.setState({visibility: "visible", contents: this.props.pasteBoardProps.contents});
         this.props.pasteBoardPropsUpdate({visibility: this.state.visibility, contents: this.props.pasteBoardProps.contents});
       }
+      if(this.state.colorMap != prevState.colorMap){
+        const vMin = document.getElementById("filter0").value;
+        const vMax = document.getElementById("filter1").value;
+        const canvas = document.getElementById("canvas-inspect");
+        canvas.width = 455;
+        canvas.height = 455;
+        const ctx = canvas.getContext("2d");
+        var imageDataArray = formImage(this.storeImage, vMin, vMax, this.state.colorMap)
+        const imageData = new ImageData(imageDataArray, 455, 455);
+        ctx.putImageData(imageData, 0, 0);
+      }
+
     }
 
 
@@ -75,11 +78,7 @@ componentDidMount(){
                     canvas.height = 455;
                     const ctx = canvas.getContext("2d");
 
-                    const rgbaSize = inspectEntries[0].dimensions*inspectEntries[0].dimensions*Math.ceil(455/inspectEntries[0].dimensions)*Math.ceil(455/inspectEntries[0].dimensions)*4;
-                    var imageDataArray = new Uint8ClampedArray(rgbaSize);
-                    for(var i=0;i<rgbaSize;i++){
-                      imageDataArray[i] = inspectEntries[0].rgbaArray[i];
-                    }           
+                    var imageDataArray = fillImageArray(inspectEntries[0].rgbaArray, this.state.colorMap);      
                     const imageData = new ImageData(imageDataArray, 455, 455);
                     ctx.putImageData(imageData, 0, 0);
 
@@ -156,11 +155,7 @@ componentDidMount(){
                     canvas.height = 455;
                     const ctx = canvas.getContext("2d");
 
-                    const rgbaSize = inspectEntries[0].dimensions*inspectEntries[0].dimensions*Math.ceil(455/inspectEntries[0].dimensions)*Math.ceil(455/inspectEntries[0].dimensions)*4;
-                    var imageDataArray = new Uint8ClampedArray(rgbaSize);
-                    for(var i=0;i<rgbaSize;i++){
-                      imageDataArray[i] = inspectEntries[0].rgbaArray[i];
-                    }           
+                    var imageDataArray = fillImageArray(inspectEntries[0].rgbaArray, this.state.colorMap);     
                     const imageData = new ImageData(imageDataArray, 455, 455);
                     ctx.putImageData(imageData, 0, 0);
                   });
@@ -228,12 +223,8 @@ componentDidMount(){
               canvas.width = 455;
               canvas.height = 455;
               const ctx = canvas.getContext("2d");
-
-              const rgbaSize = entries[0].dimensions*entries[0].dimensions*Math.ceil(455/entries[0].dimensions)*Math.ceil(455/entries[0].dimensions)*4;
-              var imageDataArray = new Uint8ClampedArray(rgbaSize);
-              for(var i=0;i<rgbaSize;i++){
-                imageDataArray[i] = entries[0].rgbaArray[i];
-              }           
+              var imageDataArray = fillImageArray(entries[0].rgbaArray, this.state.colorMap);
+        
               const imageData = new ImageData(imageDataArray, 455, 455);
               ctx.putImageData(imageData, 0, 0);
               // console.log( entries[0].histogram)
@@ -256,7 +247,7 @@ componentDidMount(){
       } 
       //try it here, try ping ponging it through serverside.
       // var imageDataArray = new Uint8ClampedArray(this.storeImage.length);
-      var imageDataArray = formImage(this.storeImage, vMin, vMax, "REDMAP");
+      var imageDataArray = formImage(this.storeImage, vMin, vMax, this.state.colorMap);
       console.log(imageDataArray)
 
       // for(var i=0;i<this.storeImage.length;i++){
@@ -278,6 +269,15 @@ componentDidMount(){
       const imageData = new ImageData(imageDataArray, 455, 455);
       ctx.putImageData(imageData, 0, 0);
     }
+
+
+handleColorSwap = (event) => {
+    if(this.state.colorMap==="REDMAP"){
+      this.setState({colorMap: "GREYSCALE"})
+    } else {
+      this.setState({colorMap: "REDMAP"})
+    }
+};
 
 copyToPasteboard = (event) => {
     var fieldSelect = document.getElementById("names-field");
@@ -391,6 +391,9 @@ copyToPasteboard = (event) => {
 
 
          <div className="row-container">
+            {/*<div id="query-left-legend" className="column-container">*/}
+               <button type="button" onClick={this.handleColorSwap}>Color</button>
+            {/*</div>         */}
             <div id="query-left-legend" className="column-container">
                <p align="right">pixelMin</p>
             </div>

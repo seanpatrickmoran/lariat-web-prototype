@@ -324,3 +324,42 @@ export function formImage(storedImage, vMin, vMax, colorMappingKeyword){
     return imageDataArray
 }
 
+
+export function fillImageArray(scaledImage, colorMappingKeyword){
+    var imageDataArray = new Uint8ClampedArray(scaledImage.length);
+    switch(colorMappingKeyword) {
+        case "REDMAP": {
+                  for(var i=0;i<scaledImage.length;i+=4){
+                    var cIndex = scaledImage[i];
+                    if(cIndex > 255){
+                        cIndex=255
+                    }
+                    else if (cIndex < 0){
+                        cIndex = 0;
+                    }
+
+                    imageDataArray[i + 0] =  Math.round(colorMap.get("REDMAP")[cIndex][0]*255);
+                    imageDataArray[i + 1] =  Math.round(colorMap.get("REDMAP")[cIndex][1]*255);
+                    imageDataArray[i + 2] =  Math.round(colorMap.get("REDMAP")[cIndex][2]*255);
+                    imageDataArray[i + 3] =  Math.round(colorMap.get("REDMAP")[cIndex][3]*255);        
+                    }
+                }
+                break;
+
+        default: {
+                  for(var i=0;i<scaledImage.length;i++){
+                  // console.log(i/4);
+                    if((i+1)%4==0){
+                    imageDataArray[i] = 255;
+                      } else {
+                      const cVal = scaledImage[i];
+                      imageDataArray[i] = cVal>0 ? cVal : 0;
+                      }
+                  }
+                }
+
+
+    }
+    return imageDataArray
+}
+

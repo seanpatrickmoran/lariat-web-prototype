@@ -26,14 +26,14 @@ export default class Error404 extends React.Component{
   getTheBoys(){
     this.setState({isCalling : "visible"})    
 
-    const fetchPromise = fetch(`http://localhost:8080/api/talk`);
-    fetchPromise.then(response => {
-              return response.json();
-                  }).then(entries => {
-                    document.getElementById("talk").innerHTML = entries;
-                    // console.log(entries);
-                  });
-    console.log('meow!')
+    // const fetchPromise = fetch(`http://localhost:8080/api/talk`);
+    // fetchPromise.then(response => {
+    //           return response.json();
+    //               }).then(entries => {
+    //                 document.getElementById("talk").innerHTML += String.raw`${entries}`;
+    //                 // console.log(entries);
+    //               });
+    // console.log('meow!')
 
   }
 
@@ -73,44 +73,6 @@ export default class Error404 extends React.Component{
 
       <div id="callBoxDiv">
         <CallBox isCalling={this.state.isCalling} handleCallChange={this.handleCallChange}/>
-
-{/*        <Draggable
-        handle=".title"
-        position={null}
-        scale={1}
-        onStart={this.handleStart}
-        onDrag={this.handleDrag}
-        onStop={this.handleStop}>
-
-        <div id="callBoxContent" className="content" style={{
-          height: ' 42%',
-          width: '42%',
-          top: '15%',
-          left: '30%',
-          backgroundColor: "#030300",
-          visibility: this.state.visCallBox,
-        }}>
-
-          <h1 className="title">Call</h1>
-          <div className="control-box close-box" onClick={this.closeWindow} ><a className="control-box-inner"></a></div>
-          <div className="control-box zoom-box"><div className="control-box-inner"><div className="zoom-box-inner"></div></div></div>
-          <div className="control-box windowshade-box"><div className="control-box-inner"><div className="windowshade-box-inner"></div></div></div>
-
-          <div>
-            <pre id="talk" style={{backgroundColor: "Black", fontSize: "12px", color:"#666"}} />
-          </div>
-          <div className="row-container">
-            <input/>
-          </div>
-          <div className="row-container">
-            <button type="button" id="intersectBtn">SEND</button>
-            <button type="button" id="aNotbBtn">RECV</button>
-            <button type="button" id="bNotaBtn">CLEAR</button>
-          </div>
-        </div>
-
-        </Draggable>*/}
-
       </div>
     </body>
     </>
