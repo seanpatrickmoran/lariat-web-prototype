@@ -256,7 +256,7 @@ export default class QueryBody extends React.Component{
     <div className="row-container offset-navigation" >
       <button type="button" id="offSetLeftButton" onClick={this.handleDecrement}>&#8592; Prev</button>
       <button type="button" id="offSetRightButton" onClick={this.handleIncrement}>Next &#8594;</button>
-      <button type="button" id="offSetRightButton" onClick={this.getTheBoys}>CALL</button>
+      <button type="button" id="colloidalCallButton" onClick={this.getTheBoys}>CALL</button>
     </div>
     <div className="row-container offset-navigation">
       <span id="offsetPage"></span>
