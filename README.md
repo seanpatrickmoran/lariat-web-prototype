@@ -1,6 +1,6 @@
 <h1>Lariat</h1>
 
-<img src="https://github.com/seanpatrickmoran/lariat-web-prototype/lariat-web-react/instructions/docuIcon.svg" width="256">
+<img src="https://github.com/seanpatrickmoran/lariat-web-prototype/blob/master/instructions/docuIcon.svg" width="256">
 Welcome to Lariat! A toolkit for architectural chromatin analysis.
 
 <h2>DOCUMENTATION</h2>
@@ -16,12 +16,11 @@ The overall goal of Lariat is to provide a tool for anyone to easily perform rap
 Lariat is a convinient combination of tools to visualize, compare, and filter chromatin architectural features, built specifically with chromatin loops in mind. The easiest way to use Lariat is to populate its clipboard by exploring filter options under PAIRS and then finding shared loops or exclusive loops, and then exporting the records using DUMP.
 
 <br>
+
+
+<img src="https://github.com/seanpatrickmoran/lariat-web-prototype/blob/master/instructions/Overview.png" width="350"></img>
+<img src="https://github.com/seanpatrickmoran/lariat-web-prototype/blob/master/instructions/SupervisorPlot.png" width="500"></img>
 <hr>
-
-<img src="https://github.com/seanpatrickmoran/lariat-web-prototype/lariat-web-react/instructions/Overview.png" width="516">
-
-
-<img src="https://github.com/seanpatrickmoran/lariat-web-prototype/lariat-web-react/instructions/SupervisorPlot.png" width="516">
 <!-- <b><a id="#alink_query">QUERY: Access Database Using Known Keys.</a></b> -->
 ### Use of QUERY
 QUERY: Access Database Using Known Keys.
