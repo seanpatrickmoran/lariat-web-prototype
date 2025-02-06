@@ -71,16 +71,16 @@ export function Histogram({histProps}){
 
   return (
     <>
-    <Draggable
+{/*    <Draggable
     handle="#histogram"
     position={null}
     scale={1}
     // onStart={this.handleStart}
     // onDrag={this.handleDrag}
     // onStop={this.handleStop}>
-    >
+    >*/}
         <div id="histogram" className="content">
-          <div className="headerTitle">
+{/*          <div className="headerTitle">
             <div className="titleLines"></div>
             <div className="titleLines"></div>
             <div className="titleLines"></div>
@@ -91,7 +91,20 @@ export function Histogram({histProps}){
             <div id="histogramBoardTitleCloseBox" className="control-box close-box">
             <a id="histogramBoardTitleCloseInner" className="control-box-inner"></a>
             </div>
+          </div>*/}
+
+        <div id="BoxTitle" className="headerTitle">
+          <div className="topTitleLine"></div>
+          <div className="titleLines"></div>
+          <div className="titleLines"></div>
+          <div className="titleLines"></div>
+          <div className="titleLines"></div>
+          <div className="bottomTitleLines"></div>
+          <div id="BoxTitleHandle" className="callTitle">Histogram</div>
+          <div id="BoxTitleCloseBox" className="control-box close-box" >
+          <a id="BoxTitleCloseInner" className="control-box-inner" ></a>
           </div>
+        </div>
             <div className="block">
               <div id="svg" className="row-container">
                 <svg width={width} height={height}>
@@ -113,7 +126,7 @@ export function Histogram({histProps}){
               </div>
             </div>
         </div>
-    </Draggable>
+    {/*</Draggable>*/}
     </>
   );
 };

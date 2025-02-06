@@ -179,7 +179,7 @@ export default class QueryBody extends React.Component{
   {/*<div className="control-box close-box"><a className="control-box-inner"></a></div>*/}
 
   <div id="queryContent" className="content">
-    <div id="queryTitle" className="headerTitle">
+{/*    <div id="queryTitle" className="headerTitle">
       <div className="titleLines"></div>
       <div className="titleLines"></div>
       <div className="titleLines"></div>
@@ -190,8 +190,19 @@ export default class QueryBody extends React.Component{
       <div id="queryTitleCloseBox" className="control-box close-box" onClick={this.closeWindow} >
       <a id="queryTitleCloseInner" className="control-box-inner"></a>
       </div>
-    </div>
-
+    </div>*/}
+        <div id="BoxTitle" className="headerTitle">
+          <div className="topTitleLine"></div>
+          <div className="titleLines"></div>
+          <div className="titleLines"></div>
+          <div className="titleLines"></div>
+          <div className="titleLines"></div>
+          <div className="bottomTitleLines"></div>
+          <div id="BoxTitleHandle" className="callTitle">Query</div>
+          <div id="BoxTitleCloseBox" className="control-box close-box" >
+          <a id="BoxTitleCloseInner" className="control-box-inner" ></a>
+          </div>
+        </div>
 
 
 

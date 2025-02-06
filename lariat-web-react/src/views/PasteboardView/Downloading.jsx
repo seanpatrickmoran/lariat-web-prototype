@@ -289,7 +289,7 @@ export default class Downloading extends React.Component{
 
 
       <Draggable
-      handle="#downloadTitle"
+      handle="#BoxTitle"
       position={null}
       scale={1}
       onStart={this.handleStart}
@@ -308,18 +308,18 @@ export default class Downloading extends React.Component{
           visibility: this.props.isDownloading,
         }}>
         {/*<div id="downloadContent" className="content">*/}
-          <div id="downloadTitle" className="headerTitle">
-            <div className="titleLines"></div>
-            <div className="titleLines"></div>
-            <div className="titleLines"></div>
-            <div className="titleLines"></div>
-            <div className="titleLines"></div>
-            <div className="titleLines"></div>
-            <div id="downloadTitleHandle" className="callTitle">Download</div>
-            <div id="downloadTitleCloseBox" className="control-box close-box" onClick={this.closeWindow} >
-            <a id="downloadTitleCloseInner" className="control-box-inner"></a>
-            </div>
+        <div id="BoxTitle" className="headerTitle">
+          <div className="topTitleLine"></div>
+          <div className="titleLines"></div>
+          <div className="titleLines"></div>
+          <div className="titleLines"></div>
+          <div className="titleLines"></div>
+          <div className="bottomTitleLines"></div>
+          <div id="BoxTitleHandle" className="callTitle">Download</div>
+          <div id="BoxTitleCloseBox" className="control-box close-box" >
+          <a id="BoxTitleCloseInner" className="control-box-inner" ></a>
           </div>
+        </div>
 
 
 

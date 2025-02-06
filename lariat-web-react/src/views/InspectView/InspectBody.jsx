@@ -294,16 +294,16 @@ copyToPasteboard = (event) => {
     render (){
   return <>
 
-  <Draggable
+{/*  <Draggable
   handle="#inspectTitle"
   position={null}
   scale={1}
   onStart={this.handleStart}
   onDrag={this.handleDrag}
-  onStop={this.handleStop}>
+  onStop={this.handleStop}>*/}
 
   <div id="inspect" className="content">
-    <div id="inspectTitle" className="headerTitle">
+{/*    <div id="inspectTitle" className="headerTitle">
       <div className="titleLines"></div>
       <div className="titleLines"></div>
       <div className="titleLines"></div>
@@ -314,7 +314,30 @@ copyToPasteboard = (event) => {
       <div id="inspectBoardTitleCloseBox" className="control-box close-box" onClick={this.closeWindow} >
       <a id="inspectBoardTitleCloseInner" className="control-box-inner"></a>
       </div>
+    </div>*/}
+
+
+
+  <div id="BoxTitle" className="headerTitle">
+    <div className="topTitleLine"></div>
+    <div className="titleLines"></div>
+    <div className="titleLines"></div>
+    <div className="titleLines"></div>
+    <div className="titleLines"></div>
+    <div className="bottomTitleLines"></div>
+    <div id="BoxTitleHandle" className="callTitle">Inspect</div>
+    <div id="BoxTitleCloseBox" className="control-box close-box" onClick={this.closeWindow}>
+    <a id="BoxTitleCloseInner" className="control-box-inner" ></a>
     </div>
+  </div>
+
+
+
+
+
+
+
+    
 
 
       <div className="container">
@@ -414,7 +437,7 @@ copyToPasteboard = (event) => {
       </div>
   </div>
   </div>
-  </Draggable>
+  {/*// </Draggable>*/}
   
 
   </>

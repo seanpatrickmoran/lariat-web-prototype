@@ -1,52 +1,10 @@
- /* main page specific */
- .row-container {
-  margin: 3px;
-  display: flex;
-  flex-direction: row;
-}
 
 #main_docs{
   z-index: 2;
   height: 520px;
   width: 480px;
-  position: relative;
-/*  left: 20%;
-  top: -66px;*/
+  position: fixed;
+  left: 4px;
+  top: -66px;
   overflow: auto;
 }
-
-.main-document{
-  margin: 15px;
-  align-content: justify;
-}
-
-#welcomeTitleHandle{
-  margin-top: -8%;
-}
-
-#welcomeCloseBox{
-  margin-top: -7.75%;  
-  margin-left: -85%; 
-  }
-
-#welcomeCloseInner{
-/*    padding-left: 3px;*/
-  }
-
-/*#main_title.title:before{
-  width: 31%;
-}
-
-#main_title.title:after{
-  width: 31%;
-}
-
-
-#mosaic.title:before {
-  width: 28%;
-}
-
-#mosaic.title:after {
-  width: 28%;
-}
-*/

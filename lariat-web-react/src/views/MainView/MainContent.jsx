@@ -1,10 +1,21 @@
 import React, {useState} from 'react';
 import Draggable from 'react-draggable';
+import { Rnd } from "react-rnd";
+
 // import { ipcRenderer } from 'electron';
 
 export default class MainContent extends React.Component{
   constructor(props){
     super(props);
+    this.state = {
+      term: "$>",
+      written: "",
+      messages: [],
+      width: 250,
+      height: 250,
+      x: window.innerWidth/2-125,
+      y: window.innerHeight/2-250,
+    };
     this.closeWindow = this.closeWindow.bind(this);
   }
 
@@ -27,15 +38,17 @@ export default class MainContent extends React.Component{
   }
     return  <>
   <div id="main_docs" className="content">
-    <div className="headerTitle">
+    <div id="BoxTitle" className="headerTitle">
+      <div className="topTitleLine"></div>
       <div className="titleLines"></div>
       <div className="titleLines"></div>
       <div className="titleLines"></div>
       <div className="titleLines"></div>
-      <div className="titleLines"></div>
-      <div className="titleLines"></div>
-      <div className="callTitle">DOCS</div>
-      <div className="control-box close-box" onClick={this.closeWindow} ><a className="control-box-inner"></a></div>
+      <div className="bottomTitleLines"></div>
+      <div id="BoxTitleHandle" className="callTitle">DOCS</div>
+      <div id="BoxTitleCloseBox" className="control-box close-box" onClick={this.closeWindow}>
+      <a id="BoxTitleCloseInner" className="control-box-inner" ></a>
+      </div>
     </div>
 
     <ul>
@@ -156,7 +169,7 @@ export default class MainContent extends React.Component{
     </p>
 
   </div>
-
+{/*
   <Draggable
     handle="#showStartMosaic"
     // defaultPosition={{x: 0, y: 0}}
@@ -165,33 +178,41 @@ export default class MainContent extends React.Component{
     scale={1}
     onStart={this.handleStart}
     onDrag={this.handleDrag}
-    onStop={this.handleStop}>
+    onStop={this.handleStop}>*/}
+    <Rnd
+      className="content"
+      cancel="BoxTitleCloseBox"
+      dragHandleClassName="headerTitle"
+      minWidth={250}
+      minHeight={250}
+      size={{ width: this.state.width,  height: this.state.height }}
+      position={{ x: this.state.x, y: this.state.y }}
+      onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
+    >
 
-  <div id="showStartMosaic" className="content">
-    <div className="headerTitle">
-      <div className="titleLines"></div>
-      <div className="titleLines"></div>
-      <div className="titleLines"></div>
-      <div className="titleLines"></div>
-      <div className="titleLines"></div>
-      <div className="titleLines"></div>
-      <div id="welcomeTitleHandle" className="callTitle">Welcome!</div>
-      <div id="welcomeCloseBox" className="control-box close-box" onClick={this.closeWindow} >
-      <a id="welcomeCloseInner" className="control-box-inner"></a>
+
+  {/*<div id="showStartMosaic" className="content">*/}
+      <div id="BoxTitle" className="headerTitle">
+        <div className="topTitleLine"></div>
+        <div className="titleLines"></div>
+        <div className="titleLines"></div>
+        <div className="titleLines"></div>
+        <div className="titleLines"></div>
+        <div className="bottomTitleLines"></div>
+        <div id="BoxTitleHandle" className="callTitle">CALL</div>
+        <div id="BoxTitleCloseBox" className="control-box close-box" onClick={this.closeWindow}>
+        <a id="BoxTitleCloseInner" className="control-box-inner" ></a>
+        </div>
       </div>
-    </div>
 
     <div className="icon"><img src="./src/img/lariattmp.png" height={75} /></div>
     <ul>
       <li>Made by Sean Moran</li><br/>
       <li>MIT License, Lariat 2024, University of Michigan. All rights reserved.</li>
     </ul>
-{/*      <div>
-        <p id="talk" style={{backgroundColor: "Black", fontSize: "12px", color:"#666"}} />
-      </div>*/}
-    </div>
 
-  </Draggable>
+
+    </Rnd>
 
     </>
 }

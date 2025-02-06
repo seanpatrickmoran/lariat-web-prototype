@@ -179,7 +179,7 @@ export default class Pasteboard extends React.Component{
 				onStop={this.handleStop}>
 
 			  <div id="pasteboard" className="content">
-			    <div id="pasteboardTitle" className="headerTitle">
+{/*			    <div id="pasteboardTitle" className="headerTitle">
 			      <div className="titleLines"></div>
 			      <div className="titleLines"></div>
 			      <div className="titleLines"></div>
@@ -190,7 +190,23 @@ export default class Pasteboard extends React.Component{
 			      <div id="pasteBoardTitleCloseBox" className="control-box close-box" onClick={this.closeWindow} >
 			      <a id="pasteBoardTitleCloseInner" className="control-box-inner"></a>
 			      </div>
-			    </div>
+			    </div>*/}
+
+	        <div id="BoxTitle" className="headerTitle">
+	          <div className="topTitleLine"></div>
+	          <div className="titleLines"></div>
+	          <div className="titleLines"></div>
+	          <div className="titleLines"></div>
+	          <div className="titleLines"></div>
+	          <div className="bottomTitleLines"></div>
+	          <div id="BoxTitleHandle" className="callTitle">Pasteboard</div>
+	          <div id="BoxTitleCloseBox" className="control-box close-box" >
+	          <a id="BoxTitleCloseInner" className="control-box-inner" ></a>
+	          </div>
+	        </div>
+
+
+			  
 
 						<div className="row-container">		
 			               <select name="pasteboard-fields" id="pasteboard-fields" multiple size="12">

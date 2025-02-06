@@ -155,18 +155,18 @@ export default class PairsBody extends React.Component{
   onStop={this.handleStop}>
 
   <div id="pairsContent" className="content">
-  <div id="pairsTitle" className="headerTitle">
-    <div className="titleLines"></div>
-    <div className="titleLines"></div>
-    <div className="titleLines"></div>
-    <div className="titleLines"></div>
-    <div className="titleLines"></div>
-    <div className="titleLines"></div>
-    <div id="pairsTitleHandle" className="callTitle">Pairs</div>
-    <div id="pairsTitleCloseBox" className="control-box close-box" onClick={this.closeWindow} >
-    <a id="pairsTitleCloseInner" className="control-box-inner"></a>
-    </div>
-  </div>
+        <div id="BoxTitle" className="headerTitle">
+          <div className="topTitleLine"></div>
+          <div className="titleLines"></div>
+          <div className="titleLines"></div>
+          <div className="titleLines"></div>
+          <div className="titleLines"></div>
+          <div className="bottomTitleLines"></div>
+          <div id="BoxTitleHandle" className="callTitle">Pairs</div>
+          <div id="BoxTitleCloseBox" className="control-box close-box" >
+          <a id="BoxTitleCloseInner" className="control-box-inner" ></a>
+          </div>
+        </div>
 
 
 {/*    <h1 className="title">Pairs</h1>
