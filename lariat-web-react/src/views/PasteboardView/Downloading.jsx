@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import Draggable from 'react-draggable';
+import { Rnd } from "react-rnd";
+
 import JSZip from 'jszip'
 // import { CallBox } from "./CallBox.jsx";
 import "./Downloading.css"
@@ -28,7 +30,11 @@ export default class Downloading extends React.Component{
                 status: "Ready",
                 maxAmount: 9000,
                 progress: 0,
-              }
+                width: 600,
+                height: 350,
+                x: window.innerWidth/2-320,
+                y: window.innerHeight/2-280,   
+                }
 
               // this.blobMap = new Map();
            }
@@ -285,28 +291,16 @@ export default class Downloading extends React.Component{
   render (){
 
     return  <>
-
-
-
-      <Draggable
-      handle="#BoxTitle"
-      position={null}
-      scale={1}
-      onStart={this.handleStart}
-      onDrag={this.handleDrag}
-      onStop={this.handleStop}>
-
-        <div id="downloadContent" className="content" style={{
-          height: ' 45%',
-          width: '42%',
-          top: '0%',
-          left: '28%',
-          minWidth:635,
-          minHeight:360,
-          maxHeight:370,
-          // backgroundColor: "#ccc",
-          visibility: this.props.isDownloading,
-        }}>
+    <Rnd
+      className="content"
+      cancel="BoxTitleCloseBox"
+      dragHandleClassName="headerTitle"
+      minWidth={400}
+      minHeight={300}
+      size={{ width: this.state.width,  height: this.state.height }}
+      position={{ x: this.state.x, y: this.state.y }}
+      onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
+    >  
         {/*<div id="downloadContent" className="content">*/}
         <div id="BoxTitle" className="headerTitle">
           <div className="topTitleLine"></div>
@@ -317,20 +311,9 @@ export default class Downloading extends React.Component{
           <div className="bottomTitleLines"></div>
           <div id="BoxTitleHandle" className="callTitle">Download</div>
           <div id="BoxTitleCloseBox" className="control-box close-box" >
-          <a id="BoxTitleCloseInner" className="control-box-inner" ></a>
+          <a id="BoxTitleCloseInner" className="control-box-inner" onClick={this.closeWindow}></a>
           </div>
         </div>
-
-
-
-{/*
-          <h1 className="title">Download</h1>
-          <div className="control-box close-box" onClick={this.closeWindow} ><a className="control-box-inner"></a></div>
-          <div className="control-box zoom-box"><div className="control-box-inner"><div className="zoom-box-inner"></div></div></div>
-          <div className="control-box windowshade-box"><div className="control-box-inner"><div className="windowshade-box-inner"></div></div></div>
-*/}
-          {/*<BasicProgressBarWithLabel currentValue={this.state.progress} label={this.state.status} max={this.state.maxAmount} />*/}
-
 
           <div className="row-container">
           <div className="column-container">
@@ -366,9 +349,6 @@ export default class Downloading extends React.Component{
 
         </div>
 
-
-
-
             <div id="downloadRow" className="row-container">
               <input type="checkbox" id="CSV" value="CSV" checked/>
               <label for="vehicle1"> Table as CSV </label>
@@ -382,22 +362,15 @@ export default class Downloading extends React.Component{
               <label for="vehicle1"> Histograms </label>
             </div>
             <div id="downloadRow" className="row-container">
-          <div id="idCOMPT">
-          <label for="progress-bar">{this.state.status}</label>
-          <progress id="progress-bar" value={this.state.progress} max={this.state.maxAmount}>{toString(this.state.progress)}%</progress>
-          </div>
+              <div id="idCOMPT">
+                <label for="progress-bar">{this.state.status}</label>
+                <progress id="progress-bar" value={this.state.progress} max={this.state.maxAmount}>{toString(this.state.progress)}%</progress>
+              </div>
             </div>
-
-
-        </div>
+          </div>
         </div>
 
-
-
-
-        </div>
-        {/*</div>*/}
-  </Draggable>
+  </Rnd>
 
 
         </>

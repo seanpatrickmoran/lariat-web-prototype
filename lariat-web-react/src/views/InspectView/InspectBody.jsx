@@ -1,4 +1,4 @@
-import Draggable from 'react-draggable';
+import { Rnd } from "react-rnd";
 import React, {useEffect,useState} from 'react';
 import useLocalStorage from './../CustomHooks/UseLocalStorage.js'
 import $ from 'jquery';
@@ -12,6 +12,10 @@ export default class InspectBody extends React.Component{
     constructor(props){
       super(props);
       this.state = {
+        width: 800,
+        height: 640,
+        x: 10,
+        y: 28,   
         selectValue: '',
         visibility: '',
         contents: '',
@@ -302,8 +306,24 @@ copyToPasteboard = (event) => {
   onDrag={this.handleDrag}
   onStop={this.handleStop}>*/}
 
-  <div id="inspect" className="content">
-{/*    <div id="inspectTitle" className="headerTitle">
+    <Rnd
+      className="content"
+      cancel="BoxTitleCloseBox"
+      dragHandleClassName="headerTitle"
+      minWidth={860}
+      minHeight={640}
+      size={{ width: this.state.width,  height: this.state.height }}
+      position={{ x: this.state.x, y: this.state.y }}
+      onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
+      onResizeStop={(e, direction, ref, delta, position) => {
+        this.setState({
+          width: ref.style.width,
+          height: ref.style.height,
+          ...position,
+        });
+      }}
+    >  
+    {/*    <div id="inspectTitle" className="headerTitle">
       <div className="titleLines"></div>
       <div className="titleLines"></div>
       <div className="titleLines"></div>
@@ -436,8 +456,8 @@ copyToPasteboard = (event) => {
 
       </div>
   </div>
-  </div>
   {/*// </Draggable>*/}
+  </Rnd>
   
 
   </>

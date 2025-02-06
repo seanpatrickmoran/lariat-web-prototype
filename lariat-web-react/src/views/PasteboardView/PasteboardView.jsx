@@ -1,4 +1,4 @@
-import Draggable from 'react-draggable';
+import { Rnd } from "react-rnd";
 import React, {useEffect,useState} from 'react';
 
 import "./popBoard.css";
@@ -11,6 +11,10 @@ export default class Pasteboard extends React.Component{
    constructor(props){
       super(props);
       this.state = {
+      width: 400,
+      height: 300,
+      x: window.innerWidth-410,
+      y: 28,   
 		contents: "",
 		contentSet: new Set(),
 		visibility: "",
@@ -170,27 +174,27 @@ export default class Pasteboard extends React.Component{
 
     render(){
 	return <>
-				<Draggable
-				handle="#pasteboardTitle"
-				position={null}
-				scale={1}
-				onStart={this.handleStart}
-				onDrag={this.handleDrag}
-				onStop={this.handleStop}>
 
-			  <div id="pasteboard" className="content">
-{/*			    <div id="pasteboardTitle" className="headerTitle">
-			      <div className="titleLines"></div>
-			      <div className="titleLines"></div>
-			      <div className="titleLines"></div>
-			      <div className="titleLines"></div>
-			      <div className="titleLines"></div>
-			      <div className="titleLines"></div>
-			      <div id="pasteBoardTitleHandle" className="callTitle">Pasteboard</div>
-			      <div id="pasteBoardTitleCloseBox" className="control-box close-box" onClick={this.closeWindow} >
-			      <a id="pasteBoardTitleCloseInner" className="control-box-inner"></a>
-			      </div>
-			    </div>*/}
+
+
+
+    <Rnd
+      className="content"
+      cancel="BoxTitleCloseBox"
+      dragHandleClassName="headerTitle"
+      minWidth={300}
+      minHeight={300}
+      size={{ width: this.state.width,  height: this.state.height }}
+      position={{ x: this.state.x, y: this.state.y }}
+      onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
+      onResizeStop={(e, direction, ref, delta, position) => {
+        this.setState({
+          width: ref.style.width,
+          height: ref.style.height,
+          ...position,
+        });
+      }}
+    >  
 
 	        <div id="BoxTitle" className="headerTitle">
 	          <div className="topTitleLine"></div>
@@ -219,11 +223,14 @@ export default class Pasteboard extends React.Component{
 							<button className="button" id="pbPaste">Paste To</button>
 							<button className="button" id="pbDump" onClick={this.pbDump}>Dump</button>
 						</div>
+			</Rnd>
 
-					</div>
-				</Draggable>
 
-				<Downloading isDownloading={this.state.isDownloading} handleIsDownloadingChange={this.handleIsDownloadingChange} contentSet={this.state.contentSet}/>
+			  <div id="callBoxDiv" style={{visibility: this.state.isDownloading}}>
+					<Downloading isDownloading={this.state.isDownloading} handleIsDownloadingChange={this.handleIsDownloadingChange} contentSet={this.state.contentSet}/>
+			  </div>  
+
+
 		</>
 	}
 }

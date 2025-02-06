@@ -1,4 +1,4 @@
-import Draggable from 'react-draggable';
+import { Rnd } from "react-rnd";
 // import React, {useState} from 'react';
 import React, {useEffect,useState} from 'react';
 // import { fetchTest } from './QueryView.jsx';
@@ -11,6 +11,10 @@ export default class PairsBody extends React.Component{
         constructor(props){
           super(props);
           this.state = {
+            width: 800,
+            height: 640,
+            x: 10,
+            y: 28,   
             selectValue: '',
             visibility: '',
             contents: '',
@@ -146,15 +150,24 @@ export default class PairsBody extends React.Component{
 
   return <>
 
-  <Draggable
-  handle="#pairsTitle"
-  position={null}
-  scale={1}
-  onStart={this.handleStart}
-  onDrag={this.handleDrag}
-  onStop={this.handleStop}>
+    <Rnd
+      className="content"
+      cancel="BoxTitleCloseBox"
+      dragHandleClassName="headerTitle"
+      minWidth={860}
+      minHeight={640}
+      size={{ width: this.state.width,  height: this.state.height }}
+      position={{ x: this.state.x, y: this.state.y }}
+      onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
+      onResizeStop={(e, direction, ref, delta, position) => {
+        this.setState({
+          width: ref.style.width,
+          height: ref.style.height,
+          ...position,
+        });
+      }}
+    >  
 
-  <div id="pairsContent" className="content">
         <div id="BoxTitle" className="headerTitle">
           <div className="topTitleLine"></div>
           <div className="titleLines"></div>
@@ -227,9 +240,8 @@ export default class PairsBody extends React.Component{
       </select>
       
     </div>
-  </div>
 
-  </Draggable>
+  </Rnd>
   </>
   }
 }

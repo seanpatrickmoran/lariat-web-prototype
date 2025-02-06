@@ -11,8 +11,8 @@ export default class QueryBody extends React.Component{
       this.state = {
       width: 480,
       height: 360,
-      x: window.innerWidth/2-240,
-      y: window.innerHeight/2-360,        
+      x: 10,
+      y: 28,        
         selectValue: '',
         visibility: '',
         contents: '',

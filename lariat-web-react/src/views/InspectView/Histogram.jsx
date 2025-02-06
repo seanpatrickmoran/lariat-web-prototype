@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useRef } from "react";
 import useLocalStorage from './../CustomHooks/UseLocalStorage.js'
 import * as d3 from "d3";
-import Draggable from 'react-draggable';
+// import Draggable from 'react-draggable';
+import { Rnd } from "react-rnd";
+
 
 
 const BUCKET_PADDING = 1;
@@ -79,7 +81,7 @@ export function Histogram({histProps}){
     // onDrag={this.handleDrag}
     // onStop={this.handleStop}>
     >*/}
-        <div id="histogram" className="content">
+        {/*<div id="histogram" className="content">*/}
 {/*          <div className="headerTitle">
             <div className="titleLines"></div>
             <div className="titleLines"></div>
@@ -93,6 +95,29 @@ export function Histogram({histProps}){
             </div>
           </div>*/}
 
+    <Rnd
+      className="content"
+      cancel="BoxTitleCloseBox"
+      dragHandleClassName="headerTitle"
+      default={{      
+      x: window.innerWidth-410,
+      y: 330,
+      width: 400,
+      height: 360}}
+
+      minWidth={400}
+      minHeight={300}
+      size={{ width: histProps.width,  height: histProps.height }}
+      // position={{ x: this.state.x, y: this.state.y }}
+      // onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
+      // onResizeStop={(e, direction, ref, delta, position) => {
+      //   this.setState({
+      //     width: ref.style.width,
+      //     height: ref.style.height,
+      //     ...position,
+      //   });
+      // }}
+    >  
         <div id="BoxTitle" className="headerTitle">
           <div className="topTitleLine"></div>
           <div className="titleLines"></div>
@@ -125,8 +150,12 @@ export function Histogram({histProps}){
     
               </div>
             </div>
-        </div>
+
+        {/*</div>*/}
+
     {/*</Draggable>*/}
+          </Rnd>
+
     </>
   );
 };
