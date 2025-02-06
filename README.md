@@ -1,7 +1,7 @@
 <h1>Lariat</h1>
 
 <img src="https://github.com/seanpatrickmoran/lariat-web-prototype/blob/master/instructions/docuIcon.svg" width="256">
-Welcome to Lariat! A toolkit for architectural chromatin analysis.
+Welcome to Lariat! A toolkit for architectural chromatin query and image analysis.
 
 <h2>DOCUMENTATION</h2>
 
