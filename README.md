@@ -18,8 +18,8 @@ Lariat is a convinient combination of tools to visualize, compare, and filter ch
 <br>
 
 
-<img src="https://github.com/seanpatrickmoran/lariat-web-prototype/blob/master/instructions/Overview.png" width="350"></img>
-<img src="https://github.com/seanpatrickmoran/lariat-web-prototype/blob/master/instructions/SupervisorPlot.png" width="500"></img>
+<img src="https://github.com/seanpatrickmoran/lariat-web-prototype/blob/master/instructions/Overview.svg" width="350"></img>
+<img src="https://github.com/seanpatrickmoran/lariat-web-prototype/blob/master/instructions/SupervisorPlot.svg" width="500"></img>
 <hr>
 <!-- <b><a id="#alink_query">QUERY: Access Database Using Known Keys.</a></b> -->
 ### Use of QUERY
