@@ -1,6 +1,6 @@
 <h1>Lariat</h1>
 
-<img src="https://github.com/seanpatrickmoran/lariat-web-prototype/blob/master/lariat-web-react/public/docuIcon.svg" width="256">
+<img src="https://github.com/seanpatrickmoran/lariat-web-prototype/lariat-web-react/instructions/docuIcon.svg" width="256">
 Welcome to Lariat! A toolkit for architectural chromatin analysis.
 
 <h2>DOCUMENTATION</h2>
@@ -18,6 +18,10 @@ Lariat is a convinient combination of tools to visualize, compare, and filter ch
 <br>
 <hr>
 
+<img src="https://github.com/seanpatrickmoran/lariat-web-prototype/lariat-web-react/instructions/Overview.png" width="516">
+
+
+<img src="https://github.com/seanpatrickmoran/lariat-web-prototype/lariat-web-react/instructions/SupervisorPlot.png" width="516">
 <!-- <b><a id="#alink_query">QUERY: Access Database Using Known Keys.</a></b> -->
 ### Use of QUERY
 QUERY: Access Database Using Known Keys.
