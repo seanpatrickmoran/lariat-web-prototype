@@ -8,6 +8,7 @@ export default class MainContent extends React.Component{
   constructor(props){
     super(props);
     this.state = {
+      favicon: "",
       term: "$>",
       written: "",
       messages: [],
@@ -24,9 +25,8 @@ export default class MainContent extends React.Component{
     console.log('Data: ', data);
   };
   componentDidMount() {
-      // setTimeout(() => {
-      //     console.log('hello');
-      // }, 10);
+    const faviconMode = window.matchMedia('(prefers-color-scheme: light)').matches ? "/colloidal.svg" : "/cyclops.svg";
+    this.setState({favicon: faviconMode});
   }
   closeWindow(){
     this.props.handleCallChange("hidden");
@@ -205,7 +205,7 @@ export default class MainContent extends React.Component{
         </div>
       </div>
 
-    <div className="icon"><img src="./src/img/lariattmp.png" height={75} /></div>
+    <div className="icon"><img src={`./src/img/${this.state.favicon}`} height={75} /></div>
     <ul>
       <li>Made by Sean Moran</li><br/>
       <li>MIT License, Lariat 2024, University of Michigan. All rights reserved.</li>
