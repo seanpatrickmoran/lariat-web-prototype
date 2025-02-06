@@ -1,20 +1,28 @@
-import Draggable from 'react-draggable';
-// import React, {useState} from 'react';
+import { Rnd } from "react-rnd";
+
 import React, {useEffect,useState} from 'react';
 // import { fetchTest } from './QueryView.jsx';
 import useLocalStorage from './../CustomHooks/UseLocalStorage.js'
+import { CallBox } from "./CallBox.jsx";
 
 export default class QueryBody extends React.Component{
          constructor(props){
             super(props);
       this.state = {
+      width: 480,
+      height: 360,
+      x: window.innerWidth/2-240,
+      y: window.innerHeight/2-360,        
         selectValue: '',
         visibility: '',
-        contents: ''
+        contents: '',
+        isCalling: "hidden",
                     };  // initial state value
             this.resolutionOptions = null;
             this.offSetQueries = null;
             this.offset = 0;
+            this.handleCallChange = this.handleCallChange.bind(this);
+            this.getTheBoys = this.getTheBoys.bind(this);
            }
 
     componentDidUpdate(prevProps, prevState) {
@@ -156,57 +164,63 @@ export default class QueryBody extends React.Component{
     //     return
     // }
 
+  getTheBoys(){
+    this.setState({isCalling : "visible"})    
 
+    // const fetchPromise = fetch(`http://localhost:8080/api/talk`);
+    // fetchPromise.then(response => {
+    //           return response.json();
+    //               }).then(entries => {
+    //                 document.getElementById("talk").innerHTML = entries;
+    //                 // console.log(entries);
+    //               });
+    // console.log('meow!')
 
+  }
 
-
-        // Object.assign(this.props.pasteBoardProps.contents);
-
-
+    handleCallChange(){
+    if(this.state.isCalling=="hidden"){
+      this.setState({isCalling: "visible"})
+    } else{
+    this.setState({isCalling: "hidden"})
+    }  
+  }
 
 	  render (){
   return <>
 
-  <Draggable
-  handle="#queryTitle"
-  position={null}
-  scale={1}
-  onStart={this.handleStart}
-  onDrag={this.handleDrag}
-  onStop={this.handleStop}>
 
-  {/*<div id="queryContent" className="content">*/}
-  {/*<div className="control-box close-box"><a className="control-box-inner"></a></div>*/}
+    <Rnd
+      className="content"
+      cancel="BoxTitleCloseBox"
+      dragHandleClassName="headerTitle"
+      minWidth={340}
+      minHeight={470}
+      size={{ width: this.state.width,  height: this.state.height }}
+      position={{ x: this.state.x, y: this.state.y }}
+      onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
+      onResizeStop={(e, direction, ref, delta, position) => {
+        this.setState({
+          width: ref.style.width,
+          height: ref.style.height,
+          ...position,
+        });
+      }}
+    >  
 
-  <div id="queryContent" className="content">
-{/*    <div id="queryTitle" className="headerTitle">
-      <div className="titleLines"></div>
-      <div className="titleLines"></div>
-      <div className="titleLines"></div>
-      <div className="titleLines"></div>
-      <div className="titleLines"></div>
-      <div className="titleLines"></div>
-      <div id="queryTitleHandle" className="callTitle">Query</div>
-      <div id="queryTitleCloseBox" className="control-box close-box" onClick={this.closeWindow} >
-      <a id="queryTitleCloseInner" className="control-box-inner"></a>
-      </div>
-    </div>*/}
-        <div id="BoxTitle" className="headerTitle">
-          <div className="topTitleLine"></div>
-          <div className="titleLines"></div>
-          <div className="titleLines"></div>
-          <div className="titleLines"></div>
-          <div className="titleLines"></div>
-          <div className="bottomTitleLines"></div>
-          <div id="BoxTitleHandle" className="callTitle">Query</div>
-          <div id="BoxTitleCloseBox" className="control-box close-box" >
-          <a id="BoxTitleCloseInner" className="control-box-inner" ></a>
-          </div>
+      <div id="BoxTitle" className="headerTitle">
+        <div className="topTitleLine"></div>
+        <div className="titleLines"></div>
+        <div className="titleLines"></div>
+        <div className="titleLines"></div>
+        <div className="titleLines"></div>
+        <div className="bottomTitleLines"></div>
+        <div id="BoxTitleHandle" className="callTitle">Query</div>
+        <div id="BoxTitleCloseBox" className="control-box close-box" >
+        <a id="BoxTitleCloseInner" className="control-box-inner" ></a>
         </div>
+      </div>
 
-
-
-    {/*<h1 className="title">SQL Query</h1>*/}
     <div className="row-container">
       <select name="fields" id="dataset-field-select" selected="dataset" onChange={this.handleDatasetChange}>
         <option value="dataset">Dataset</option>
@@ -242,13 +256,17 @@ export default class QueryBody extends React.Component{
     <div className="row-container offset-navigation" >
       <button type="button" id="offSetLeftButton" onClick={this.handleDecrement}>&#8592; Prev</button>
       <button type="button" id="offSetRightButton" onClick={this.handleIncrement}>Next &#8594;</button>
+      <button type="button" id="offSetRightButton" onClick={this.getTheBoys}>CALL</button>
     </div>
     <div className="row-container offset-navigation">
       <span id="offsetPage"></span>
     </div>
-  </div>
-  </Draggable>
-  
+  {/*</div>*/}
+  </Rnd>
+
+  <div id="callBoxDiv" style={{visibility: this.state.isCalling}}>
+    <CallBox isCalling={this.state.isCalling} handleCallChange={this.handleCallChange}/>
+  </div>  
   </>
   }
 }
