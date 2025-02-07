@@ -59,7 +59,7 @@ export default class MainContent extends React.Component{
 
     <p className="main-document"> 
     Use of the tools relies on the user to have formed a sqlite3 database compatible 
-    for use with Larait via Ingest, which can be found on github at <a href="">https://github.com/seanpatrickmoran/Lariat</a>.
+    for use with Larait via Ingest, which can be found on github at <a href="https://github.com/seanpatrickmoran/strainer">https://github.com/seanpatrickmoran/strainer</a>.
     Briefly, users will need to provide Ingest with original chomratin conformation 
     capture (3C) data-inputs such as .hic or .cool .mcool files. The user will also need 
     a secondary file that contains chromatin architectural information in tabular form.
@@ -78,7 +78,7 @@ export default class MainContent extends React.Component{
     combine data from many experiments from publically availible 3C-type data. By default, the database
     entries are written in exactly the same way via Ingest to the following schema:</p>
 
-{/*    <pre>
+    <pre>
          imag(name, 
               dataset, 
               condition, 
@@ -89,7 +89,7 @@ export default class MainContent extends React.Component{
               hic_path, 
               PUB_ID, 
               resolution, 
-              meta)</pre>*/}
+              meta)</pre>
 
     <p className="main-document">
     Lariat supports simplistic calling to the underlying SQLite database. SQL queries rely on the user
@@ -169,29 +169,20 @@ export default class MainContent extends React.Component{
     </p>
 
   </div>
-{/*
-  <Draggable
-    handle="#showStartMosaic"
-    // defaultPosition={{x: 0, y: 0}}
-    position={null}
-    // grid={[25, 25]}
-    scale={1}
-    onStart={this.handleStart}
-    onDrag={this.handleDrag}
-    onStop={this.handleStop}>*/}
+
     <Rnd
       className="content"
       cancel="BoxTitleCloseBox"
       dragHandleClassName="headerTitle"
       minWidth={250}
       minHeight={250}
+      maxWidth={250}
+      maxHeight={250}
       size={{ width: this.state.width,  height: this.state.height }}
       position={{ x: this.state.x, y: this.state.y }}
       onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
     >
 
-
-  {/*<div id="showStartMosaic" className="content">*/}
       <div id="BoxTitle" className="headerTitle">
         <div className="topTitleLine"></div>
         <div className="titleLines"></div>
@@ -199,7 +190,7 @@ export default class MainContent extends React.Component{
         <div className="titleLines"></div>
         <div className="titleLines"></div>
         <div className="bottomTitleLines"></div>
-        <div id="BoxTitleHandle" className="callTitle">CALL</div>
+        <div id="BoxTitleHandle" className="callTitle">Welcome!</div>
         <div id="BoxTitleCloseBox" className="control-box close-box" onClick={this.closeWindow}>
         <a id="BoxTitleCloseInner" className="control-box-inner" ></a>
         </div>
@@ -207,6 +198,7 @@ export default class MainContent extends React.Component{
 
     <div className="icon"><img src={`./src/img/${this.state.favicon}`} height={75} /></div>
     <ul>
+      <li>Running Lariat</li><br/>
       <li>Made by Sean Moran</li><br/>
       <li>MIT License, Lariat 2024, University of Michigan. All rights reserved.</li>
     </ul>

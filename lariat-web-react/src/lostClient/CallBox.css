@@ -60,7 +60,11 @@
 /*    color: FF;*/
 /*}*/
 
-pre{
+p{
+    margin-top: 0px;
+}
+
+#talk{
     margin-left:1%;
     width:98%;
 /*    height:78%;*/
@@ -74,17 +78,32 @@ pre{
 }
 
 input{
-    margin-left:1%;
+    display: inline-block;
+/*    margin-left:1%;*/
 /*    margin-top:16.5%;*/
-    height: 16px;
-    width: 98%;
+/*    height: 16px;*/
+/*    margin-bottom: 2px;*/
+/*    width: 80;*/
     border: none;
     outline: none;
     background-color: transparent;
     font-size: 14px;
-    position: relative;
+/*    position: relative;*/
 }
 
+.command__user{
+    margin-top: 0px;
+    margin-bottom: 1px;
+    margin-left:1%;
+    width: 98%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.userClass{
+    width:  100%;
+    font-size: 14px;
+}
 
 .blink {
     animation: blink-animation 1s infinite;
