@@ -3,7 +3,7 @@ import { Rnd } from "react-rnd";
 import React, {useEffect,useState} from 'react';
 // import { fetchTest } from './QueryView.jsx';
 import useLocalStorage from './../CustomHooks/UseLocalStorage.js'
-import { CallBox } from "./CallBox.jsx";
+import { CallBox } from "./QBox.jsx";
 
 export default class QueryBody extends React.Component{
          constructor(props){
@@ -246,6 +246,7 @@ export default class QueryBody extends React.Component{
       </select>
     </div>
     <div className="row-container">
+      <button type="button" id="colloidalCallButton" onClick={this.getTheBoys}>Query</button>
       <button type="button" id="selectAll" onClick={this.qvSelectAll}>Select All</button>
       <button type="button" id="copyToPbBtn" onClick={this.copyToPasteboard}>Copy</button>
     </div>
@@ -256,7 +257,6 @@ export default class QueryBody extends React.Component{
     <div className="row-container offset-navigation" >
       <button type="button" id="offSetLeftButton" onClick={this.handleDecrement}>&#8592; Prev</button>
       <button type="button" id="offSetRightButton" onClick={this.handleIncrement}>Next &#8594;</button>
-      <button type="button" id="colloidalCallButton" onClick={this.getTheBoys}>CALL</button>
     </div>
     <div className="row-container offset-navigation">
       <span id="offsetPage"></span>

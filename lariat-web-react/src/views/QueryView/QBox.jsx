@@ -5,8 +5,9 @@ import { Rnd } from "react-rnd";
 // import React, {useState} from 'react';
 import React, {useEffect,useState} from 'react';
 import ollama from 'ollama';
-import "./CallBox.css"
+import "./QBox.css"
 
+import { PopOut} from "./PopOut.jsx"
 
 
 export class CallBox extends React.Component{
@@ -22,14 +23,28 @@ export class CallBox extends React.Component{
 	    height: 360,
 	    x: window.innerWidth/2-240,
 	    y: window.innerHeight/2-360,
+	    popViews: [],
 		};
+		this.popViewMap = new Map();
+    this.fetchMap = new Map([[":", "%3A"], [";", "%3B"], ["<","%3C"], ["=" , "%3D"],[">" , "%3E"],["?" , "%3F"],["@" , "%40"],["!" , "%21"],["\"" , "%22"],["#" , "%23"],["$" , "%24"],["%" , "%25"],["&" , "%26"],["'" , "%27"],["(" , "%28"],[")" , "%29"],["*" , "%2A"],["+" , "%2B"],["," , "%2C"],["-" , "%2D"],["." , "%2E"],["/" , "%2F"]]);
     this.focusCall = React.createRef();
+	}
+
+	componentDidUpdate(prevProps,prevState){
+		if(this.state.popViews!=prevState.popViews){
+			this.setState({popViews: this.state.popViews})
+		}
 	}
 
 
 	componentDidMount() {
 		document.querySelector("#talk").style.maxHeight = "300px"
 		document.querySelector(".textField").style.width = Math.round(.98*480-20).toString()+"px";
+
+		const welcomeMessage = document.createElement('p');
+		welcomeMessage.innerHTML = "@>" + `Welcome!\n` + `Here are some commands you can execute:\n    :search?"xyz" search features based on name "xyz"\n    :clear ––clears the terminal\n    :purge ––removes terminal history\n    :reset ––wipes messages from my memory\n    :help ––displays help\n    :quit ––closes this window`;
+		document.querySelector("#talk").append(welcomeMessage);
+
 	}
 
 
@@ -60,6 +75,66 @@ export class CallBox extends React.Component{
 		this.scrollToBottom();
    };
 
+
+	llamaQuery = async (name) => {
+
+		document.querySelector(".userClass").classList.add("blink");
+	  document.querySelector(".textField").classList.add("blink");
+	  document.querySelector(".textField").disabled = true;		
+		console.log("meow")
+
+		// const name = 
+
+	  const fetchPromise = fetch(`http://localhost:9999/test2?name=${[...name].map((char) => this.fetchMap.get(char) || char).join("")}`);
+
+    fetchPromise.then(response => {
+        return response.json();
+            }).then(entries => {
+            	console.log(entries.message)
+							const node = document.createElement('p');
+							node.innerHTML = "$>" + `${this.state.term}`;
+							document.querySelector("#talk").append(node);
+
+
+
+							const responseNode = document.createElement('p');
+							responseNode.innerHTML = "@>" + ` found these similar to ${this.state.term.slice(8).trim()}`
+							this.setState({
+									term: ""
+								});
+
+							 entries.message.forEach((x) =>{
+								const ahref =  document.createElement('a');
+								ahref.value = `http://localhost:8080/api/getImageSingleton?name=${[...x].map((char) => this.fetchMap.get(char) || char).join("")}`
+								ahref.href = "#";
+								// ahref.onclick = (()=>{ alert('hey'); return false});
+								ahref.onclick = (()=>{
+
+									this.state.popViews.push((x));
+									this.popViewMap.set(x, ahref.value)
+									// console.log(this.popViewMap.get(x))
+									this.setState({popViews: this.state.popViews});
+									// alert(this.popViewMap.get(x));
+									// alert([...this.popViewMap.entries()]);
+
+								});
+								ahref.className = "queryResult" + " " + x;
+								ahref.innerHTML = x;
+								// ahref.setAttribute("onclick", "(()=>{ alert('hey'); return false})");
+								responseNode.append(document.createElement("br"));
+								responseNode.append(ahref);
+								// responseNode.innerHTML += `${entries.message}`;
+							})
+							document.querySelector("#talk").append(responseNode);
+
+						  document.querySelector(".textField").classList.remove("blink");
+							document.querySelector(".userClass").classList.remove("blink");
+						  document.querySelector(".textField").disabled = false;
+
+							this.focusCall.current.focus();
+							this.scrollToBottom();
+        });
+	}
 
 	llamaSpeak = async () => {
 
@@ -150,10 +225,15 @@ export class CallBox extends React.Component{
 				this.setState({userMessagePointer: 0, userMessages: [""]});
 				break;
 
+			// case(":search"): 
+			// 	this.llamaQuery();
+			// 	this.setState({term: ""});
+			// 	break;
+
 			case(":help"): 
 				this.setState({term: ""});
 				const responseNode = document.createElement('p');
-				responseNode.innerHTML = "@>" + `Here are some commands you can execute:\n    :clear ––clears the terminal\n    :purge ––removes terminal history\n    :reset ––wipes messages from my memory\n    :help ––displays help\n    :quit ––closes this window`;
+				responseNode.innerHTML = "@>" + `Here are some commands you can execute:\n    :search?"xyz" search features based on name "xyz"\n    :clear ––clears the terminal\n    :purge ––removes terminal history\n    :reset ––wipes messages from my memory\n    :help ––displays help\n    :quit ––closes this window`;
 				selectNode.append(responseNode);
 				this.scrollToBottom();
 				break;
@@ -162,8 +242,15 @@ export class CallBox extends React.Component{
 				break;
 
 			default: 
+				if (this.state.term.startsWith(":search?")){
+					const query = this.state.term.slice(8).trim()
+					this.llamaQuery(query);
+					return;
+				}
 				this.llamaSpeak();
 			}
+
+
 		} else if (e.key === 'ArrowUp'){
 			if (this.state.userMessagePointer-1>=0 &&  this.state.userMessages.length!=0){
 				this.setState({
@@ -173,7 +260,7 @@ export class CallBox extends React.Component{
 			}
 
  		} else if (e.key === 'ArrowDown'){
-			if (this.state.userMessagePointer+1<this.state.userMessages.length){
+			if (this.state.userMessagePointer+1<=this.state.userMessages.length){
 				this.setState({
 					term: this.state.userMessages[this.state.userMessagePointer+1]
 					})
@@ -181,6 +268,7 @@ export class CallBox extends React.Component{
 			}
 
 			else{
+				// console.log('huh')
 				this.setState({term: ""})
 			}
  	}
@@ -219,6 +307,7 @@ export class CallBox extends React.Component{
 
 
 		<Rnd
+			id="callBox"
 			className="content"
 			cancel="callBoxTitleCloseBox"
 			dragHandleClassName="headerTitle"
@@ -274,12 +363,18 @@ export class CallBox extends React.Component{
           autoFocus="autofocus"/>
       </span></p>
       </section>
-
     {/*</div>*/}
 	  </div>
     {/*</div>*/}
 
 	  </Rnd>
+
+    <div id="spawnedViews">
+    {/*{comments.map(comment => <Comment id={comment.id} text={comment.text} />)}*/}
+    	{this.state.popViews.map((view) => 
+    		<PopOut id={view} image={this.popViewMap.get(view)}/>
+    	)}
+    </div>
 	  </>
   }
 }
