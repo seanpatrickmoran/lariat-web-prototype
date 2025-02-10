@@ -165,7 +165,22 @@ export default class QueryBody extends React.Component{
     // }
 
   getTheBoys(){
-    this.setState({isCalling : "visible"})    
+    this.setState({isCalling : "visible"})
+    // console.log("hey")
+    const divs = document.querySelectorAll(".content");
+
+    divs.forEach(div => { 
+      console.log(div)
+      div.style.zIndex-=1
+    })
+    console.log(this.props.id)
+    // document.getElementById(this.props.id).style.zIndex-=
+    document.getElementById("queryBox").style.zIndex=1    
+
+
+    divs.forEach(div => { 
+      console.log(div)
+    })
 
     // const fetchPromise = fetch(`http://localhost:8080/api/talk`);
     // fetchPromise.then(response => {
@@ -191,13 +206,22 @@ export default class QueryBody extends React.Component{
 
 
     <Rnd
+      id={this.props.id}
       className="content"
-      cancel="BoxTitleCloseBox"
+      cancel=".colloidalCallButton"
       dragHandleClassName="headerTitle"
       minWidth={340}
       minHeight={470}
       size={{ width: this.state.width,  height: this.state.height }}
       position={{ x: this.state.x, y: this.state.y }}
+      onClick={() => {
+        const divs = document.querySelectorAll(".content");
+        divs.forEach(div => { 
+          div.style.zIndex-=1
+        })
+        document.getElementById(this.props.id).style.zIndex=0
+      }}
+
       onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
       onResizeStop={(e, direction, ref, delta, position) => {
         this.setState({
@@ -265,7 +289,7 @@ export default class QueryBody extends React.Component{
   </Rnd>
 
   <div id="callBoxDiv" style={{visibility: this.state.isCalling}}>
-    <CallBox isCalling={this.state.isCalling} handleCallChange={this.handleCallChange}/>
+    <CallBox id={"queryBox"} isCalling={this.state.isCalling} handleCallChange={this.handleCallChange}/>
   </div>  
   </>
   }

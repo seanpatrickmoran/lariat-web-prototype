@@ -179,6 +179,7 @@ export default class Pasteboard extends React.Component{
 
 
     <Rnd
+	    id={this.props.id}
       className="content"
       cancel="BoxTitleCloseBox"
       dragHandleClassName="headerTitle"
@@ -187,6 +188,13 @@ export default class Pasteboard extends React.Component{
       size={{ width: this.state.width,  height: this.state.height }}
       position={{ x: this.state.x, y: this.state.y }}
       onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
+			onClick={() => {
+				const divs = document.querySelectorAll(".content");
+				divs.forEach(div => { 
+          div.style.zIndex-=1
+        })
+        document.getElementById(this.props.id).style.zIndex=0
+      }}
       onResizeStop={(e, direction, ref, delta, position) => {
         this.setState({
           width: ref.style.width,

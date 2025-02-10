@@ -11,7 +11,7 @@ const BUCKET_NUMBER = 64;
 const MARGIN = { top: 30, right: 30, bottom: 40, left: 50 };
 
 
-export function Histogram({histProps}){
+export function Histogram({id,histProps}){
 
   const axesRef = useRef(null);
   const boundsWidth = histProps.width - MARGIN.right - MARGIN.left;
@@ -73,29 +73,8 @@ export function Histogram({histProps}){
 
   return (
     <>
-{/*    <Draggable
-    handle="#histogram"
-    position={null}
-    scale={1}
-    // onStart={this.handleStart}
-    // onDrag={this.handleDrag}
-    // onStop={this.handleStop}>
-    >*/}
-        {/*<div id="histogram" className="content">*/}
-{/*          <div className="headerTitle">
-            <div className="titleLines"></div>
-            <div className="titleLines"></div>
-            <div className="titleLines"></div>
-            <div className="titleLines"></div>
-            <div className="titleLines"></div>
-            <div className="titleLines"></div>
-            <div id="histogramBoardTitleHandle" className="callTitle">Histogram</div>
-            <div id="histogramBoardTitleCloseBox" className="control-box close-box">
-            <a id="histogramBoardTitleCloseInner" className="control-box-inner"></a>
-            </div>
-          </div>*/}
-
     <Rnd
+      id={id}
       className="content"
       cancel="BoxTitleCloseBox"
       dragHandleClassName="headerTitle"
@@ -105,18 +84,19 @@ export function Histogram({histProps}){
       width: 400,
       height: 360}}
 
+
+      onClick={() => {
+        const divs = document.querySelectorAll(".content");
+        divs.forEach(div => { 
+          div.style.zIndex-=1
+        })
+        console.log(histProps)
+        document.getElementById(id).style.zIndex=0
+      }}
       minWidth={400}
       minHeight={300}
       size={{ width: histProps.width,  height: histProps.height }}
-      // position={{ x: this.state.x, y: this.state.y }}
-      // onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
-      // onResizeStop={(e, direction, ref, delta, position) => {
-      //   this.setState({
-      //     width: ref.style.width,
-      //     height: ref.style.height,
-      //     ...position,
-      //   });
-      // }}
+
     >  
         <div id="BoxTitle" className="headerTitle">
           <div className="topTitleLine"></div>
@@ -150,10 +130,6 @@ export function Histogram({histProps}){
     
               </div>
             </div>
-
-        {/*</div>*/}
-
-    {/*</Draggable>*/}
           </Rnd>
 
     </>

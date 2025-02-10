@@ -298,15 +298,8 @@ copyToPasteboard = (event) => {
     render (){
   return <>
 
-{/*  <Draggable
-  handle="#inspectTitle"
-  position={null}
-  scale={1}
-  onStart={this.handleStart}
-  onDrag={this.handleDrag}
-  onStop={this.handleStop}>*/}
-
     <Rnd
+      id={"inspectBody"}
       className="content"
       cancel="BoxTitleCloseBox"
       dragHandleClassName="headerTitle"
@@ -315,6 +308,15 @@ copyToPasteboard = (event) => {
       size={{ width: this.state.width,  height: this.state.height }}
       position={{ x: this.state.x, y: this.state.y }}
       onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
+
+      onClick={() => {
+        const divs = document.querySelectorAll(".content");
+        divs.forEach(div => { 
+          div.style.zIndex-=1
+        })
+        document.getElementById(this.props.id).style.zIndex=0
+      }}
+
       onResizeStop={(e, direction, ref, delta, position) => {
         this.setState({
           width: ref.style.width,
@@ -323,20 +325,6 @@ copyToPasteboard = (event) => {
         });
       }}
     >  
-    {/*    <div id="inspectTitle" className="headerTitle">
-      <div className="titleLines"></div>
-      <div className="titleLines"></div>
-      <div className="titleLines"></div>
-      <div className="titleLines"></div>
-      <div className="titleLines"></div>
-      <div className="titleLines"></div>
-      <div id="inspectBoardTitleHandle" className="callTitle">Inspect</div>
-      <div id="inspectBoardTitleCloseBox" className="control-box close-box" onClick={this.closeWindow} >
-      <a id="inspectBoardTitleCloseInner" className="control-box-inner"></a>
-      </div>
-    </div>*/}
-
-
 
   <div id="BoxTitle" className="headerTitle">
     <div className="topTitleLine"></div>

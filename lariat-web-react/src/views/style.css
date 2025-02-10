@@ -130,6 +130,9 @@ button {
   -moz-osx-font-smoothing: grayscale;
 }
 
+a {
+    color: #c15260;
+}
 
 .blink {
     color: #c15260;
@@ -335,9 +338,9 @@ nav {
     background-color: #ddd;
   }
 
-  a{
+/*  a{
     color: #f5f6f7;
-  }
+  }*/
 
     div.headerTitle {
       display: flex;
@@ -449,7 +452,9 @@ nav {
   -moz-osx-font-smoothing: grayscale;
 }
 
-
+a {
+    color: #14998b;
+}
 
 .blink {
     color: #14998b;
@@ -598,6 +603,17 @@ progress { color: #14998b; }
       opacity: 100%;
     /*  box-shadow: 0 0 10px black;*/
     }
+
+
+
+
+    .content {
+        font-size: 14px;
+    }
+
+
+
+
 
     /*div .control-box {
 

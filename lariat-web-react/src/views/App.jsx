@@ -65,7 +65,7 @@ export function App() {
                             <>
                                 <Head />
                                 <QueryPage pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
-                                <PasteBoard pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
+                                <PasteBoard id={"pasteboardBody"} pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
                             </>
                         }
                     />
@@ -76,7 +76,7 @@ export function App() {
                             <>
                                 <Head />
                                 <InspectPage pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
-                                <PasteBoard pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
+                                <PasteBoard id={"pasteboardBody"} pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
                         </>
                     }
                     />      
@@ -87,7 +87,7 @@ export function App() {
                             <>
                                 <Head />
                                 <PairsPage pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
-                                <PasteBoard pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
+                                <PasteBoard id={"pasteboardBody"} pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
                         </>
                     }
                     />      

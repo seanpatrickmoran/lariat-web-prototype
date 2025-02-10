@@ -11,19 +11,12 @@ import useLocalStorage from './../CustomHooks/UseLocalStorage.js';
 export default function QueryView({pasteBoardProps,pasteBoardPropsUpdate}) {
 
     const [tableMemory, setTableMemory] = useLocalStorage("tableMemory");
-    // const [pasteBoardPropsChild, setPasteBoardPropsChild] = useState(pasteBoardProps);
-    // console.log(tableMemory);
-
-    // for (var key in tableMemory) {
-    //   console.log(key);
-    //   console.log(tableMemory[key]);
-    // }
-    // tableMemory.keys().forEach((element) => console.log(tableMemory.get(element)));
 
   return (
     <>
 
-      <QueryBody    storetable={tableMemory} 
+      <QueryBody    id={"QueryBody"}
+                    storetable={tableMemory} 
                     pasteBoardProps={pasteBoardProps} 
                     pasteBoardPropsUpdate={pasteBoardPropsUpdate}/>
     </>

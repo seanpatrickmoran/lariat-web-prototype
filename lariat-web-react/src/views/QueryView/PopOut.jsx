@@ -12,7 +12,7 @@ export class PopOut extends React.Component{
 		super(props);
 		this.closeWindow = this.closeWindow.bind(this);
     this.state = {
-	    width: 480,
+	    width: 458,
 	    height: 482,
 	    x: window.innerWidth/2-240+50,
 	    y: window.innerHeight/2-360+50,
@@ -38,10 +38,6 @@ export class PopOut extends React.Component{
 	    this.storeImage = inspectEntries[0].rgbaRawArray;
 
 	    const canvas = document.getElementById("canvas-inspect"+this.props.id);
-	    // const vMax = document.getElementById("filter1");
-	    // vMax.value = inspectEntries[0].viewing_vmax;
-	    // const names = document.getElementById("fields-payload");
-	    // names.innerHTML = `${inspectEntries[0].dataset}<br/>${inspectEntries[0].name}<br/>${inspectEntries[0].coordinates}`
 
 	    canvas.width = 455;
 	    canvas.height = 455;
@@ -52,15 +48,6 @@ export class PopOut extends React.Component{
 	    ctx.putImageData(imageData, 0, 0);
 
 	});
-
-
-
-
-
-
-
-
-
   }
 
 
@@ -86,14 +73,19 @@ export class PopOut extends React.Component{
 			dragHandleClassName="headerTitle"
 			minWidth={455}
 			minHeight={455}
-		  size={{ width: this.state.width,  height: this.state.height }}
-		  position={{ x: this.state.x, y: this.state.y }}
-		  onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
-		  onResizeStop={(e, direction, ref, delta, position) => {
+			style={{"zIndex":2}}
+			size={{ width: this.state.width,  height: this.state.height }}
+			position={{ x: this.state.x, y: this.state.y }}
+			onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
+			onClick={() => {
+				const divs = document.querySelectorAll(".content");
+				divs.forEach(div => { 
+					div.style.zIndex-=1
+				})
+				document.getElementById(this.props.id).style.zIndex=1
+			}}
 
-				// document.getElementById("talk").style.maxHeight = 
-					// (parseInt(ref.style.height.split("px")[0])-26).toString()+"px";
-				// document.querySelector(".textField").style.width = Math.round(.98*ref.style.width.split("px")[0]-20).toString()+"px";
+		  onResizeStop={(e, direction, ref, delta, position) => {
 
 
 			    this.setState({

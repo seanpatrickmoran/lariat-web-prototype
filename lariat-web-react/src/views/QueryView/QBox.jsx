@@ -307,7 +307,7 @@ export class CallBox extends React.Component{
 
 
 		<Rnd
-			id="callBox"
+			id={this.props.id}
 			className="content"
 			cancel="callBoxTitleCloseBox"
 			dragHandleClassName="headerTitle"
@@ -316,6 +316,14 @@ export class CallBox extends React.Component{
 		  size={{ width: this.state.width,  height: this.state.height }}
 		  position={{ x: this.state.x, y: this.state.y }}
 		  onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
+			onClick={() => {
+				const divs = document.querySelectorAll(".content");
+				divs.forEach(div => { 
+          div.style.zIndex-=2
+        })
+        document.getElementById(this.props.id).style.zIndex=0
+      }}
+
 		  onResizeStop={(e, direction, ref, delta, position) => {
 
 				document.getElementById("talk").style.maxHeight = 
@@ -347,7 +355,7 @@ export class CallBox extends React.Component{
 	    <div id="talk">
 	    </div>
 	    	{/*<pre id="talk">{this.state.written}</pre>	*/}
-	    	{/*<pre id="talk" style={{maxHeight: this.state.height-26-19}}>{this.state.written}</pre>*/}
+	    	{/*<pre id="talk" style={{maxHeight: this.state.height-2sea6-19}}>{this.state.written}</pre>*/}
 	    <div>
 	    	{/*<p className="blink">~@</p>*/}
 	    <section>

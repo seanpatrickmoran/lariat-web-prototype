@@ -18,13 +18,15 @@ export default function InspectView({pasteBoardProps,pasteBoardPropsUpdate}) {
 
   return (
     <>
-      <InspectBody  histProps={histogramProperties} 
+      <InspectBody  id={"inspectBody"}
+                    histProps={histogramProperties} 
                     OnHistChange={sethistogramProperties} 
                     storetable={tableMemory} 
                     pasteBoardProps={pasteBoardProps} 
                     pasteBoardPropsUpdate={pasteBoardPropsUpdate}/>
 
-      <Histogram    histProps={histogramProperties}/>
+      <Histogram    id={"histogramView"}
+                    histProps={histogramProperties}/>
     </>
   )
 }
