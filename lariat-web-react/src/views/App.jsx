@@ -13,6 +13,8 @@ import './PasteboardView/popBoard.css';
 import MainPage from './MainView/MainPage.jsx'
 import QueryPage from './QueryView/QueryView.jsx'
 import InspectPage from './InspectView/InspectView.jsx'
+// import { CallBox } from './CallBox/QBox.jsx'
+
 import PairsPage from './PairsView/PairsView.jsx'
 
 import Error404 from './../lostClient/404.jsx'
@@ -40,7 +42,8 @@ export function App() {
 
 
     const [pasteBoardProps, setPasteBoardProps] = useLocalStorage("pasteBoardProps", {visibility: "hidden", contents: ""});
-    const storeEntries = {};
+    // const [queryProps, setQueryProps] = useState({"isVisible":"visible"})
+    // const storeEntries = {};
 
 
     return (
@@ -54,6 +57,7 @@ export function App() {
                             <>
                                 <Head />
                                 <MainPage />
+                                {/*<CallBox id={"queryBox"} isCalling={queryProps.isVisible} handleCallChange={setQueryProps}/>*/}
                                 {/*<PasteBoard pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>*/}
                             </>
                         }
