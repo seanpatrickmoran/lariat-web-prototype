@@ -34,8 +34,11 @@ export class CallBox extends React.Component{
 		if(this.state.popViews!=prevState.popViews){
 			this.setState({popViews: this.state.popViews})
 		}
-	}
 
+    //   if (this.props.pasteBoardProps !== prevProps.pasteBoardProps){
+      	
+  	// }
+	}	
 
 	componentDidMount() {
 		document.querySelector("#talk").style.maxHeight = "300px"
@@ -89,6 +92,7 @@ export class CallBox extends React.Component{
 
     fetchPromise.then(response => {
 			  if (response.ok) {
+			  	console.log('yo')
 			    return response.json();
 			  }
 
@@ -109,7 +113,11 @@ export class CallBox extends React.Component{
 								ahref.value = `http://localhost:8080/api/getImageSingleton?name=${[...x].map((char) => this.fetchMap.get(char) || char).join("")}`
 								ahref.href = "#";
 
+								console.log('here')
+
 								ahref.onclick = (()=>{
+									console.log('there')
+									console.log(x)
 									if(document.querySelector(`[id*='${x}']`)==null){
 									this.state.popViews.push((x));
 									this.popViewMap.set(x, ahref.value)
@@ -263,12 +271,32 @@ export class CallBox extends React.Component{
 			case(":help"): 
 				this.setState({term: ""});
 				const responseNode = document.createElement('p');
-				responseNode.innerHTML = "@>" + `Here are some commands you can execute:\n    :search?"xyz" search features based on name "xyz"\n    :clear ––clears the terminal\n    :purge ––removes terminal history\n    :reset ––wipes messages from my memory\n    :help ––displays help\n    :quit ––closes this window`;
+				responseNode.innerHTML = "@>" + 
+`
+  :search?"xyz" search images similar to "xyz"  
+  :closeall close all pop-out windows.  
+  --------------------------------------------
+  :clear ––clears the terminal
+  :purge ––removes terminal history  
+  :reset ––wipes messages from my memory    
+  :help ––displays help   
+  :quit ––closes this window`;
 				selectNode.append(responseNode);
 				this.scrollToBottom();
 				break;
 
-			case(":quit"): this.closeWindow();
+
+			case(":closeall"): 
+				this.setState({term: ""});
+				this.state.popViews.map((view) =>
+					{if(document.getElementById(`${view}`)!=null){
+						document.getElementById(`${view}`).remove();
+					}
+				});
+				break;
+
+			case(":quit"): 
+				this.closeWindow();
 				break;
 
 			default: 

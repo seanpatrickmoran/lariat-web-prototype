@@ -11,9 +11,10 @@ export class PopOut extends React.Component{
 	constructor(props){
 		super(props);
 		this.closeWindow = this.closeWindow.bind(this);
+		this.copyToPasteboard = this.copyToPasteboard.bind(this)
     this.state = {
 	    width: 458,
-	    height: 482,
+	    height: 482+26,
 	    x: window.innerWidth/2-240+50,
 	    y: window.innerHeight/2-360+50,
 		};
@@ -50,6 +51,18 @@ export class PopOut extends React.Component{
 	});
   }
 
+
+copyToPasteboard = (event) => {
+    var fieldSelect = document.getElementById(this.props.id);
+    console.log(fieldSelect.id)
+    let oldEntry = this.props.pasteBoardProps.contents;
+    this.props.pasteBoardPropsUpdate({visibility:"visible", contents: oldEntry+","+newEntry});
+
+    // const optionsSelect = fieldSelect.selectedOptions;
+    // let newEntry = optionsSelect[0].value;
+    // let oldEntry = this.props.pasteBoardProps.contents;
+    // this.props.pasteBoardPropsUpdate({visibility:"visible", contents: oldEntry+","+newEntry});
+  };
 
 	componentDidMount() {
 	console.log(this.props.image)
@@ -110,7 +123,10 @@ export class PopOut extends React.Component{
 	    </div >
 	    <div id="image" className="row-container">
             <canvas id={"canvas-inspect"+this.props.id} width="455" height="455"></canvas>
-         </div>	    
+       </div>	    
+      <div className="row-container">
+				<button className="button" id={`${this.props.id}++copyToPasteBoard`} onClick={this.copyToPasteboard}>Copy To Pasteboard</button>
+      </div>
 	  </Rnd>
 	  </>
   }

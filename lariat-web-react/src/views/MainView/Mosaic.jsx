@@ -28,6 +28,7 @@ export default class Moasic extends React.Component{
       return  <>
 
     <Rnd
+      id={this.props.id}
       className="content"
       cancel="BoxTitleCloseBox"
       dragHandleClassName="headerTitle"
@@ -37,8 +38,15 @@ export default class Moasic extends React.Component{
       maxHeight={276}
       size={{ width: this.state.width,  height: this.state.height }}
       position={{ x: this.state.x, y: this.state.y }}
-      onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
-    >
+      onClick={() => {
+        const divs = document.querySelectorAll(".content");
+        divs.forEach(div => { 
+          div.style.zIndex-=2
+        })
+        document.getElementById(this.props.id).style.zIndex=0
+      }}
+
+      onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}>
 
       <div id="BoxTitle" className="headerTitle">
         <div className="topTitleLine"></div>
@@ -54,12 +62,12 @@ export default class Moasic extends React.Component{
       </div>
 
     <div className="icon"><img src={`./src/img/${this.state.favicon}`} height={75} /></div>
-    <ul>
-      <li>Running Lariat</li><br/>
-      <li>Made by Sean Moran</li><br/>
-      <li>MIT License, Lariat 2024, University of Michigan. All rights reserved.</li>
-    </ul>
-
+    <div>
+      <p style={{margin:24, marginBottom:0}}>Running Lariat</p>
+      <p style={{margin:24, marginTop: 2, marginBottom:0}}>Made by Sean Moran</p>
+      <p style={{margin:24, marginTop: 2, marginBottom:0}}><a href="https://jieliu6.github.io/">Jie Liu Labs</a></p>
+      <p style={{margin:24, marginTop: 2, marginBottom:12,fontSize: 10}}>Apache License 2024, Sean Moran, Jie Liu, University of Michigan. All rights reserved.</p>
+    </div>
 
     </Rnd>
     </>

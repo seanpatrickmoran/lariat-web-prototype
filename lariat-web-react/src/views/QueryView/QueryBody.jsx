@@ -3,7 +3,7 @@ import { Rnd } from "react-rnd";
 import React, {useEffect,useState} from 'react';
 // import { fetchTest } from './QueryView.jsx';
 import useLocalStorage from './../CustomHooks/UseLocalStorage.js'
-import { CallBox } from "./QBox.jsx";
+// import { CallBox } from "./QBox.jsx";
 
 export default class QueryBody extends React.Component{
          constructor(props){
@@ -289,7 +289,8 @@ export default class QueryBody extends React.Component{
   </Rnd>
 
   <div id="callBoxDiv" style={{visibility: this.state.isCalling}}>
-    <CallBox id={"queryBox"} isCalling={this.state.isCalling} handleCallChange={this.handleCallChange}/>
+    <p>hehe</p>
+    {/*<CallBox id={"queryBox"} isCalling={this.state.isCalling} handleCallChange={this.handleCallChange}/>*/}
   </div>  
   </>
   }

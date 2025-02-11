@@ -1,8 +1,10 @@
 import Head from './Head.jsx'
 import MainContent from './MainContent.jsx'
 import PasteBoard from '../PasteboardView/PasteboardView.jsx'
-import '../PasteboardView/popBoard.css';
+import Mosaic from './Mosaic.jsx'
 
+
+import '../PasteboardView/popBoard.css';
 import "../style.css";
 import "./main.css";
 import "../../../src/img/lariattmp.png"
@@ -18,7 +20,6 @@ import { useState, useEffect } from 'react';
 
 
 export default function MainPage() {
-
   // const [tableMemory, setTableMemory] = useLocalStorage("tableMemory");
   // useEffect(() => {
   //   fetch(`http://localhost:8080/api/readTableMemory`, {
@@ -40,6 +41,7 @@ export default function MainPage() {
   return (
     <>
       <MainContent />
+      <Mosaic id={"mosaic"}/>
     </>
   )
 }

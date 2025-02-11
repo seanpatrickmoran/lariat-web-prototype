@@ -119,9 +119,10 @@ button {
 
   color-scheme: light;
   color: rgba(0, 0, 0, 0.87);
-/*  background-color: #FFFFFF;*/
-/*    background-image: url("../img/patterns/12821.png");*/
-    background-image: url("../img/patterns/stardust.png");
+  background-color: rgba(220, 220, 220, 0.87);
+/*  background-image: url("../img/patterns/dirty-old-black-shirt.png");*/
+  background-image: url("../img/patterns/redox-02.png");
+/*  background-image: url("../img/patterns/stardust.png");*/
 
 
   font-synthesis: none;

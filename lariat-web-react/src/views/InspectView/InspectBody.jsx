@@ -76,7 +76,10 @@ componentDidMount(){
                     const vMax = document.getElementById("filter1");
                     vMax.value = inspectEntries[0].viewing_vmax;
                     const names = document.getElementById("fields-payload");
-                    names.innerHTML = `${inspectEntries[0].dataset}<br/>${inspectEntries[0].name}<br/>${inspectEntries[0].coordinates}`
+                    names.innerHTML = `${inspectEntries[0].dataset}<br/>${inspectEntries[0].name}<br/>`
+                    const coordsArray = inspectEntries[0].coordinates.split(",");
+                    names.innerHTML += coordsArray[0] +": " + coordsArray[1] +":"+ coordsArray[2]+ "<br/>";
+                    names.innerHTML += coordsArray[3] +": " + coordsArray[4] +":"+ coordsArray[5];
 
                     canvas.width = 455;
                     canvas.height = 455;
@@ -152,8 +155,10 @@ componentDidMount(){
                     const names = document.getElementById("fields-payload");
                     const vMax = document.getElementById("filter1");
                     vMax.value = inspectEntries[0].viewing_vmax;
-                    names.innerHTML = `${inspectEntries[0].dataset}<br/>${inspectEntries[0].name}<br/>${inspectEntries[0].coordinates}`
-
+                    names.innerHTML = `${inspectEntries[0].dataset}<br/>${inspectEntries[0].name}<br/>`;
+                    const coordsArray = inspectEntries[0].coordinates.split(",");
+                    names.innerHTML += coordsArray[0] +": " + coordsArray[1] +":"+ coordsArray[2]+ "<br/>";
+                    names.innerHTML += coordsArray[3] +": " + coordsArray[4] +":"+ coordsArray[5];
                     const canvas = document.getElementById("canvas-inspect");
                     canvas.width = 455;
                     canvas.height = 455;
@@ -222,7 +227,10 @@ componentDidMount(){
               vMin.value = 0;
               vMax.value = entries[0].viewing_vmax;
 
-              names.innerHTML = `${entries[0].dataset}<br/>${entries[0].name}<br/>${entries[0].coordinates}`
+              names.innerHTML = `${entries[0].dataset}<br/>${entries[0].name}<br/>`
+              const coordsArray = entries[0].coordinates.split(",");
+              names.innerHTML += coordsArray[0] +": " + coordsArray[1] +":"+ coordsArray[2]+ "<br/>";
+              names.innerHTML += coordsArray[3] +": " + coordsArray[4] +":"+ coordsArray[5];
 
               canvas.width = 455;
               canvas.height = 455;
@@ -312,7 +320,7 @@ copyToPasteboard = (event) => {
       onClick={() => {
         const divs = document.querySelectorAll(".content");
         divs.forEach(div => { 
-          div.style.zIndex-=1
+          div.style.zIndex-=2
         })
         document.getElementById(this.props.id).style.zIndex=0
       }}
@@ -416,28 +424,28 @@ copyToPasteboard = (event) => {
           </div>
         </div>
 
-         <div className="row-container">
+         <div className="row-container" height="455" width="455">
             <canvas id="canvas-inspect" width="455" height="455"></canvas>
          </div>
 
 
-         <div className="row-container">
+         <div id="imageBtnRow" className="row-container">
             {/*<div id="query-left-legend" className="column-container">*/}
                <button type="button" onClick={this.handleColorSwap}>Color</button>
             {/*</div>         */}
-            <div id="query-left-legend" className="column-container">
+            <div id="query-left-legend" className="column-container imageRow">
                <p align="right">pixelMin</p>
             </div>
-            <div id="pMin" className="column-container">
+            <div id="pMin" className="column-container  imageRow">
               <input type="text" id="filter0" defaultValue="0" name="filter0" onChange={this.inputHandleChange} />
             </div>
-            <div id="query-right-legend" className="column-container">
+            <div id="query-right-legend" className="column-container imageRow">
                <p align="right">pixelMax</p>
             </div>
-            <div id="pMax" className="column-container">
+            <div id="pMax" className="column-container imageRow">
               <input type="text" id="filter1" defaultValue="200" name="filter1" onChange={this.inputHandleChange} />
             </div>
-            <div className="column-container">
+            <div className="column-container imageRow">
                <button type="button" id="resetfiltersBtn">Reset Max</button>
             </div>
          </div>

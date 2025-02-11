@@ -88,7 +88,7 @@ export function Histogram({id,histProps}){
       onClick={() => {
         const divs = document.querySelectorAll(".content");
         divs.forEach(div => { 
-          div.style.zIndex-=1
+          div.style.zIndex-=2
         })
         console.log(histProps)
         document.getElementById(id).style.zIndex=0

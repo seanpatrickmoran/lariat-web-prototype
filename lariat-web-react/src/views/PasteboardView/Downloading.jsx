@@ -292,6 +292,7 @@ export default class Downloading extends React.Component{
 
     return  <>
     <Rnd
+      id={this.props.id}
       className="content"
       cancel="BoxTitleCloseBox"
       dragHandleClassName="headerTitle"
@@ -303,9 +304,9 @@ export default class Downloading extends React.Component{
       onClick={() => {
         const divs = document.querySelectorAll(".content");
         divs.forEach(div => { 
-          div.style.zIndex-=1
+          div.style.zIndex-=2
         })
-        document.getElementById(this.props.id).style.zIndex+=2
+        document.getElementById(this.props.id).style.zIndex=2
       }}      
     >  
         {/*<div id="downloadContent" className="content">*/}

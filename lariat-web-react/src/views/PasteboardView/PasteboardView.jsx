@@ -191,7 +191,7 @@ export default class Pasteboard extends React.Component{
 			onClick={() => {
 				const divs = document.querySelectorAll(".content");
 				divs.forEach(div => { 
-          div.style.zIndex-=1
+          div.style.zIndex-=2
         })
         document.getElementById(this.props.id).style.zIndex=0
       }}
@@ -235,7 +235,7 @@ export default class Pasteboard extends React.Component{
 
 
 			  <div id="callBoxDiv" style={{visibility: this.state.isDownloading}}>
-					<Downloading isDownloading={this.state.isDownloading} handleIsDownloadingChange={this.handleIsDownloadingChange} contentSet={this.state.contentSet}/>
+					<Downloading id={"downloadingWindow"} isDownloading={this.state.isDownloading} handleIsDownloadingChange={this.handleIsDownloadingChange} contentSet={this.state.contentSet}/>
 			  </div>  
 
 

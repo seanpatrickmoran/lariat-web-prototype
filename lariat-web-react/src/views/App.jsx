@@ -13,7 +13,7 @@ import './PasteboardView/popBoard.css';
 import MainPage from './MainView/MainPage.jsx'
 import QueryPage from './QueryView/QueryView.jsx'
 import InspectPage from './InspectView/InspectView.jsx'
-// import { CallBox } from './CallBox/QBox.jsx'
+import { CallBox } from './CallBox/QBox.jsx'
 
 import PairsPage from './PairsView/PairsView.jsx'
 
@@ -42,6 +42,7 @@ export function App() {
 
 
     const [pasteBoardProps, setPasteBoardProps] = useLocalStorage("pasteBoardProps", {visibility: "hidden", contents: ""});
+    const [callBoxProps, setCallBoxProps] = useLocalStorage("callBoxProps", {visibility: "hidden", contents: ""});
     // const [queryProps, setQueryProps] = useState({"isVisible":"visible"})
     // const storeEntries = {};
 
@@ -59,6 +60,7 @@ export function App() {
                                 <MainPage />
                                 {/*<CallBox id={"queryBox"} isCalling={queryProps.isVisible} handleCallChange={setQueryProps}/>*/}
                                 {/*<PasteBoard pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>*/}
+                                {/*<CallBox id={"queryBox"} callBoxProps={callBoxProps} setCallBoxProps={setCallBoxProps}/>*/}
                             </>
                         }
                     />
@@ -70,6 +72,8 @@ export function App() {
                                 <Head />
                                 <QueryPage pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
                                 <PasteBoard id={"pasteboardBody"} pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
+                                {/*<CallBox id={"queryBox"} isCalling={queryProps.isVisible} handleCallChange={setQueryProps}/>*/}
+                                <CallBox id={"queryBox"} callBoxProps={callBoxProps} setCallBoxProps={setCallBoxProps}/>
                             </>
                         }
                     />
@@ -81,6 +85,7 @@ export function App() {
                                 <Head />
                                 <InspectPage pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
                                 <PasteBoard id={"pasteboardBody"} pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
+                                <CallBox id={"queryBox"} callBoxProps={callBoxProps} setCallBoxProps={setCallBoxProps}/>
                         </>
                     }
                     />      
@@ -92,6 +97,7 @@ export function App() {
                                 <Head />
                                 <PairsPage pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
                                 <PasteBoard id={"pasteboardBody"} pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
+                                <CallBox id={"queryBox"} callBoxProps={callBoxProps} setCallBoxProps={setCallBoxProps}/>
                         </>
                     }
                     />      

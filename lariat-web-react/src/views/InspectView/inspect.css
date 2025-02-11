@@ -26,7 +26,12 @@
 /*    padding-left: 3px;*/
   }
 
-
+div .imageRow{
+    margin: 2px;
+/*    margin-left: 0px;*/
+    margin-left: 2px;
+    margin-right: 2px;
+}
 
 
 #names-field{
@@ -43,13 +48,13 @@
 }
 
 #filter0{
-  margin-top: 10px; 
-  width: 65px;
+/*  margin-top: 10px; */
+  width: 55px;
 }
 
 #filter1{
-  margin-top: 10px; 
-  width: 65px;
+/*  margin-top: 10px; */
+  width: 55px;
 }
 
 
@@ -58,11 +63,11 @@
 }
 
 #resetfiltersBtn{
-  margin-top: 10px;
+/*  margin-top: 10px;*/
 }
 
 #canvas-inspect{
-  margin-top: -3px;
+/*  margin-top: -3px;*/
 }
 
 
@@ -72,6 +77,7 @@ ul {
 
 button {
   margin: 1px;
+  height: 22.5px;
 }
 
 .container {
@@ -123,11 +129,12 @@ button {
 
 
 #query-left-legend {
-  margin-right: 4px;
+  margin-left: 12px;
+  margin-right: 6px;
 }
 #query-right-legend {
   margin-left: 4px;
-  margin-right: 5px;
+  margin-right: 6px;
 }
 
 #sql-query-payload{
@@ -137,7 +144,9 @@ button {
     background-image: #ddd;
 }
 
-/*-webkit-user-select: text;*/
+#imageBtnRow {
+  margin-top: 10px;
+}
 
 .title:before{
   width: 45%;
