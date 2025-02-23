@@ -273,17 +273,6 @@ export default class Downloading extends React.Component{
         pasteBoardSelectField.remove(index);
       }
     }
-  //   const _contentSet = new Set();
-  //   var _contents = "";
-  //   for (const child of pasteBoardSelectField.children) {
-  //     _contentSet.add(child.value);
-  //     _contents+=","+child.value;
-  //   }
-
-  //   this.setState({visibility: "visible", contents: _contents});
-  //   this.setState({contentSet: _contentSet})
-  //   this.props.pasteBoardPropsUpdate({visibility: this.state.visibility, contents: _contents});
-
   }
 
 

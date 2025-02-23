@@ -6,27 +6,27 @@ import useLocalStorage from './../CustomHooks/UseLocalStorage.js'
 // import { CallBox } from "./QBox.jsx";
 
 export default class QueryBody extends React.Component{
-         constructor(props){
-            super(props);
-      this.state = {
+  constructor(props){
+    super(props);
+    this.state = {
       width: 480,
       height: 360,
       x: 10,
       y: 28,        
-        selectValue: '',
-        visibility: '',
-        contents: '',
-        isCalling: "hidden",
-                    };  // initial state value
-            this.resolutionOptions = null;
-            this.offSetQueries = null;
-            this.offset = 0;
-            // this.handleCallChange = this.handleCallChange.bind(this);
-            this.invokeCallBox = this.invokeCallBox.bind(this);
-           }
+      selectValue: '',
+      visibility: '',
+      contents: '',
+      isCalling: "hidden",
+      isQuerying: "hidden",
+      };
+    this.resolutionOptions = null;
+    this.offSetQueries = null;
+    this.offset = 0;
+    this.invokeCallBox = this.invokeCallBox.bind(this);
+    this.invokeQueryBox = this.invokeQueryBox.bind(this);
+  }
 
   componentDidUpdate(prevProps, prevState) {
-      // console.log(this.props.pasteBoardProps.contents === prevProps.pasteBoardProps.contents);
       if (this.props.pasteBoardProps.contents !== prevProps.pasteBoardProps.contents){
         this.setState({visibility: "visible", contents: this.props.pasteBoardProps.contents});
         this.props.pasteBoardPropsUpdate({visibility: this.state.visibility, contents: this.props.pasteBoardProps.contents});
@@ -89,91 +89,74 @@ export default class QueryBody extends React.Component{
 
 
 
-    handleIncrement = (event) => {
-      console.log('hey')
-      const storeHicPath = document.getElementById("dataset-field-select").value;
-      const storeResolution = document.getElementById("resolution-field-select").value;
-      const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset+200}&hic_path=${storeHicPath}&resolution=${storeResolution}`);
-      const node = document.getElementById("queryNames");
+  handleIncrement = (event) => {
+    console.log('hey')
+    const storeHicPath = document.getElementById("dataset-field-select").value;
+    const storeResolution = document.getElementById("resolution-field-select").value;
+    const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset+200}&hic_path=${storeHicPath}&resolution=${storeResolution}`);
+    const node = document.getElementById("queryNames");
 
-      fetchPromise.then(response => {
-              return response.json();
-                  }).then(entries => {
-              const queryNames = [...entries.map(elem => elem.name)];
-              if (queryNames.length!=0){
-                  this.offset += 200;
-                  const names = entries.map(elem => elem.name).join("<option />");
-                  node.innerHTML = "<option />" + names;
-                }
-              });
-    }
-
-
-    handleDecrement = (event) => {
-      const storeHicPath = document.getElementById("dataset-field-select").value;
-      const storeResolution = document.getElementById("resolution-field-select").value;
-      const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset-200}&hic_path=${storeHicPath}&resolution=${storeResolution}`);
-      const node = document.getElementById("queryNames");
-
-      fetchPromise.then(response => {
-              return response.json();
-                  }).then(entries => {
-              const queryNames = [...entries.map(elem => elem.name)];
-              if (queryNames.length!=0){
-                  this.offset -= 200;
-                  const names = entries.map(elem => elem.name).join("<option />");
-                  node.innerHTML = "<option />" + names;
-                }
-              });
-    }
-
-    copyToPasteboard = (event) => {
-        var fieldSelect = document.getElementById("queryNames");
-        const optionsSelect = fieldSelect.selectedOptions;
-        const dumpArr = new Array(optionsSelect.length);
-        for (var i = 0; i < optionsSelect.length; i++) {
-          // dumpArr[i] = JSON.parse(JSON.stringify(window.api.getNames(optionsSelect[i].value)))[0]
-            dumpArr[i] = optionsSelect[i].value;
-            console.log(optionsSelect[i].value)
-            // dumpArr[i] = window.api.getNames(optionsSelect[i].value)[0]
-            // console.log(window.api.getNames(optionsSelect[i].value))
-        }if (dumpArr.length === 0){
-            return
-        }
-        let entries = this.props.pasteBoardProps.contents;
-        dumpArr.forEach((elem) => {
-          entries += "," + elem;
-        });
-
-        // console.log(newEntry)
-        this.props.pasteBoardPropsUpdate({visibility:"visible", contents: entries});
-        // localStorage.setItem('pasteBoardProps', JSON.stringify({visibility:"visible", contents: entries}));
-
-        console.log(this.props.pasteBoardProps.contents)
-    };
+    fetchPromise.then(response => {
+            return response.json();
+                }).then(entries => {
+            const queryNames = [...entries.map(elem => elem.name)];
+            if (queryNames.length!=0){
+                this.offset += 200;
+                const names = entries.map(elem => elem.name).join("<option />");
+                node.innerHTML = "<option />" + names;
+              }
+            });
+  }
 
 
-    qvSelectAll = (event) => {
-      console.log("hello!")
-      const fieldSelect = document.getElementById("queryNames");
-      console.log(fieldSelect);
-      const length = fieldSelect.options.length;
-      for(var i = 0;i<length;i++){
-        fieldSelect.options[i].selected = "selected";
+  handleDecrement = (event) => {
+    const storeHicPath = document.getElementById("dataset-field-select").value;
+    const storeResolution = document.getElementById("resolution-field-select").value;
+    const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset-200}&hic_path=${storeHicPath}&resolution=${storeResolution}`);
+    const node = document.getElementById("queryNames");
+
+    fetchPromise.then(response => {
+            return response.json();
+                }).then(entries => {
+            const queryNames = [...entries.map(elem => elem.name)];
+            if (queryNames.length!=0){
+                this.offset -= 200;
+                const names = entries.map(elem => elem.name).join("<option />");
+                node.innerHTML = "<option />" + names;
+              }
+            });
+  }
+
+  copyToPasteboard = (event) => {
+      var fieldSelect = document.getElementById("queryNames");
+      const optionsSelect = fieldSelect.selectedOptions;
+      const dumpArr = new Array(optionsSelect.length);
+      for (var i = 0; i < optionsSelect.length; i++) {
+          dumpArr[i] = optionsSelect[i].value;
+          // console.log(optionsSelect[i].value)
+      }if (dumpArr.length === 0){
+          return
       }
-   }
- // var fieldSelect = document.getElementById("names");
-    // const optionsSelect = fieldSelect.selectedOptions;
-    // const dumpArr = new Array(optionsSelect.length);
-    // for (let i = 0; i < optionsSelect.length; i++) {
-    //   // dumpArr[i] = JSON.parse(JSON.stringify(window.api.getNames(optionsSelect[i].value)))[0]
-    //     dumpArr[i] = optionsSelect[i].value;
-    //     console.log(optionsSelect[i].value)
-    //     // dumpArr[i] = window.api.getNames(optionsSelect[i].value)[0]
-    //     // console.log(window.api.getNames(optionsSelect[i].value))
-    // }if (dumpArr.length === 0){
-    //     return
-    // }
+      let entries = this.props.pasteBoardProps.contents;
+      dumpArr.forEach((elem) => {
+        entries += "," + elem;
+      });
+
+      this.props.pasteBoardPropsUpdate({visibility:"visible", contents: entries});
+      console.log(this.props.pasteBoardProps.contents)
+  };
+
+
+  qvSelectAll = (event) => {
+    console.log("hello!")
+    const fieldSelect = document.getElementById("queryNames");
+    console.log(fieldSelect);
+    const length = fieldSelect.options.length;
+    for(var i = 0;i<length;i++){
+      fieldSelect.options[i].selected = "selected";
+    }
+  }
+
 
   invokeCallBox(){
     this.setState({isCalling : "visible"})
@@ -184,25 +167,23 @@ export default class QueryBody extends React.Component{
     })
 
     document.getElementById("queryBox").style.zIndex=1    
-
-    // divs.forEach(div => { 
-    //   console.log(div)
-    // })
-
   }
 
-  //   handleCallChange(){
-  //   if(this.state.isCalling=="hidden"){
-  //     this.setState({isCalling: "visible"})
-  //     this.props.setCallBoxProps({visibility: this.state.visibility})
-  //     // this.props.pasteBoardPropsUpdate({visibility: this.state.visibility,
-  //   } else{
-  //   this.setState({isCalling: "hidden"})
-  //   }  
-  // }
 
-	  render (){
-  return <>
+  invokeQueryBox(){
+    if(this.state.isQuerying=="hidden"){
+      this.setState({isQuerying: "visible"})
+      this.props.setSearchVisible("visible")
+    } else{
+    this.setState({isQuerying: "hidden"})
+    }
+    console.log(this.state.isQuerying)
+    // document.getElementById("queryBox").style.zIndex=1    
+  }
+
+
+  render (){
+    return <>
 
 
     <Rnd
@@ -286,12 +267,7 @@ export default class QueryBody extends React.Component{
     <div className="row-container offset-navigation">
       <span id="offsetPage"></span>
     </div>
-  {/*</div>*/}
   </Rnd>
-
-{/*  <div id="callBoxDiv" style={{visibility: this.state.isCalling}}>
-    <p>hehe</p>
-  </div>  */}
   </>
   }
 }

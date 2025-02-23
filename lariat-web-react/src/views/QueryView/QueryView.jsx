@@ -1,5 +1,6 @@
 import Head from '../MainView/Head.jsx';
 import QueryBody from './QueryBody.jsx'
+import IsQuerying from "./IsQuerying.jsx";
 import PasteBoard from '../PasteboardView/PasteboardView.jsx'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -11,7 +12,7 @@ import useLocalStorage from './../CustomHooks/UseLocalStorage.js';
 export default function QueryView({pasteBoardProps,pasteBoardPropsUpdate,callBoxProps,setCallBoxProps}) {
 
     const [tableMemory, setTableMemory] = useLocalStorage("tableMemory");
-    // const [tableMemory, setTableMemory] = useLocalStorage("tableMemory");
+    const [searchVisible, setSearchVisible] = useState("hidden");
 
   return (
     <>
@@ -21,7 +22,12 @@ export default function QueryView({pasteBoardProps,pasteBoardPropsUpdate,callBox
                     pasteBoardProps={pasteBoardProps} 
                     pasteBoardPropsUpdate={pasteBoardPropsUpdate}
                     callBoxProps={callBoxProps} 
-                    setCallBoxProps={setCallBoxProps}/>
+                    setCallBoxProps={setCallBoxProps}
+                    setSearchVisible={setSearchVisible}/>
+      <IsQuerying   id={"IsQuerying"}
+                    searchVisible={searchVisible}
+                    setSearchVisible={setSearchVisible}
+                    />
     </>
   )
 }
