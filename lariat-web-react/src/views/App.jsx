@@ -22,23 +22,58 @@ import Error404 from './../lostClient/404.jsx'
 
 import useLocalStorage from './CustomHooks/UseLocalStorage.js'
 
+import tableMem from './CustomHooks/021625_reduced_L+S.json'
+
 export function App() {
+
+    // const [tableMemory, setTableMemory] = useLocalStorage("tableMemory");
+    // useEffect(() => {
+    //     fetch(`http://localhost:8080/api/readTableMemory`, {
+    //       method: "GET"
+    //     })
+    //       .then((response) => response.json())
+    //       .then((data) => {
+    //         console.log(tableMemory)
+    //         setTableMemory(data);
+    //         localStorage.setItem('tableMemory', JSON.stringify(data));
+    //       })
+    //       .catch((error) => console.log(error));
+    // }, []);
+
+    // console.log(tableMemory);  
+
+
 
     const [tableMemory, setTableMemory] = useLocalStorage("tableMemory");
     useEffect(() => {
-        fetch(`http://localhost:8080/api/readTableMemory`, {
-          method: "GET"
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            console.log(tableMemory)
-            setTableMemory(data);
-            localStorage.setItem('tableMemory', JSON.stringify(data));
-          })
-          .catch((error) => console.log(error));
+
+        // const _tableMemory = new Map();
+        var _tableMemory = {};
+
+        for (let i = 0; i < tableMem.length; i++) {
+            const resolution = tableMem[i]["resolution"];
+            const toolName = tableMem[i]["tool-source"];
+            const _drawer = tableMem[i]["hic_path"]
+            // var _drawer = tableMem[i]["drawer-name"].split("_")[0].replace(`${toolName}/`,"")+".hic";
+            // _drawer = _drawer
+
+            if (!(_tableMemory.hasOwnProperty(_drawer))){
+                _tableMemory[_drawer] = {};
+                _tableMemory[_drawer][resolution] = [toolName]
+            }
+            else if(!(_tableMemory[_drawer].hasOwnProperty(resolution))){
+                _tableMemory[_drawer][resolution] = [toolName]
+            }
+            else if(!(_tableMemory[_drawer][resolution].includes(toolName))){
+                _tableMemory[_drawer][resolution].push(toolName);
+            }
+
+        } 
+      console.log(_tableMemory)
+      setTableMemory(_tableMemory);
+      localStorage.setItem('tableMemory', JSON.stringify(_tableMemory));
     }, []);
 
-    console.log(tableMemory);  
 
 
     const [pasteBoardProps, setPasteBoardProps] = useLocalStorage("pasteBoardProps", {visibility: "hidden", contents: ""});

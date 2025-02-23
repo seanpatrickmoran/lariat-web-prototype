@@ -26,9 +26,15 @@ export default class PairsBody extends React.Component{
             right: '',
           };
 
+          this.featureOption = {
+            left: '',
+            right: '',
+          }
+
           this.offSetQueries = null;
           this.offset = 0;
           this.pairsSelectAll=this.pairsSelectAll.bind(this);
+          this.handleResolutionChange=this.handleResolutionChange.bind(this);
         }
 
 
@@ -49,10 +55,10 @@ export default class PairsBody extends React.Component{
             })})
 
       const datasetHandle = Object.keys(this.props.storetable)[0];
-      this.resolutionOptions.left = this.props.storetable[datasetHandle].map((el) => {
+      this.resolutionOptions.left = Object.keys(this.props.storetable[datasetHandle]).map((el) => {
         return <option value={el} key={el}>{el}</option>
       });
-      this.resolutionOptions.right = this.props.storetable[datasetHandle].map((el) => {
+      this.resolutionOptions.right =  Object.keys(this.props.storetable[datasetHandle]).map((el) => {
         return <option value={el} key={el}>{el}</option>
       });
     }
@@ -73,12 +79,27 @@ export default class PairsBody extends React.Component{
     console.log(bubbleDownHandle);
     this.setState({selectValue: event.target.value});
     if (event.target.value != "dataset"){
-      this.resolutionOptions[bubbleDownHandle] = this.props.storetable[event.target.value].map((el) => {
+      this.resolutionOptions[bubbleDownHandle] = Object.keys(this.props.storetable[event.target.value]).map((el) => {
        return <option value={el} key={el}>{el}</option>
      });
 
       }
   };
+
+  handleResolutionChange = (event) => {
+    const bubbleDownHandle =  event.target.name.split("-")[1];
+    this.setState({selectValue: event.target.value});
+    const dataHandler = document.getElementById(`dataset-${bubbleDownHandle}`).value
+    const resolutionHandler = document.getElementById(`resolution-${bubbleDownHandle}`).value
+    console.log(event)
+    console.log(dataHandler, resolutionHandler)
+
+    if (event.target.value != "Resolution"){
+      this.featureOption[bubbleDownHandle] = this.props.storetable[dataHandler][resolutionHandler].map((el) => <option value={el} key={el}>{el}</option>);
+    }
+    // this.featureOptions = this.props.storetable[Object.keys(this.props.storetable)[0]][Object.keys(this.props.storetable[Object.keys(this.props.storetable)[0]])[0]].map((el) => <option value={el} key={el}>{el}</option>);
+    // this.featureOptions = this.props.storetable[storeHicPath][event.target.value].map((el) => <option value={el} key={el}>{el}</option>);
+  }
 
 
 
@@ -197,11 +218,20 @@ export default class PairsBody extends React.Component{
               </select>
           </div>
           <div className="row-container">
-            <select className="row-selection" name="resolution-left" id="resolution-left">
+            <select className="row-selection" name="resolution-left" id="resolution-left" onChange={this.handleResolutionChange}>
               <option value="resolution">Resolution</option>
               {this.resolutionOptions.left}
             </select>
           </div>
+
+      <div className="row-container">
+        <select className="row-selection" name="tool-left" id="tool-left">
+          
+          <option value="tool">All</option>
+          {this.featureOption.left}
+        </select>
+      </div>
+
       </div>
 
     <div className="row-container">
@@ -214,12 +244,21 @@ export default class PairsBody extends React.Component{
         </select>
       </div>
       <div className="row-container">
-        <select className="row-selection" name="resolution-right" id="resolution-right">
+        <select className="row-selection" name="resolution-right" id="resolution-right" onChange={this.handleResolutionChange}>
           
           <option value="resolution">Resolution</option>
           {this.resolutionOptions.right}
         </select>
       </div>
+
+      <div className="row-container">
+        <select className="row-selection" name="tool-right" id="tool-right">
+          
+          <option value="tool">All</option>
+          {this.featureOption.right}
+        </select>
+      </div>
+
     </div>
     </div>
     </div>

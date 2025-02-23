@@ -21,7 +21,9 @@ export default class InspectBody extends React.Component{
         contents: '',
         colorMap: "GreyScale",
                     };
-      this.resolutionOptions = (this.props.storetable[Object.keys(this.props.storetable)[0]]).map((el) => <option value={el} key={el}>{el}</option>);
+      this.resolutionOptions = Object.keys(this.props.storetable[Object.keys(this.props.storetable)[0]]).map((el) => <option value={el} key={el}>{el}</option>);
+      this.featureOptions = this.props.storetable[Object.keys(this.props.storetable)[0]][Object.keys(this.props.storetable[Object.keys(this.props.storetable)[0]])[0]].map((el) => <option value={el} key={el}>{el}</option>);
+      // this.featureOptions = Object.keys(this.props.storetable[Object.keys(this.props.storetable[Object.keys(this.props.storetable)[0]])[0]]).map((el) => <option value={el} key={el}>{el}</option>);
       this.offset = 0;
       this.storeImage;
       this.histogram;
@@ -52,7 +54,7 @@ componentDidMount(){
 
   //bug is here.
       const node = document.getElementById("names-field");
-      const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset}&hic_path=${Object.keys(this.props.storetable)[0]}&resolution=${this.props.storetable[Object.keys(this.props.storetable)[0]][0]}`);
+      const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset}&hic_path=${Object.keys(this.props.storetable)[0]}&resolution=${Object.keys(this.props.storetable[Object.keys(this.props.storetable)[0]])[0]}`);
             fetchPromise.then(response => {
               return response.json();
                   }).then(entries => {
@@ -98,9 +100,10 @@ componentDidMount(){
     this.setState({selectValue: event.target.value});
     if (event.target.value != "dataset"){
       console.log(this.props.storetable[event.target.value])
-      this.resolutionOptions = this.props.storetable[event.target.value].map((el) => <option value={el} key={el}>{el}</option>);
+      this.resolutionOptions = Object.keys(this.props.storetable[event.target.value]).map((el) => <option value={el} key={el}>{el}</option>);
       const storeHicPath = document.getElementById("field-select").value;
       const storeResolution = document.getElementById("resolution-field-select").value;
+      this.featureOptions = this.props.storetable[event.target.value][storeResolution].map((el) => <option value={el} key={el}>{el}</option>);
       const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset}&hic_path=${event.target.value}&resolution=${this.props.storetable[event.target.value][0]}`);
       const node = document.getElementById("names-field");
 
@@ -126,6 +129,7 @@ componentDidMount(){
     if (event.target.value != "resolution" 
       && document.getElementById("field-select").value!="dataset"){
         const storeHicPath = document.getElementById("field-select").value;
+        this.featureOptions = this.props.storetable[storeHicPath][event.target.value].map((el) => <option value={el} key={el}>{el}</option>);
         const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset}&hic_path=${storeHicPath}&resolution=${event.target.value}`);
         const node = document.getElementById("names-field");
 
@@ -373,9 +377,11 @@ copyToPasteboard = (event) => {
                <label for="field-select">Dataset:</label>
               </div>
               <div className="row-container">
-                <label for="field-select">Resolution:</label>
+                <label for="resolution-field-select">Resolution:</label>
               </div>
-
+              <div className="row-container">
+                <label for="feature-field-select">Feature:</label>
+              </div>
             </div>
 
 
@@ -395,6 +401,13 @@ copyToPasteboard = (event) => {
                   {this.resolutionOptions}
                 </select>
               </div>
+              <div className="row-container">
+                <select id="feature-field-select" onChange={this.handleResolutionChange}>
+                  <option value={"All"} key={"All"}>{"All"}</option>
+                  {this.featureOptions}
+                </select>
+              </div>
+
              </div>  
           </div>
 

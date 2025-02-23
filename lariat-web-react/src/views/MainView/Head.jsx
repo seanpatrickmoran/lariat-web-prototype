@@ -29,13 +29,13 @@ export default function Head() {
   useEffect(() => {
     
     const faviconMode = window.matchMedia('(prefers-color-scheme: light)').matches ? "/colloidal.svg" : "/cyclops.svg";
-    console.log(faviconMode)
+    // console.log(faviconMode)
     setFavicon(faviconMode);
 },[]);
 
   return (
 <>
-      <link id="favicon" rel="icon" type="image/svg+xml" href={favicon} />
+      <link id="favicon" rel="shortcut icon" type="image/svg+xml" href={favicon} />
 			<nav className="row-container">
       <button className="command_button" id="backBtn" onClick={navToMain}> MAIN </button>
       <button className="command_button" id="viewToQueryBtn" onClick={navToQuery}> QUERY </button>

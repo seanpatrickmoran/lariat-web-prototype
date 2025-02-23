@@ -15,6 +15,7 @@ export class CallBox extends React.Component{
 		super(props);
 		this.closeWindow = this.closeWindow.bind(this);
     this.state = {
+    	visibility: "visible",
     	term: "",
     	userMessagePointer: 0,
     	userMessages: [],
@@ -35,6 +36,11 @@ export class CallBox extends React.Component{
 			this.setState({popViews: this.state.popViews})
 		}
 
+		if(this.state.visibility!=prevState.visibility){
+			this.setState({visibility: this.state.visibility})
+
+		}
+
     //   if (this.props.pasteBoardProps !== prevProps.pasteBoardProps){
       	
   	// }
@@ -45,7 +51,18 @@ export class CallBox extends React.Component{
 		document.querySelector(".textField").style.width = Math.round(.98*480-20).toString()+"px";
 
 		const welcomeMessage = document.createElement('p');
-		welcomeMessage.innerHTML = "@>" + `Welcome!\n` + `Here are some commands you can execute:\n    :search?"xyz" search features based on name "xyz"\n    :clear ––clears the terminal\n    :purge ––removes terminal history\n    :reset ––wipes messages from my memory\n    :help ––displays help\n    :quit ––closes this window`;
+		welcomeMessage.innerHTML = "@>" + `Welcome!\n` + `Here are some commands you can execute:\n` + 
+`
+  :search?"xyz" search images similar to "xyz"  
+  :closeall close all pop-out windows.  
+  --------------------------------------------
+  :clear ––clears the terminal
+  :purge ––removes terminal history  
+  :reset ––wipes messages from my memory    
+  :help ––displays help   
+  :quit ––closes this window`;
+  
+
 		document.querySelector("#talk").append(welcomeMessage);
 
 	}
@@ -354,8 +371,8 @@ export class CallBox extends React.Component{
 
 
   closeWindow(){
-  	this.setState({term:"", width: 480, height: 360})
-    this.props.handleCallChange("hidden");
+  	this.setState({term:"", width: 480, height: 360, visibility: "hidden"})
+    // this.state.handleCallChange("hidden");
   }
 
     render (){
@@ -371,7 +388,7 @@ export class CallBox extends React.Component{
 			dragHandleClassName="headerTitle"
 			minWidth={340}
 			minHeight={200}
-		  size={{ width: this.state.width,  height: this.state.height }}
+		  size={{ width: this.state.width,  height: this.state.height, visibility: this.state.visibility}}
 		  position={{ x: this.state.x, y: this.state.y }}
 		  onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
 			onClick={() => {

@@ -36,7 +36,8 @@ export default class QueryBody extends React.Component{
   handleDatasetChange = (event) => {
     this.setState({selectValue: event.target.value});
     if (event.target.value != "dataset"){
-      this.resolutionOptions = this.props.storetable[event.target.value].map((el) => <option value={el} key={el}>{el}</option>);
+      // console.log(Object.keys(this.props.storetable[event.target.value]))
+      this.resolutionOptions = Object.keys(this.props.storetable[event.target.value]).map((el) => <option value={el}>{el}</option>);
       const storeHicPath = document.getElementById("dataset-field-select").value;
       const storeResolution = document.getElementById("resolution-field-select").value;
       const fetchPromise = fetch(`http://localhost:8080/api/read_limiter?offset=${this.offset}&hic_path=${storeHicPath}&resolution=${storeResolution}`);

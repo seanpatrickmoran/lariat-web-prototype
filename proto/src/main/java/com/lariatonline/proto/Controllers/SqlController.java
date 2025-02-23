@@ -30,8 +30,8 @@ import java.sql.*;
 
 @RestController
 public class SqlController {
-	
-	private String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/databse6_binary.db";
+	private String databaseURI = "jdbc:sqlite:/Users/seanmoran/Projects/sTables/database_17_bin.db";
+//	private String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/databse6_binary.db";
 	
 	Map<String,List<String>> tableMemory = new HashMap<>();
 //	TalkTomcat binder = new TalkTomcat();
