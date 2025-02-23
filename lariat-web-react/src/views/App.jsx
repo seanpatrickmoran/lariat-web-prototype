@@ -105,7 +105,7 @@ export function App() {
                         element={
                             <>
                                 <Head />
-                                <QueryPage pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
+                                <QueryPage pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps} callBoxProps={callBoxProps} setCallBoxProps={setCallBoxProps}/>
                                 <PasteBoard id={"pasteboardBody"} pasteBoardProps={pasteBoardProps} pasteBoardPropsUpdate = {setPasteBoardProps}/>
                                 {/*<CallBox id={"queryBox"} isCalling={queryProps.isVisible} handleCallChange={setQueryProps}/>*/}
                                 <CallBox id={"queryBox"} callBoxProps={callBoxProps} setCallBoxProps={setCallBoxProps}/>

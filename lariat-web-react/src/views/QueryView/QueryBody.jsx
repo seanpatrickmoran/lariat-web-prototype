@@ -21,15 +21,25 @@ export default class QueryBody extends React.Component{
             this.resolutionOptions = null;
             this.offSetQueries = null;
             this.offset = 0;
-            this.handleCallChange = this.handleCallChange.bind(this);
-            this.getTheBoys = this.getTheBoys.bind(this);
+            // this.handleCallChange = this.handleCallChange.bind(this);
+            this.invokeCallBox = this.invokeCallBox.bind(this);
            }
 
-    componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
       // console.log(this.props.pasteBoardProps.contents === prevProps.pasteBoardProps.contents);
       if (this.props.pasteBoardProps.contents !== prevProps.pasteBoardProps.contents){
         this.setState({visibility: "visible", contents: this.props.pasteBoardProps.contents});
         this.props.pasteBoardPropsUpdate({visibility: this.state.visibility, contents: this.props.pasteBoardProps.contents});
+      }
+      if((this.state.isCalling !== prevProps.callBoxProps.visibility)){
+        console.log('1')
+        this.props.setCallBoxProps({visibility: this.state.isCalling});
+      }
+      else if(this.props.callBoxProps.visibility!=prevProps.callBoxProps.visibility){
+        console.log('2')
+        this.setState({isCalling : this.props.callBoxProps.visibility})
+        this.props.setCallBoxProps({visibility: this.state.isCalling});
+
       }
     }
 
@@ -165,42 +175,31 @@ export default class QueryBody extends React.Component{
     //     return
     // }
 
-  getTheBoys(){
+  invokeCallBox(){
     this.setState({isCalling : "visible"})
-    // console.log("hey")
     const divs = document.querySelectorAll(".content");
 
     divs.forEach(div => { 
-      console.log(div)
       div.style.zIndex-=1
     })
-    console.log(this.props.id)
-    // document.getElementById(this.props.id).style.zIndex-=
+
     document.getElementById("queryBox").style.zIndex=1    
 
-
-    divs.forEach(div => { 
-      console.log(div)
-    })
-
-    // const fetchPromise = fetch(`http://localhost:8080/api/talk`);
-    // fetchPromise.then(response => {
-    //           return response.json();
-    //               }).then(entries => {
-    //                 document.getElementById("talk").innerHTML = entries;
-    //                 // console.log(entries);
-    //               });
-    // console.log('meow!')
+    // divs.forEach(div => { 
+    //   console.log(div)
+    // })
 
   }
 
-    handleCallChange(){
-    if(this.state.isCalling=="hidden"){
-      this.setState({isCalling: "visible"})
-    } else{
-    this.setState({isCalling: "hidden"})
-    }  
-  }
+  //   handleCallChange(){
+  //   if(this.state.isCalling=="hidden"){
+  //     this.setState({isCalling: "visible"})
+  //     this.props.setCallBoxProps({visibility: this.state.visibility})
+  //     // this.props.pasteBoardPropsUpdate({visibility: this.state.visibility,
+  //   } else{
+  //   this.setState({isCalling: "hidden"})
+  //   }  
+  // }
 
 	  render (){
   return <>
@@ -271,9 +270,10 @@ export default class QueryBody extends React.Component{
       </select>
     </div>
     <div className="row-container">
-      <button type="button" id="colloidalCallButton" onClick={this.getTheBoys}>Query</button>
+      <button type="button" id="semanticQuery" onClick={this.invokeQueryBox}>Similarity</button>
       <button type="button" id="selectAll" onClick={this.qvSelectAll}>Select All</button>
       <button type="button" id="copyToPbBtn" onClick={this.copyToPasteboard}>Copy</button>
+      <button type="button" id="colloidalCallButton" onClick={this.invokeCallBox}>Semantic @&gt;</button>
     </div>
     <div id="queryNamesDiv">
       <select id="queryNames" multiple size="10"></select>
@@ -289,10 +289,9 @@ export default class QueryBody extends React.Component{
   {/*</div>*/}
   </Rnd>
 
-  <div id="callBoxDiv" style={{visibility: this.state.isCalling}}>
+{/*  <div id="callBoxDiv" style={{visibility: this.state.isCalling}}>
     <p>hehe</p>
-    {/*<CallBox id={"queryBox"} isCalling={this.state.isCalling} handleCallChange={this.handleCallChange}/>*/}
-  </div>  
+  </div>  */}
   </>
   }
 }

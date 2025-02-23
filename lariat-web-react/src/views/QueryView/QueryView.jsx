@@ -8,9 +8,10 @@ import '../style.css';
 import '../PasteboardView/popBoard.css';
 import useLocalStorage from './../CustomHooks/UseLocalStorage.js';
 
-export default function QueryView({pasteBoardProps,pasteBoardPropsUpdate}) {
+export default function QueryView({pasteBoardProps,pasteBoardPropsUpdate,callBoxProps,setCallBoxProps}) {
 
     const [tableMemory, setTableMemory] = useLocalStorage("tableMemory");
+    // const [tableMemory, setTableMemory] = useLocalStorage("tableMemory");
 
   return (
     <>
@@ -18,7 +19,9 @@ export default function QueryView({pasteBoardProps,pasteBoardPropsUpdate}) {
       <QueryBody    id={"QueryBody"}
                     storetable={tableMemory} 
                     pasteBoardProps={pasteBoardProps} 
-                    pasteBoardPropsUpdate={pasteBoardPropsUpdate}/>
+                    pasteBoardPropsUpdate={pasteBoardPropsUpdate}
+                    callBoxProps={callBoxProps} 
+                    setCallBoxProps={setCallBoxProps}/>
     </>
   )
 }

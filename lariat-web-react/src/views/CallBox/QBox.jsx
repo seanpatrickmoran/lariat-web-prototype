@@ -15,7 +15,7 @@ export class CallBox extends React.Component{
 		super(props);
 		this.closeWindow = this.closeWindow.bind(this);
     this.state = {
-    	visibility: "visible",
+    	visibility: "hidden",
     	term: "",
     	userMessagePointer: 0,
     	userMessages: [],
@@ -38,7 +38,14 @@ export class CallBox extends React.Component{
 
 		if(this.state.visibility!=prevState.visibility){
 			this.setState({visibility: this.state.visibility})
+			// console.log(this.state.visibility)
+			this.props.setCallBoxProps({visibility: this.state.visibility})
+		}
 
+		else if (this.props.callBoxProps.visibility!=prevProps.callBoxProps.visibility){
+			this.setState({visibility: this.props.callBoxProps.visibility})
+			// console.log(this.props.callBoxProps.visibility)
+			this.props.setCallBoxProps({visibility:this.props.callBoxProps.visibility})
 		}
 
     //   if (this.props.pasteBoardProps !== prevProps.pasteBoardProps){
@@ -372,7 +379,8 @@ export class CallBox extends React.Component{
 
   closeWindow(){
   	this.setState({term:"", width: 480, height: 360, visibility: "hidden"})
-    // this.state.handleCallChange("hidden");
+  	// this.props.setCallBoxProps({visibility: "hidden"})
+    // this.setState({visibility: "hidden")};
   }
 
     render (){
@@ -388,7 +396,8 @@ export class CallBox extends React.Component{
 			dragHandleClassName="headerTitle"
 			minWidth={340}
 			minHeight={200}
-		  size={{ width: this.state.width,  height: this.state.height, visibility: this.state.visibility}}
+		  size={{ width: this.state.width,  height: this.state.height}}
+		  style={{visibility: this.state.visibility}}
 		  position={{ x: this.state.x, y: this.state.y }}
 		  onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
 			onClick={() => {
