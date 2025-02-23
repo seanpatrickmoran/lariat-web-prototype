@@ -81,6 +81,7 @@ public class SqlController {
         Connection connection = null;
         List<Map<String, Object>> listOfMaps = null;		
 			
+//		String callQuery = "SELECT * FROM imag WHERE hic_path = (?) AND resolution = ? AND toolsource = ? LIMIT 200 OFFSET ?";	
 		String callQuery = "SELECT * FROM imag WHERE hic_path = (?) AND resolution = ? LIMIT 200 OFFSET ?";	
 		
 		try {
@@ -97,6 +98,32 @@ public class SqlController {
 		return new ResponseEntity<String>(new Gson().toJson(listOfMaps), HttpStatus.OK);
 	}	
 	
+	@GetMapping("/api/read_feature")
+	public ResponseEntity<String> read_feature(
+			@RequestParam("offset")int offset,
+			@RequestParam("hic_path")String hic_path,
+			@RequestParam("resolution")String resolution,
+			@RequestParam("toolsource")String toolsource) {
+		
+        Connection connection = null;
+        List<Map<String, Object>> listOfMaps = null;		
+			
+		String callQuery = "SELECT * FROM imag WHERE hic_path = (?) AND resolution = ? AND toolsource = ? LIMIT 200 OFFSET ?";	
+		
+		try {
+			MapListHandler beanListHandler = new MapListHandler();
+			QueryRunner queryrunner = new QueryRunner();
+			
+			connection = DriverManager.getConnection(databaseURI);
+			listOfMaps = queryrunner.query(connection, callQuery, beanListHandler, new Object[]{hic_path,resolution,toolsource,offset});
+			
+		} catch (Exception e) {
+			 e.printStackTrace();
+		}
+		
+		return new ResponseEntity<String>(new Gson().toJson(listOfMaps), HttpStatus.OK);
+	}	
+//	
 	
 	@GetMapping("/api/captureIntersect")
 	public ResponseEntity<String> readDatasetAtResolution(

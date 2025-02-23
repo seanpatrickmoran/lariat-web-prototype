@@ -177,6 +177,73 @@ componentDidMount(){
     };
 
 
+
+
+
+
+  handleFeatureChange = (event) => {
+    this.setState({selectValue: event.target.value});
+    if (event.target.value != "All" 
+      && document.getElementById("feature-field-select").value!="dataset"){
+        const storeHicPath = document.getElementById("field-select").value;
+        const storeResolution = document.getElementById("resolution-field-select").value;
+        const fetchPromise = fetch(`http://localhost:8080/api/read_feature?offset=${this.offset}&hic_path=${storeHicPath}&resolution=${storeResolution}&toolsource=${event.target.value}`);
+        const node = document.getElementById("names-field");
+
+        fetchPromise.then(response => {
+                return response.json();
+                    }).then(entries => {
+                let names = entries.map(elem => elem.name).join("<option />");
+                node.innerHTML = "<option />" + names;
+              $("#names-field")[0].selectedIndex = 0;
+              // const name_query = document.querySelector("#names-field")
+
+              let selection = document.getElementById("names-field");
+              var value = selection;
+              // console.log(value)
+              var name_query = selection.options[selection.selectedIndex].value;
+              // console.log(selection.options[selection.selectedIndex])
+
+
+              const inspectPromise = fetch(`http://localhost:8080/api/getImageSingleton?name=${[...name_query].map((char) => this.fetchMap.get(char) || char).join("")}`);
+              inspectPromise.then(response => {
+              return response.json();
+                  }).then(inspectEntries => {
+                    this.storeImage = inspectEntries[0].rgbaRawArray;
+                    // this.histogram = Histogram(this.props.histProps);
+
+                    this.props.OnHistChange({width:380, height:280, data: inspectEntries[0].histogram})
+                    const names = document.getElementById("fields-payload");
+                    const vMax = document.getElementById("filter1");
+                    vMax.value = inspectEntries[0].viewing_vmax;
+                    names.innerHTML = `${inspectEntries[0].dataset}<br/>${inspectEntries[0].name}<br/>`;
+                    const coordsArray = inspectEntries[0].coordinates.split(",");
+                    names.innerHTML += coordsArray[0] +": " + coordsArray[1] +":"+ coordsArray[2]+ "<br/>";
+                    names.innerHTML += coordsArray[3] +": " + coordsArray[4] +":"+ coordsArray[5];
+                    const canvas = document.getElementById("canvas-inspect");
+                    canvas.width = 455;
+                    canvas.height = 455;
+                    const ctx = canvas.getContext("2d");
+
+                    var imageDataArray = fillImageArray(inspectEntries[0].rgbaArray, this.state.colorMap);     
+                    const imageData = new ImageData(imageDataArray, 455, 455);
+                    ctx.putImageData(imageData, 0, 0);
+                  });
+                });
+      };
+    };
+
+
+
+
+
+
+
+
+
+
+
+
     handleIncrement = (event) => {
       const storeHicPath = document.getElementById("field-select").value;
       const storeResolution = document.getElementById("resolution-field-select").value;
@@ -402,7 +469,7 @@ copyToPasteboard = (event) => {
                 </select>
               </div>
               <div className="row-container">
-                <select id="feature-field-select" onChange={this.handleResolutionChange}>
+                <select id="feature-field-select" onChange={this.handleFeatureChange}>
                   <option value={"All"} key={"All"}>{"All"}</option>
                   {this.featureOptions}
                 </select>
