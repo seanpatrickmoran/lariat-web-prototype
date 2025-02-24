@@ -139,7 +139,16 @@ class MultiDropdownApp extends React.Component {
 	    this.choices=[]
 	    this.getItems = this.getItems.bind(this)
         // this.onChange = this.onChange.bind(this)
-	    this.handleChange = this.props.handleChange.bind(this)
+	    // this.handleChange = this.props.handleChange.bind(this)
+	}
+
+  componentDidUpdate(prevProps, prevState) {
+  	if(this.props.choices!=prevProps.choices){
+  		this.choices = []
+	    this.props.choices.forEach((x) => {
+	        this.choices.push({name: x})
+	    })
+		}
 	}
 
 
@@ -179,7 +188,7 @@ class MultiDropdownApp extends React.Component {
       <div>
         <div style={{textAlign: 'center'}}>Select  {this.props.tag}</div>
         <MultiDownshift
-          onChange={this.handleChange}
+          onChange={this.props.handleChange}
           itemToString={this.itemToString}
         >
           {({

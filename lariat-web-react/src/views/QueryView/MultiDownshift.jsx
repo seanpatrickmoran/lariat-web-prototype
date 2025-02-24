@@ -144,8 +144,8 @@ import Downshift from 'downshift';
       }
 
       onChange(selectedDropItem) {
-        // this.setState({ selectedDropItem: selectedDropItem.name })
-        this.handleChange([this.props.tag,...selectedDropItem.name])
+        this.setState({ selectedDropItem: selectedDropItem.name })
+        this.handleChange([this.props.tag,selectedDropItem.name])
       }
 
       render() {

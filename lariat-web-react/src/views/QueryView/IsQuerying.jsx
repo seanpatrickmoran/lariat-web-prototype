@@ -23,7 +23,10 @@ export default class IsQuerying extends React.Component{
               this.Ref = React.createRef();
               this.closeWindow = this.closeWindow.bind(this);
               this.dumpWithOptions = this.dumpWithOptions.bind(this);
-              this.handleChange = this.handleChange.bind(this);
+              this.handleDatasetChange = this.handleDatasetChange.bind(this);
+              this.handleResolutionChange = this.handleResolutionChange.bind(this);
+              this.handleToolChange = this.handleToolChange.bind(this);
+
               // this.showCheckboxes = this.showCheckboxes.bind(this);
               this.fetchMap = new Map([
                 [":", "%3A"], [";", "%3B"], ["<","%3C"], ["=" , "%3D"],
@@ -45,8 +48,8 @@ export default class IsQuerying extends React.Component{
                   "Tool": "Select Tool",
                   "Search": "Select Similarity Type",
                   },
-                // resChoices: ["All"],
-                // toolChoices: ["All"]
+                resChoices: ["All"],
+                toolChoices: ["All"]
                 }
               // this.featureOptions = this.props.storetable[Object.keys(this.props.storetable)[0]][Object.keys(this.props.storetable[Object.keys(this.props.storetable)[0]])[0]].map((el) => return el)
               // this.datasets = ["All"].concat([...Object.keys(this.props.storetable)])
@@ -66,48 +69,78 @@ export default class IsQuerying extends React.Component{
 
 
   handleDatasetChange(value){
-    const reply = []
+    const reply = new Set()
     for(var i=0;i<value.length;i++){
-      console.log(value[i].name)
-      reply.push(value[i].name)
-    }
+      if(value[i].name==="All"){
+        Object.keys(this.props.storetable).forEach((dataKey =>{
+          Object.keys(this.props.storetable[dataKey]).forEach((resKey =>{
+            reply.add(resKey)
+          }))
+        }))
+        break;
 
-    if(reply.includes("All")){
-      //take all resolutions from our tableMemory and add them to field 2
-    } else {
-      //take resolutions as expected and move them to field 2. 
+      } else{
+        Object.keys(this.props.storetable[value[i].name]).forEach((entry =>{
+          reply.add(entry)
+        }))
+      }
     }
-
+    console.log(reply)
+    this.setState({resChoices: ["All", ...reply]})
   }
 
 
   handleResolutionChange(value){
-    const reply = []
+    console.log(this.props)
+    const dataSelected = document.querySelectorAll("#DatasetSelected")
+    // const resolutionSelected = document.querySelectorAll("#DatasetSelected")
+    const reply = new Set()
     for(var i=0;i<value.length;i++){
       console.log(value[i].name)
-      reply.push(value[i].name)
-    }
+      if(value[i].name==="All"){
+        dataSelected.forEach((dataKey =>{
+          console.log(dataKey.innerHTML)
+          Object.keys(this.props.storetable[dataKey.innerHTML]).forEach((resKey =>{
+            this.props.storetable[dataKey.innerHTML][resKey].forEach((toolKey =>{
+              reply.add(toolKey)
+            }))
+          }))
+        }))
+        break;
 
-    if(reply.includes("All")){
-      //take all resolutions from our tableMemory and add them to field 2
-    } else {
-      //take resolutions as expected and move them to field 2. 
+      } else{
+        dataSelected.forEach((dataKey =>{
+          console.log(dataKey.innerHTML)
+          this.props.storetable[dataKey.innerHTML][value[i].name].forEach((toolKey =>{
+              reply.add(toolKey)
+            }))
+          }))
+      }
     }
-
+    console.log(reply)
+    this.setState({toolChoices: ["All", ...reply]})
+    // console.log( this.state.resChoices)
   }
 
   handleToolChange(value){
     const reply = []
     for(var i=0;i<value.length;i++){
-      console.log(value[i].name)
-      reply.push(value[i].name)
-    }
+      // Object.keys(this.props.storetable[value[i].name]).forEach(key =>{
+        // reply.add(key)
+      // })
+      console.log(value[i])
+      // console.log(this.props)
 
-    if(reply.includes("All")){
-      //take all resolutions from our tableMemory and add them to field 2
-    } else {
-      //take resolutions as expected and move them to field 2. 
     }
+    // const outfield = new Set();
+    // if(reply.includes("All")){
+      //take all resolutions from our tableMemory and add them to field 2
+    // } else {
+      // for(var i=0;i<reply.length;i++){
+        // this.props.storetable[]
+      // }
+      //take resolutions as expected and move them to field 2. 
+    // console.log(reply)
 
   }
 
@@ -155,6 +188,13 @@ export default class IsQuerying extends React.Component{
       // this.setState({resChoices: this.state.resChoices, toolChoices, this.state.toolChoices})
 
     // }
+    if((prevState.resChoices!=this.state.resChoices)||(prevState.toolChoices!=this.state.toolChoices)){
+      console.log("state changed")
+      this.setState({resChoices: this.state.resChoices, toolChoices: this.state.toolChoices})
+      this.resChoices = this.state.resChoices;
+      this.toolChoices = this.state.toolChoices;
+      console.log(this.resChoices)
+    }
 
     if(prevProps.searchVisible != this.props.searchVisible){
       const divs = document.querySelectorAll(".content");
