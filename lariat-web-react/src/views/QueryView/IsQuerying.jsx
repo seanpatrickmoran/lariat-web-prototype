@@ -1,10 +1,16 @@
 import React, {useState} from 'react';
 import Draggable from 'react-draggable';
 import { Rnd } from "react-rnd";
+import Downshift from 'downshift'
+
+import DownshiftTwo from './MultiDownshift.jsx';
+import { MultiDownshift, MultiDropdownApp,  ArrowIcon } from './MultiDropDown.jsx'
+// import { Select, Space } from 'antd';
 
 // import JSZip from 'jszip'
 // import { CallBox } from "./CallBox.jsx";
 import "./isquery.css"
+// import { Select } from "antd";
 import streamSaver from 'streamsaver'
 
 // import { Jimp } from 'jimp';
@@ -17,6 +23,7 @@ export default class IsQuerying extends React.Component{
               this.Ref = React.createRef();
               this.closeWindow = this.closeWindow.bind(this);
               this.dumpWithOptions = this.dumpWithOptions.bind(this);
+              this.handleChange = this.handleChange.bind(this);
               // this.showCheckboxes = this.showCheckboxes.bind(this);
               this.fetchMap = new Map([
                 [":", "%3A"], [";", "%3B"], ["<","%3C"], ["=" , "%3D"],
@@ -27,41 +34,145 @@ export default class IsQuerying extends React.Component{
                 ["." , "%2E"],["/" , "%2F"]]);
 
               this.state = {
-                // downloadActive: true,
-                // status: "Ready",
-                // maxAmount: 9000,
-                // progress: 0,
-                width: 600,
+                width: 800,
                 height: 350,
                 x: window.innerWidth/2-320,
                 y: window.innerHeight/2-280,
-
-                showSearch: true
+                showSearch: true,
+                ChooseDownshift : {
+                  "Dataset": "Select Dataset",
+                  "Resolution": "Select Resolution",
+                  "Tool": "Select Tool",
+                  "Search": "Select Similarity Type",
+                  },
+                // resChoices: ["All"],
+                // toolChoices: ["All"]
                 }
-
-              // this.blobMap = new Map();
-           }
+              // this.featureOptions = this.props.storetable[Object.keys(this.props.storetable)[0]][Object.keys(this.props.storetable[Object.keys(this.props.storetable)[0]])[0]].map((el) => return el)
+              // this.datasets = ["All"].concat([...Object.keys(this.props.storetable)])
+              // this.ChooseDownshift = {
+              //     Dataset: "Select Dataset",
+              //     Resolution: "Select Resolution",
+              //     Tool: "Select Tool",
+              //     Search: "Select Similarity Type",
+              //   }
+                this.resChoices= ["All"]
+                this.toolChoices= ["All"]
+              }
 
   componentDidMount() {
   }
 
+
+
+  handleDatasetChange(value){
+    const reply = []
+    for(var i=0;i<value.length;i++){
+      console.log(value[i].name)
+      reply.push(value[i].name)
+    }
+
+    if(reply.includes("All")){
+      //take all resolutions from our tableMemory and add them to field 2
+    } else {
+      //take resolutions as expected and move them to field 2. 
+    }
+
+  }
+
+
+  handleResolutionChange(value){
+    const reply = []
+    for(var i=0;i<value.length;i++){
+      console.log(value[i].name)
+      reply.push(value[i].name)
+    }
+
+    if(reply.includes("All")){
+      //take all resolutions from our tableMemory and add them to field 2
+    } else {
+      //take resolutions as expected and move them to field 2. 
+    }
+
+  }
+
+  handleToolChange(value){
+    const reply = []
+    for(var i=0;i<value.length;i++){
+      console.log(value[i].name)
+      reply.push(value[i].name)
+    }
+
+    if(reply.includes("All")){
+      //take all resolutions from our tableMemory and add them to field 2
+    } else {
+      //take resolutions as expected and move them to field 2. 
+    }
+
+  }
+
+
+  handleChange(value){
+    // console.log(this.ChooseDownshift[value[0]])
+    // this.ChooseDownshift[value[0]] = value[1]
+    // console.log(this.ChooseDownshift[value[0]])
+    console.log(value)
+    const name = value[0]
+    const reply = value[1]
+
+    console.log(name, reply)
+
+    if(reply!="All"){
+      switch(name) {
+        case "Dataset":
+          var dlisted = Object.keys(this.props.storetable[reply])
+          // this.setState({resChoices: ["All", ...dlisted]})
+          this.resChoices =  ["All", ...dlisted]
+          console.log(dlisted)
+          console.log(this.resChoices)
+          // console.log(this.state.resChoices)
+          break;
+        case "Resolution":
+          const rlisted = document.querySelectorAll("span#DatasetSelected").forEach((entry =>{
+            console.log(...this.props.storetable[entry.innerHTML])
+            return [...this.props.storetable[entry.innerHTML]]
+          }))
+          // [...this.props.storetable[document.querySelectorAll("span#DatasetSelected").innerHTML][reply]]
+          this.toolChoices= ["All", ...rlisted]
+          console.log(rlisted)
+          console.log(this.toolChoices)
+          break;
+        default:
+          // code block
+      }
+    } 
+  };
+
+
+
   componentDidUpdate(prevProps, prevState) {
-    // if(prevState.showSearch!=this.state.showSearch){
-    //   this.setState
+    // if((prevState.resChoices!=this.state.resChoices)||(prevState.toolChoices!=this.state.toolChoices)){
+      // this.setState({resChoices: this.state.resChoices, toolChoices, this.state.toolChoices})
 
     // }
+
     if(prevProps.searchVisible != this.props.searchVisible){
-    const divs = document.querySelectorAll(".content");
+      const divs = document.querySelectorAll(".content");
+    // this.setState({showAnt: this.props.searchVisible})
 
     divs.forEach(div => { 
-      div.style.zIndex-=2
-    })
+        div.style.zIndex-=2
+      })
 
-    document.getElementById(this.props.id).style.zIndex=0
+      document.getElementById(this.props.id).style.zIndex=0
+    // document.querySelector(".selectSpace").style.visibility=this.props.searchVisible
     }
   }
 
   closeWindow(){
+    // this.setState({showAnt: 'hidden'})
+    // setTimeout(this.setState({showAnt: 'hidden'}))
+    // document.querySelector(".selectSpace").style.visibility="hidden"
     this.props.setSearchVisible("hidden")
     // this.props.handleIsDownloadingChange("hidden");
   }
@@ -137,6 +248,13 @@ export default class IsQuerying extends React.Component{
       style={{ visibility: this.props.searchVisible }}
       position={{ x: this.state.x, y: this.state.y }}
       onDragStop={(e, d) => { this.setState({ x: d.x, y: d.y }) }}
+      onResizeStop={(e, direction, ref, delta, position) => {
+        this.setState({
+          width: ref.style.width,
+          height: ref.style.height,
+          ...position,
+        });
+      }}
       onClick={() => {
         const divs = document.querySelectorAll(".content");
         divs.forEach(div => { 
@@ -159,12 +277,64 @@ export default class IsQuerying extends React.Component{
           <a id="BoxTitleCloseInner" className="control-box-inner" onClick={this.closeWindow}></a>
           </div>
         </div>
-          <div className="row-container" style={{margin: 8, marginLeft:22}}>
-            <select id="dataset-search-select" selected="Dataset"><option>Dataset</option><option>All</option></select>
-            <select id="resolution-search-select" selected="Resolution"><option>Resolution</option><option>All</option></select>
-            <select id="tool-search-select" selected="Tools"><option>Tools</option><option>Alll</option></select>
+          <div className="column-container-container" style={{margin: 8, marginLeft:22}}>
+
+          <MultiDropdownApp id="dataset" tag={"Dataset"} choices={["All",...Object.keys(this.props.storetable)]}  handleChange={this.handleDatasetChange}></MultiDropdownApp>
+          <MultiDropdownApp id="resolution" tag={"Resolution"} choices={[...this.resChoices]}  handleChange={this.handleResolutionChange}></MultiDropdownApp>
+          <MultiDropdownApp id="tools" tag={"Tool"} choices={[...this.toolChoices]} handleChange={this.handleToolChange}></MultiDropdownApp>
+
+{/*
+          <DownshiftTwo id="dataset" tag={"Dataset"} choices={["All",...Object.keys(this.props.storetable)]} handleChange={this.handleChange}>
+          </DownshiftTwo>
+          <DownshiftTwo id="resolution" tag={"Resolution"} choices={[...this.resChoices]} handleChange={this.handleChange}>
+          </DownshiftTwo>
+          <DownshiftTwo id="tools" tag={"Tool"} choices={[...this.toolChoices]} handleChange={this.handleChange}>
+          </DownshiftTwo>*/}
+{/* 
+          make these the same way we did the chat text. for every selected item, load it into a div using the pattern
+          <div id={`${name}_selected`}key={name}>
+            <span>name</span>
+            <div onClick={document.querySelector(`#${name}_selected`).remove()}></div>
           </div>
-          <div className="row-container" style={{margin: 8, marginLeft:22}}>
+*/}
+
+
+
+
+
+{/*            <select id="dataset-search-select" selected="Dataset"><option>Dataset</option><option>All</option></select>
+            <select id="resolution-search-select" selected="Resolution"><option>Resolution</option><option>All</option></select>
+            <select id="tool-search-select" selected="Tools"><option>Tools</option><option>All</option></select>*/}
+{/*           <Space className="selectSpace" style={{ width: '480px', margin: 8, marginLeft:22, visibility: this.state.showAnt, transitionDelay: 0, transition: '0s'}} direction="horizontal">
+              <Select
+                mode="multiple"
+                allowClear
+                style={{ width: '120px' }}
+                placeholder="Dataset"
+                onChange={this.handleChange}
+              />
+              <Select
+                mode="multiple"
+                allowClear
+                style={{ width: '120px' }}
+                placeholder="Resolution"
+                onChange={this.handleChange}
+              />
+              <Select
+                mode="multiple"
+                allowClear
+                style={{ width: '120px' }}
+                placeholder="Tools"
+                onChange={this.handleChange}
+              />
+            </Space>*/}
+          </div>
+          <div className="row-container" style={{margin: 8, marginLeft:22, width:600}}>
+            <DownshiftTwo   tag="Similarity Type"
+                            choices={["All","Images","Epigenomic","Loop Orientation"]} handleChange={this.handleChange}>
+            </DownshiftTwo>
+          </div>
+{/*          <div className="row-container" style={{margin: 8, marginLeft:22}}>
             <select id="criteria-search-select" selected="Search Criteria">
               <option>Similarity Criteria</option>
               <option>All</option>
@@ -173,7 +343,8 @@ export default class IsQuerying extends React.Component{
               <option>Epigenomic Signal</option>
               <option>CTCF Orientation</option>
             </select>
-          </div>
+          </div>*/}
+
 
 
 
@@ -209,9 +380,9 @@ export default class IsQuerying extends React.Component{
 
           <div className="row-container">
           <div className="column-container">
-            <select id="download-names" multiple size="14">
+{/*            <select id="download-names" multiple size="14">
               
-            </select>
+            </select>*/}
 
           <div className="row-container">
             <button className="command_button" id="pbSelect" onClick={this.pbSelectAll}>Select All</button>

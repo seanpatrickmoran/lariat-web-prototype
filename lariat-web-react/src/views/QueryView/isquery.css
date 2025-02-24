@@ -48,3 +48,21 @@
     color: white;
     /* Added text color for better visibility */
 }
+
+
+@media (prefers-color-scheme: dark) {
+.downshift-dropdown{
+    background-color: #141414;
+}
+.dropdown-item{
+    background-color: #141414;
+}
+}
+
+@media (prefers-color-scheme: light) {
+.downshift-dropdown{
+    background-color: lightgray;
+
+}
+}
+

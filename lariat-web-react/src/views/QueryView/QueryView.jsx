@@ -25,6 +25,7 @@ export default function QueryView({pasteBoardProps,pasteBoardPropsUpdate,callBox
                     setCallBoxProps={setCallBoxProps}
                     setSearchVisible={setSearchVisible}/>
       <IsQuerying   id={"IsQuerying"}
+                    storetable={tableMemory}
                     searchVisible={searchVisible}
                     setSearchVisible={setSearchVisible}
                     />
