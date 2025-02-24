@@ -251,10 +251,9 @@ export default class QueryBody extends React.Component{
       </select>
     </div>
     <div className="row-container">
-      <button type="button" id="semanticQuery" onClick={this.invokeQueryBox}>Similarity</button>
+      <button type="button" id="semanticQuery" onClick={this.invokeQueryBox}>Search</button>
       <button type="button" id="selectAll" onClick={this.qvSelectAll}>Select All</button>
       <button type="button" id="copyToPbBtn" onClick={this.copyToPasteboard}>Copy</button>
-      <button type="button" id="colloidalCallButton" onClick={this.invokeCallBox}>Semantic @&gt;</button>
     </div>
     <div id="queryNamesDiv">
       <select id="queryNames" multiple size="10"></select>
@@ -262,6 +261,7 @@ export default class QueryBody extends React.Component{
 
     <div className="row-container offset-navigation" >
       <button type="button" id="offSetLeftButton" onClick={this.handleDecrement}>&#8592; Prev</button>
+      <button type="button" id="colloidalCallButton" onClick={this.invokeCallBox}>@&gt;</button>
       <button type="button" id="offSetRightButton" onClick={this.handleIncrement}>Next &#8594;</button>
     </div>
     <div className="row-container offset-navigation">

@@ -12,8 +12,8 @@ import { MultiDownshift, MultiDropdownApp,  ArrowIcon } from './MultiDropDown.js
 import "./isquery.css"
 // import { Select } from "antd";
 import streamSaver from 'streamsaver'
+import Dropzone from 'react-dropzone'
 
-// import { Jimp } from 'jimp';
 
 
 export default class IsQuerying extends React.Component{
@@ -23,9 +23,9 @@ export default class IsQuerying extends React.Component{
               this.Ref = React.createRef();
               this.closeWindow = this.closeWindow.bind(this);
               this.dumpWithOptions = this.dumpWithOptions.bind(this);
-              this.handleDatasetChange = this.handleDatasetChange.bind(this);
-              this.handleResolutionChange = this.handleResolutionChange.bind(this);
-              this.handleToolChange = this.handleToolChange.bind(this);
+              // this.handleDatasetChange = this.handleDatasetChange.bind(this);
+              // this.handleResolutionChange = this.handleResolutionChange.bind(this);
+              // this.handleToolChange = this.handleToolChange.bind(this);
 
               // this.showCheckboxes = this.showCheckboxes.bind(this);
               this.fetchMap = new Map([
@@ -38,9 +38,9 @@ export default class IsQuerying extends React.Component{
 
               this.state = {
                 width: 800,
-                height: 350,
-                x: window.innerWidth/2-320,
-                y: window.innerHeight/2-280,
+                height: 600,
+                x: window.innerWidth/2-400,
+                y: window.innerHeight/2-300,
                 showSearch: true,
                 ChooseDownshift : {
                   "Dataset": "Select Dataset",
@@ -59,8 +59,8 @@ export default class IsQuerying extends React.Component{
               //     Tool: "Select Tool",
               //     Search: "Select Similarity Type",
               //   }
-                this.resChoices= ["All"]
-                this.toolChoices= ["All"]
+                this.resChoices= ["All","2000","5000","10000"]
+                this.toolChoices= ["All","mustache","quagga"]
               }
 
   componentDidMount() {
@@ -68,81 +68,81 @@ export default class IsQuerying extends React.Component{
 
 
 
-  handleDatasetChange(value){
-    const reply = new Set()
-    for(var i=0;i<value.length;i++){
-      if(value[i].name==="All"){
-        Object.keys(this.props.storetable).forEach((dataKey =>{
-          Object.keys(this.props.storetable[dataKey]).forEach((resKey =>{
-            reply.add(resKey)
-          }))
-        }))
-        break;
+  // handleDatasetChange(value){
+  //   const reply = new Set()
+  //   for(var i=0;i<value.length;i++){
+  //     if(value[i].name==="All"){
+  //       Object.keys(this.props.storetable).forEach((dataKey =>{
+  //         Object.keys(this.props.storetable[dataKey]).forEach((resKey =>{
+  //           reply.add(resKey)
+  //         }))
+  //       }))
+  //       break;
 
-      } else{
-        Object.keys(this.props.storetable[value[i].name]).forEach((entry =>{
-          reply.add(entry)
-        }))
-      }
-    }
-    console.log(reply)
-    this.setState({resChoices: ["All", ...reply]})
-  }
+  //     } else{
+  //       Object.keys(this.props.storetable[value[i].name]).forEach((entry =>{
+  //         reply.add(entry)
+  //       }))
+  //     }
+  //   }
+  //   console.log(reply)
+  //   this.setState({resChoices: ["All", ...reply]})
+  // }
 
 
-  handleResolutionChange(value){
-    console.log(this.props)
-    const dataSelected = document.querySelectorAll("#DatasetSelected")
-    // const resolutionSelected = document.querySelectorAll("#DatasetSelected")
-    const reply = new Set()
-    for(var i=0;i<value.length;i++){
-      console.log(value[i].name)
-      if(value[i].name==="All"){
-        dataSelected.forEach((dataKey =>{
-          console.log(dataKey.innerHTML)
-          Object.keys(this.props.storetable[dataKey.innerHTML]).forEach((resKey =>{
-            this.props.storetable[dataKey.innerHTML][resKey].forEach((toolKey =>{
-              reply.add(toolKey)
-            }))
-          }))
-        }))
-        break;
+  // handleResolutionChange(value){
+  //   console.log(this.props)
+  //   const dataSelected = document.querySelectorAll("#DatasetSelected")
+  //   // const resolutionSelected = document.querySelectorAll("#DatasetSelected")
+  //   const reply = new Set()
+  //   for(var i=0;i<value.length;i++){
+  //     console.log(value[i].name)
+  //     if(value[i].name==="All"){
+  //       dataSelected.forEach((dataKey =>{
+  //         console.log(dataKey.innerHTML)
+  //         Object.keys(this.props.storetable[dataKey.innerHTML]).forEach((resKey =>{
+  //           this.props.storetable[dataKey.innerHTML][resKey].forEach((toolKey =>{
+  //             reply.add(toolKey)
+  //           }))
+  //         }))
+  //       }))
+  //       break;
 
-      } else{
-        dataSelected.forEach((dataKey =>{
-          console.log(dataKey.innerHTML)
-          this.props.storetable[dataKey.innerHTML][value[i].name].forEach((toolKey =>{
-              reply.add(toolKey)
-            }))
-          }))
-      }
-    }
-    console.log(reply)
-    this.setState({toolChoices: ["All", ...reply]})
-    // console.log( this.state.resChoices)
-  }
+  //     } else{
+  //       dataSelected.forEach((dataKey =>{
+  //         console.log(dataKey.innerHTML)
+  //         this.props.storetable[dataKey.innerHTML][value[i].name].forEach((toolKey =>{
+  //             reply.add(toolKey)
+  //           }))
+  //         }))
+  //     }
+  //   }
+  //   console.log(reply)
+  //   this.setState({toolChoices: ["All", ...reply]})
+  //   // console.log( this.state.resChoices)
+  // }
 
-  handleToolChange(value){
-    const reply = []
-    for(var i=0;i<value.length;i++){
-      // Object.keys(this.props.storetable[value[i].name]).forEach(key =>{
-        // reply.add(key)
-      // })
-      console.log(value[i])
-      // console.log(this.props)
+  // handleToolChange(value){
+  //   const reply = []
+  //   for(var i=0;i<value.length;i++){
+  //     // Object.keys(this.props.storetable[value[i].name]).forEach(key =>{
+  //       // reply.add(key)
+  //     // })
+  //     console.log(value[i])
+  //     // console.log(this.props)
 
-    }
-    // const outfield = new Set();
-    // if(reply.includes("All")){
-      //take all resolutions from our tableMemory and add them to field 2
-    // } else {
-      // for(var i=0;i<reply.length;i++){
-        // this.props.storetable[]
-      // }
-      //take resolutions as expected and move them to field 2. 
-    // console.log(reply)
+  //   }
+  //   // const outfield = new Set();
+  //   // if(reply.includes("All")){
+  //     //take all resolutions from our tableMemory and add them to field 2
+  //   // } else {
+  //     // for(var i=0;i<reply.length;i++){
+  //       // this.props.storetable[]
+  //     // }
+  //     //take resolutions as expected and move them to field 2. 
+  //   // console.log(reply)
 
-  }
+  // }
 
 
   handleChange(value){
@@ -188,13 +188,14 @@ export default class IsQuerying extends React.Component{
       // this.setState({resChoices: this.state.resChoices, toolChoices, this.state.toolChoices})
 
     // }
-    if((prevState.resChoices!=this.state.resChoices)||(prevState.toolChoices!=this.state.toolChoices)){
-      console.log("state changed")
-      this.setState({resChoices: this.state.resChoices, toolChoices: this.state.toolChoices})
-      this.resChoices = this.state.resChoices;
-      this.toolChoices = this.state.toolChoices;
-      console.log(this.resChoices)
-    }
+
+    // if((prevState.resChoices!=this.state.resChoices)||(prevState.toolChoices!=this.state.toolChoices)){
+    //   console.log("state changed")
+    //   this.setState({resChoices: this.state.resChoices, toolChoices: this.state.toolChoices})
+    //   this.resChoices = this.state.resChoices;
+    //   this.toolChoices = this.state.toolChoices;
+    //   console.log(this.resChoices)
+    // }
 
     if(prevProps.searchVisible != this.props.searchVisible){
       const divs = document.querySelectorAll(".content");
@@ -282,8 +283,8 @@ export default class IsQuerying extends React.Component{
       className="content"
       cancel="BoxTitleCloseBox"
       dragHandleClassName="headerTitle"
-      minWidth={400}
-      minHeight={300}
+      minWidth={720}
+      minHeight={400}
       size={{ width: this.state.width,  height: this.state.height }}
       style={{ visibility: this.props.searchVisible }}
       position={{ x: this.state.x, y: this.state.y }}
@@ -312,17 +313,21 @@ export default class IsQuerying extends React.Component{
           <div className="titleLines"></div>
           <div className="titleLines"></div>
           <div className="bottomTitleLines"></div>
-          <div id="BoxTitleHandle" className="callTitle">Search</div>
+          <div id="BoxTitleHandle" className="callTitle">Vector Search</div>
           <div id="BoxTitleCloseBox" className="control-box close-box" >
           <a id="BoxTitleCloseInner" className="control-box-inner" onClick={this.closeWindow}></a>
           </div>
         </div>
-          <div className="column-container-container" style={{margin: 8, marginLeft:22}}>
-
+        <div className="row-container">
+          <div className="column-container" style={{margin: 8, marginLeft:22, width:300}}>
+{/*
           <MultiDropdownApp id="dataset" tag={"Dataset"} choices={["All",...Object.keys(this.props.storetable)]}  handleChange={this.handleDatasetChange}></MultiDropdownApp>
           <MultiDropdownApp id="resolution" tag={"Resolution"} choices={[...this.resChoices]}  handleChange={this.handleResolutionChange}></MultiDropdownApp>
+          <MultiDropdownApp id="tools" tag={"Tool"} choices={[...this.toolChoices]} handleChange={this.handleToolChange}></MultiDropdownApp>*/}
+          
+          <MultiDropdownApp id="dataset" tag={"Dataset"} choices={["All",...Object.keys(this.props.storetable)]}></MultiDropdownApp>
+          <MultiDropdownApp id="resolution" tag={"Resolution"} choices={[...this.resChoices]}></MultiDropdownApp>
           <MultiDropdownApp id="tools" tag={"Tool"} choices={[...this.toolChoices]} handleChange={this.handleToolChange}></MultiDropdownApp>
-
 {/*
           <DownshiftTwo id="dataset" tag={"Dataset"} choices={["All",...Object.keys(this.props.storetable)]} handleChange={this.handleChange}>
           </DownshiftTwo>
@@ -368,12 +373,46 @@ export default class IsQuerying extends React.Component{
                 onChange={this.handleChange}
               />
             </Space>*/}
-          </div>
           <div className="row-container" style={{margin: 8, marginLeft:22, width:600}}>
             <DownshiftTwo   tag="Similarity Type"
                             choices={["All","Images","Epigenomic","Loop Orientation"]} handleChange={this.handleChange}>
             </DownshiftTwo>
           </div>
+
+          </div>
+
+          <div className="column-container-container" style={{margin: 8, marginLeft:22}}>
+
+
+
+
+
+
+          <Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)}>
+            {({getRootProps, getInputProps}) => (
+              <div style={{display:"flex", alignItems: "center", justifyContent: "center"}}>
+                <div {...getRootProps()}
+                      style={{  textAlign: "center",
+                                height: 80,
+                                width: 300,
+                                margin: 25,
+                                padding: 20,
+                                border: "1px dashed rgb(112 112 112)",
+                                colorScheme: "dark",
+                                backgroundColor: "#141414"
+                              }}>
+                  <input {...getInputProps()} />
+                  <p style={{marginBottom: 0}}>Drag 'n' drop some files here, or click to select files</p>
+                </div>
+              </div>
+            )}
+          </Dropzone>
+          </div>
+        </div>
+
+
+
+
 {/*          <div className="row-container" style={{margin: 8, marginLeft:22}}>
             <select id="criteria-search-select" selected="Search Criteria">
               <option>Similarity Criteria</option>
@@ -416,13 +455,13 @@ export default class IsQuerying extends React.Component{
                     <input type="checkbox" id="fourth" />
                     CTCF Orientation
                 </label>
-            </div>     */}     
+            </div>  
 
           <div className="row-container">
           <div className="column-container">
-{/*            <select id="download-names" multiple size="14">
+           <select id="download-names" multiple size="14">
               
-            </select>*/}
+            </select>
 
           <div className="row-container">
             <button className="command_button" id="pbSelect" onClick={this.pbSelectAll}>Select All</button>
@@ -467,7 +506,7 @@ export default class IsQuerying extends React.Component{
             <div id="downloadRow" className="row-container">
             </div>
           </div>
-        </div>
+        </div>*/}
 
   </Rnd>
 

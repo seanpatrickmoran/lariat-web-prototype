@@ -142,14 +142,14 @@ class MultiDropdownApp extends React.Component {
 	    // this.handleChange = this.props.handleChange.bind(this)
 	}
 
-  componentDidUpdate(prevProps, prevState) {
-  	if(this.props.choices!=prevProps.choices){
-  		this.choices = []
-	    this.props.choices.forEach((x) => {
-	        this.choices.push({name: x})
-	    })
-		}
-	}
+  // componentDidUpdate(prevProps, prevState) {
+  // 	if(this.props.choices!=prevProps.choices){
+  // 		this.choices = []
+// 	    this.props.choices.forEach((x) => {
+// 	        this.choices.push({name: x})
+// 	    })
+// 		}
+// 	}
 
 
   componentDidMount(){
@@ -186,7 +186,7 @@ class MultiDropdownApp extends React.Component {
 
     return (
       <div>
-        <div style={{textAlign: 'center'}}>Select  {this.props.tag}</div>
+        <div style={{textAlign: 'left', marginTop:12}}>Select  {this.props.tag}</div>
         <MultiDownshift
           onChange={this.props.handleChange}
           itemToString={this.itemToString}
@@ -207,13 +207,13 @@ class MultiDropdownApp extends React.Component {
             highlightedIndex,
             toggleMenu,
           }) => (
-            <div style={{width: 750, margin: 'auto', position: 'relative'}}>
+            <div style={{width: 350, margin: 'auto', position: 'relative'}}>
               <div 	style={{cursor: "pointer",position: "relative",borderRadius: 6}}
 	                onClick={() => {
                   		toggleMenu()
                   		!isOpen && this.input.current.focus()
                 	}}>
-                <div style={{display: "flex", flexWrap: "wrap"}}>
+                <div style={{width: 350, display: "flex", flexWrap: "wrap"}}>
                   {selectedItems.length > 0 &&
                     selectedItems.map(item => (
                       <div style={{
@@ -227,17 +227,21 @@ class MultiDropdownApp extends React.Component {
                       	key={item.id}>
 
                         <div style={{
+                        	width: 320,
                         	display: "grid",
                         	gridGap: 6,
                         	gridAutoFlow: "column",
                         	alignItems: "center"}}>
                           <span id={`${this.props.tag}Selected`}>{item.name}</span>
 
-                          <button {...getRemoveButtonProps({item})}>X</button>
+                          <button 	{...getRemoveButtonProps({item})}
+                          			style={{width:22, height:22}}>
+                          	X
+                  		  </button>
                         </div>
                       </div>
                     ))}
-                  <div
+                  <input
                     {...getInputProps({
                       ref: this.input,
                       onKeyDown(event) {
