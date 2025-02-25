@@ -23,6 +23,9 @@ export default class IsQuerying extends React.Component{
               this.Ref = React.createRef();
               this.closeWindow = this.closeWindow.bind(this);
               this.dumpWithOptions = this.dumpWithOptions.bind(this);
+
+
+              this.handleFileUpload = this.handleFileUpload.bind(this);
               // this.handleDatasetChange = this.handleDatasetChange.bind(this);
               // this.handleResolutionChange = this.handleResolutionChange.bind(this);
               // this.handleToolChange = this.handleToolChange.bind(this);
@@ -49,7 +52,8 @@ export default class IsQuerying extends React.Component{
                   "Search": "Select Similarity Type",
                   },
                 resChoices: ["All"],
-                toolChoices: ["All"]
+                toolChoices: ["All"],
+                // imageNodeList: new Array(),
                 }
               // this.featureOptions = this.props.storetable[Object.keys(this.props.storetable)[0]][Object.keys(this.props.storetable[Object.keys(this.props.storetable)[0]])[0]].map((el) => return el)
               // this.datasets = ["All"].concat([...Object.keys(this.props.storetable)])
@@ -61,10 +65,121 @@ export default class IsQuerying extends React.Component{
               //   }
                 this.resChoices= ["All","2000","5000","10000"]
                 this.toolChoices= ["All","mustache","quagga"]
+                this.imageNodeList = new Array()
               }
 
   componentDidMount() {
   }
+
+
+  async handleFileUpload(fileArray){
+    const parentNode = document.querySelector("#accepted_files")
+    const dataTransfer = new DataTransfer();
+    for(var i=0;i<fileArray.length;i++){
+      const fptr = fileArray[i]
+      dataTransfer.items.add(fptr)
+
+      //already loaded, or not image.
+      if((fptr.type.split("/")[0]!="image")||(document.querySelector(`[id="@${fptr.name}"]`)!=undefined)){
+        continue
+      }
+
+      let childNode = document.createElement('p');
+      childNode.id = `@${fptr.name}`;
+      childNode.innerHTML = `@ ${fptr.name}`;
+      parentNode.append(childNode);
+      const reader = new FileReader();
+
+
+      switch(fptr.type){
+        /*
+        handling SVG https://developer.mozilla.org/en-US/docs/Web/API/Path2D/Path2D
+
+        let p = new Path2D("M10 10 h 80 v 80 h -80 Z");
+        ctx.fill(p);
+        */
+        case "image/svg+xml": 
+          alert("upload failed!!! not implemented!")
+          // console.log("not implemented!")
+          // console.log(`[id="@${fptr.name}"]`)
+          document.querySelector(`[id="@${fptr.name}"]`).remove()
+          break;
+
+        //handles PNG/JPEG
+        default:
+          reader.onload = async function (event) {
+            const scalar = 128
+            const imageNode = document.createElement('canvas');
+            imageNode.id = `canvasImage@${fptr.name}`
+            imageNode.style.marginLeft="12px"
+
+            var ctx = imageNode.getContext("2d");
+
+            console.log(this.imageNodeList)
+
+            //standard images
+            const imageData = new Image();
+            imageData.onload=function(){
+              var scalewidth = this.width
+              var scaleheight = this.height
+              console.log(scalewidth, scaleheight)
+              if(scalewidth<scaleheight){
+                const multiplier = scaleheight/scalar
+                imageNode.width = ctx.width = this.width/multiplier
+                imageNode.height= ctx.height = this.height/multiplier
+              ctx.drawImage(this,0,0,this.width/multiplier,scalar);
+              
+              } else {
+                const multiplier = scalewidth/scalar
+                imageNode.height = ctx.height = this.height/multiplier
+                imageNode.width = ctx.width = this.width/multiplier
+              ctx.drawImage(this,0,0,scalar,this.height/multiplier);
+              }
+            }
+            imageData.src=event.target.result;
+            childNode.key=event.target.result;
+            childNode.append(document.createElement('br'))
+            childNode.append(imageNode)
+          }
+      };
+
+     reader.readAsDataURL(dataTransfer.files[i])
+    }
+
+
+    }
+
+    // console.log(dataTransfer.files)
+
+    // for(var i=0;i<dataTransfer.files.length;i++){
+    //   console.log("here")
+    //   // var imageData = new Image();
+    //   // console.log(dataTransfer.files[i])
+    //   const fileNode = document.querySelector(`[id="@${dataTransfer.files[i].name}"]`)
+
+
+    //   const imageNode = document.createElement('canvas');
+    //   var ctx = imageNode.getContext("2d");
+    //   ctx.width = ctx.height = 100;
+    //   dataTransfer.setData("text/plain", imageNode.toDataURL())
+    //   // imageData.onload=function(){ctx.drawImage(this,0,0);}
+    //   // const imageBase64 = reader.readAsDataURL(dataTransfer.files[i])
+    //   // imageData.onload=function(){ctx.drawImage(this,0,0);}
+    //   // imageData.src=imageBase64
+
+    //   fileNode.append(imageNode)
+
+    //   imageData.decode().then(() => {
+    //       let width = imageData.width;
+    //       let height = imageData.height;
+    //       console.log("here")
+    //       console.log(width, height)
+    //   });
+    // }
+
+    // console.log(dataTransfer.files)
+    // }
+
 
 
 
@@ -318,7 +433,7 @@ export default class IsQuerying extends React.Component{
           <a id="BoxTitleCloseInner" className="control-box-inner" onClick={this.closeWindow}></a>
           </div>
         </div>
-        <div className="row-container">
+        <div className="row-container" style={{justifyContent: "center"}}>
           <div className="column-container" style={{margin: 8, marginLeft:22, width:300}}>
 {/*
           <MultiDropdownApp id="dataset" tag={"Dataset"} choices={["All",...Object.keys(this.props.storetable)]}  handleChange={this.handleDatasetChange}></MultiDropdownApp>
@@ -383,19 +498,14 @@ export default class IsQuerying extends React.Component{
 
           <div className="column-container-container" style={{margin: 8, marginLeft:22}}>
 
-
-
-
-
-
-          <Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)}>
+          <Dropzone onDrop={acceptedFiles => this.handleFileUpload(acceptedFiles)}>
             {({getRootProps, getInputProps}) => (
               <div style={{display:"flex", alignItems: "center", justifyContent: "center"}}>
                 <div {...getRootProps()}
                       style={{  textAlign: "center",
                                 height: 80,
                                 width: 300,
-                                margin: 25,
+                                margin: 36,
                                 padding: 20,
                                 border: "1px dashed rgb(112 112 112)",
                                 colorScheme: "dark",
@@ -407,7 +517,17 @@ export default class IsQuerying extends React.Component{
               </div>
             )}
           </Dropzone>
+
+          <div  id="accepted_files" 
+                style={{  whiteSpace: "pre-wrap", 
+                          wordBreak: "break-word",
+                          overflowY: "scroll",
+                          maxHeight: "200px",
+                          margin: "12px"
+                        }}>
           </div>
+          </div>
+
         </div>
 
 

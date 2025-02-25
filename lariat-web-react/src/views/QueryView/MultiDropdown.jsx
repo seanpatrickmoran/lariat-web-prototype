@@ -161,7 +161,7 @@ class MultiDropdownApp extends React.Component {
         this.choices.push({name: x})
       // }
     })
-	console.log(this.choices)
+	// console.log(this.choices)
   }
 
   input = React.createRef()
@@ -185,8 +185,8 @@ class MultiDropdownApp extends React.Component {
   render() {
 
     return (
-      <div>
-        <div style={{textAlign: 'left', marginTop:12}}>Select  {this.props.tag}</div>
+      <div style={{marginLeft:8, marginTop:12}}>
+        {/*<div style={{textAlign: 'left', marginTop:12}}>Select  {this.props.tag}</div>*/}
         <MultiDownshift
           onChange={this.props.handleChange}
           itemToString={this.itemToString}
@@ -251,7 +251,7 @@ class MultiDropdownApp extends React.Component {
                       },
                     })}
                     placeholder={
-                      selectedItems.length < 1 ? 'Select a value' : ''
+                      selectedItems.length < 1 ? `Select ${this.props.tag}` : ''
                     }
                   />
                   </div>
