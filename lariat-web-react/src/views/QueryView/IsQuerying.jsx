@@ -23,8 +23,7 @@ export default class IsQuerying extends React.Component{
               this.Ref = React.createRef();
               this.closeWindow = this.closeWindow.bind(this);
               this.dumpWithOptions = this.dumpWithOptions.bind(this);
-
-
+              this.submitQuery = this.submitQuery.bind(this);
               this.handleFileUpload = this.handleFileUpload.bind(this);
               // this.handleDatasetChange = this.handleDatasetChange.bind(this);
               // this.handleResolutionChange = this.handleResolutionChange.bind(this);
@@ -41,7 +40,7 @@ export default class IsQuerying extends React.Component{
 
               this.state = {
                 width: 800,
-                height: 600,
+                height: 442,
                 x: window.innerWidth/2-400,
                 y: window.innerHeight/2-300,
                 showSearch: true,
@@ -72,6 +71,7 @@ export default class IsQuerying extends React.Component{
   }
 
 
+
   async handleFileUpload(fileArray){
     const parentNode = document.querySelector("#accepted_files")
     const dataTransfer = new DataTransfer();
@@ -80,14 +80,29 @@ export default class IsQuerying extends React.Component{
       dataTransfer.items.add(fptr)
 
       //already loaded, or not image.
-      if((fptr.type.split("/")[0]!="image")||(document.querySelector(`[id="@${fptr.name}"]`)!=undefined)){
+      if((fptr.type.split("/")[0]!="image")||(document.querySelector(`[id="${fptr.name}"]`)!=undefined)){
         continue
       }
 
-      let childNode = document.createElement('p');
-      childNode.id = `@${fptr.name}`;
-      childNode.innerHTML = `@ ${fptr.name}`;
-      parentNode.append(childNode);
+      let childDiv = document.createElement('div');
+      childDiv.id = `${fptr.name}`;
+      let childX = document.createElement('button');
+      childX.innerHTML = "x";
+      childX.style.width = 12;
+      childX.style.height = 12;
+      childX.onclick = function(e){
+        document.querySelector(`[id="${fptr.name}"]`).remove()
+      }
+      // document.querySelector(`[id="@asked-gpt-to-draw-anything-he-wants-and-im-satisfied-v0-u2wvxv3qlwge1.webp"]`).onclick = function(e){document.querySelector(`[id="@asked-gpt-to-draw-anything-he-wants-and-im-satisfied-v0-u2wvxv3qlwge1.webp"]`).remove()}
+      childDiv.append(childX)
+      let childspan = document.createElement('span');
+      childspan.innerHTML = ` ${fptr.name}`;
+      childDiv.append(childspan);
+
+      // let childNode = document.createElement('p');
+      // childNode.id = `@${fptr.name}`;
+      // childNode.innerHTML = `@ ${fptr.name}`;
+      parentNode.append(childDiv);
       const reader = new FileReader();
 
 
@@ -102,18 +117,22 @@ export default class IsQuerying extends React.Component{
           alert("upload failed!!! not implemented!")
           // console.log("not implemented!")
           // console.log(`[id="@${fptr.name}"]`)
-          document.querySelector(`[id="@${fptr.name}"]`).remove()
+          document.querySelector(`[id="${fptr.name}"]`).remove()
           break;
 
         //handles PNG/JPEG
         default:
           reader.onload = async function (event) {
             const scalar = 128
+
             const imageNode = document.createElement('canvas');
             imageNode.id = `canvasImage@${fptr.name}`
             imageNode.style.marginLeft="12px"
 
             var ctx = imageNode.getContext("2d");
+
+            // const imageData = new ImageData(imageDataArray, 455, 455);
+            // ctx.putImageData(imageData, 0, 0);
 
             console.log(this.imageNodeList)
 
@@ -128,7 +147,7 @@ export default class IsQuerying extends React.Component{
                 imageNode.width = ctx.width = this.width/multiplier
                 imageNode.height= ctx.height = this.height/multiplier
               ctx.drawImage(this,0,0,this.width/multiplier,scalar);
-              
+
               } else {
                 const multiplier = scalewidth/scalar
                 imageNode.height = ctx.height = this.height/multiplier
@@ -137,18 +156,34 @@ export default class IsQuerying extends React.Component{
               }
             }
             imageData.src=event.target.result;
-            childNode.key=event.target.result;
-            childNode.append(document.createElement('br'))
-            childNode.append(imageNode)
+            childDiv.key=event.target.result;
+            childDiv.append(document.createElement('br'))
+            childDiv.append(imageNode)
           }
       };
 
      reader.readAsDataURL(dataTransfer.files[i])
     }
+  }
 
+
+  submitQuery = async () => {
+
+    const parentNode = document.querySelector("#accepted_files")
+    for(var i = 0; i<parentNode.childNodes.length;i++){
+      console.log(parentNode.childNodes[i].key.split(",")[1])
+      console.log(Uint8Array.from(atob(parentNode.childNodes[i].key.split(",")[1]), c => c.charCodeAt(0)))
+
+      //process image to 65x65.
+
+
+      //for each, fetch to flaskAPI (or fetch as batch)
+          //to support this we need a live inference model.
+
+      //provide HOWTO for people to make their own embeddings?
 
     }
-
+  } 
     // console.log(dataTransfer.files)
 
     // for(var i=0;i<dataTransfer.files.length;i++){
@@ -373,23 +408,6 @@ export default class IsQuerying extends React.Component{
   }
 
 
-
-
-  // showCheckboxes() {
-  //     const cbox = document.querySelector("#checkBoxes");
-  //     console.log(cbox)
-  //     console.log(this.state.showSearch)
-
-  //     if (this.state.showSearch===true) {
-  //         cbox.style.display = "block";
-  //         this.setState({showSearch: false});
-  //     } else {
-  //         cbox.style.display = "none";
-  //         this.setState({showSearch: true});
-  //     }
-  // }
-
-
   render (){
 
     return  <>
@@ -398,8 +416,8 @@ export default class IsQuerying extends React.Component{
       className="content"
       cancel="BoxTitleCloseBox"
       dragHandleClassName="headerTitle"
-      minWidth={720}
-      minHeight={400}
+      minWidth={800}
+      minHeight={442}
       size={{ width: this.state.width,  height: this.state.height }}
       style={{ visibility: this.props.searchVisible }}
       position={{ x: this.state.x, y: this.state.y }}
@@ -433,61 +451,13 @@ export default class IsQuerying extends React.Component{
           <a id="BoxTitleCloseInner" className="control-box-inner" onClick={this.closeWindow}></a>
           </div>
         </div>
-        <div className="row-container" style={{justifyContent: "center"}}>
+        <div className="row-container" style={{justifyContent: "center", height: 380}}>
           <div className="column-container" style={{margin: 8, marginLeft:22, width:300}}>
-{/*
-          <MultiDropdownApp id="dataset" tag={"Dataset"} choices={["All",...Object.keys(this.props.storetable)]}  handleChange={this.handleDatasetChange}></MultiDropdownApp>
-          <MultiDropdownApp id="resolution" tag={"Resolution"} choices={[...this.resChoices]}  handleChange={this.handleResolutionChange}></MultiDropdownApp>
-          <MultiDropdownApp id="tools" tag={"Tool"} choices={[...this.toolChoices]} handleChange={this.handleToolChange}></MultiDropdownApp>*/}
-          
+
           <MultiDropdownApp id="dataset" tag={"Dataset"} choices={["All",...Object.keys(this.props.storetable)]}></MultiDropdownApp>
           <MultiDropdownApp id="resolution" tag={"Resolution"} choices={[...this.resChoices]}></MultiDropdownApp>
           <MultiDropdownApp id="tools" tag={"Tool"} choices={[...this.toolChoices]} handleChange={this.handleToolChange}></MultiDropdownApp>
-{/*
-          <DownshiftTwo id="dataset" tag={"Dataset"} choices={["All",...Object.keys(this.props.storetable)]} handleChange={this.handleChange}>
-          </DownshiftTwo>
-          <DownshiftTwo id="resolution" tag={"Resolution"} choices={[...this.resChoices]} handleChange={this.handleChange}>
-          </DownshiftTwo>
-          <DownshiftTwo id="tools" tag={"Tool"} choices={[...this.toolChoices]} handleChange={this.handleChange}>
-          </DownshiftTwo>*/}
-{/* 
-          make these the same way we did the chat text. for every selected item, load it into a div using the pattern
-          <div id={`${name}_selected`}key={name}>
-            <span>name</span>
-            <div onClick={document.querySelector(`#${name}_selected`).remove()}></div>
-          </div>
-*/}
 
-
-
-
-
-{/*            <select id="dataset-search-select" selected="Dataset"><option>Dataset</option><option>All</option></select>
-            <select id="resolution-search-select" selected="Resolution"><option>Resolution</option><option>All</option></select>
-            <select id="tool-search-select" selected="Tools"><option>Tools</option><option>All</option></select>*/}
-{/*           <Space className="selectSpace" style={{ width: '480px', margin: 8, marginLeft:22, visibility: this.state.showAnt, transitionDelay: 0, transition: '0s'}} direction="horizontal">
-              <Select
-                mode="multiple"
-                allowClear
-                style={{ width: '120px' }}
-                placeholder="Dataset"
-                onChange={this.handleChange}
-              />
-              <Select
-                mode="multiple"
-                allowClear
-                style={{ width: '120px' }}
-                placeholder="Resolution"
-                onChange={this.handleChange}
-              />
-              <Select
-                mode="multiple"
-                allowClear
-                style={{ width: '120px' }}
-                placeholder="Tools"
-                onChange={this.handleChange}
-              />
-            </Space>*/}
           <div className="row-container" style={{margin: 8, marginLeft:22, width:600}}>
             <DownshiftTwo   tag="Similarity Type"
                             choices={["All","Images","Epigenomic","Loop Orientation"]} handleChange={this.handleChange}>
@@ -496,137 +466,44 @@ export default class IsQuerying extends React.Component{
 
           </div>
 
-          <div className="column-container-container" style={{margin: 8, marginLeft:22}}>
+          <div className="column-container" style={{margin: 8, marginLeft:22}}>
 
-          <Dropzone onDrop={acceptedFiles => this.handleFileUpload(acceptedFiles)}>
-            {({getRootProps, getInputProps}) => (
-              <div style={{display:"flex", alignItems: "center", justifyContent: "center"}}>
-                <div {...getRootProps()}
-                      style={{  textAlign: "center",
-                                height: 80,
-                                width: 300,
-                                margin: 36,
-                                padding: 20,
-                                border: "1px dashed rgb(112 112 112)",
-                                colorScheme: "dark",
-                                backgroundColor: "#141414"
-                              }}>
-                  <input {...getInputProps()} />
-                  <p style={{marginBottom: 0}}>Drag 'n' drop some files here, or click to select files</p>
+            <Dropzone onDrop={acceptedFiles => this.handleFileUpload(acceptedFiles)}>
+              {({getRootProps, getInputProps}) => (
+                <div style={{display:"flex", alignItems: "center", justifyContent: "center", width: 400, backgroundColor:"#141414", marginTop:22, marginRight:22}}>
+                  <div {...getRootProps()}
+                        style={{  textAlign: "center",
+                                  height: 80,
+                                  width: 300,
+                                  margin: 36,
+                                  padding: 20,
+                                  border: "1px dashed rgb(112 112 112)",
+                                  colorScheme: "dark",
+                                  backgroundColor: "#141414"
+                                }}>
+                    <input {...getInputProps()} />
+                    <p style={{marginBottom: 0}}>Drag 'n' drop some files here, or click to select files</p>
+                  </div>
                 </div>
-              </div>
-            )}
-          </Dropzone>
+              )}
+            </Dropzone>
 
-          <div  id="accepted_files" 
-                style={{  whiteSpace: "pre-wrap", 
-                          wordBreak: "break-word",
-                          overflowY: "scroll",
-                          maxHeight: "200px",
-                          margin: "12px"
-                        }}>
+            <div  id="accepted_files" 
+                  style={{  whiteSpace: "pre-wrap", 
+                            wordBreak: "break-word",
+                            overflowY: "scroll",
+                            maxHeight: "200px",
+                            margin: "12px",
+                            width: "400px"
+                          }}>
+            </div>
           </div>
-          </div>
-
         </div>
+        <button   onClick={this.submitQuery}
+                  style={{marginLeft: "60px"}}>
+        Submit Search
+        </button>
 
-
-
-
-{/*          <div className="row-container" style={{margin: 8, marginLeft:22}}>
-            <select id="criteria-search-select" selected="Search Criteria">
-              <option>Similarity Criteria</option>
-              <option>All</option>
-              <option>Image</option>
-              <option>Histogram</option>
-              <option>Epigenomic Signal</option>
-              <option>CTCF Orientation</option>
-            </select>
-          </div>*/}
-
-
-
-
-
-{/*
-          <div className="multipleSelection">
-          <div className="selectBox">
-              <select>
-                  <option>Select Search</option>
-              </select>
-              <div className ="overSelect"></div>
-          </div>
-          </div>
-          <div id="checkBoxes">
-                <label for="first">
-                    <input type="checkbox" id="first" />
-                    Image
-                </label>
- 
-                <label for="second">
-                    <input type="checkbox" id="second" />
-                    Histogram
-                </label>
-                <label for="third">
-                    <input type="checkbox" id="third" />
-                    Epigenomic Signal
-                </label>
-                <label for="fourth">
-                    <input type="checkbox" id="fourth" />
-                    CTCF Orientation
-                </label>
-            </div>  
-
-          <div className="row-container">
-          <div className="column-container">
-           <select id="download-names" multiple size="14">
-              
-            </select>
-
-          <div className="row-container">
-            <button className="command_button" id="pbSelect" onClick={this.pbSelectAll}>Select All</button>
-            <button className="command_button" id="pbRemove" onClick={this.pbRemove}>Remove</button>
-          </div>
-
-          </div>
-
-
-          <div className="column-container">
-
-        <div className="row-container">
-
-          <div id="downloadBlock" className="column-container">
-            <div id="downloadRow" className="row-container">
-              <p>Set a filename</p>
-            </div>
-            <div id="downloadRow" className="row-container">
-              <input type="text" id="filename" placeholder="OutfileName.csv" />
-            </div>
-
-            <div id="downloadRow" className="row-container">
-              <button disabled={!this.state.downloadActive} className="command-button" value="Download" onClick={this.dumpWithOptions}>Download</button>
-              <button disabled={this.state.downloadActive} className="command-button" value="Cancel" >Cancel</button>
-            </div>
-          </div>
-
-        </div>
-
-            <div id="downloadRow" className="row-container">
-              <input type="checkbox" id="CSV" value="CSV" checked/>
-              <label for="vehicle1"> Table as CSV </label>
-            </div>
-            <div id="downloadRow" className="row-container">
-              <input type="checkbox" id="Image" value="True Image"/>
-              <label for="vehicle1"> Images </label>
-            </div>
-            <div id="downloadRow" className="row-container">
-              <input type="checkbox" id="Histogram" value="Histogram"/>
-              <label for="vehicle1"> Histograms </label>
-            </div>
-            <div id="downloadRow" className="row-container">
-            </div>
-          </div>
-        </div>*/}
 
   </Rnd>
 

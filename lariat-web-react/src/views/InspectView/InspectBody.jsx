@@ -3,7 +3,7 @@ import React, {useEffect,useState} from 'react';
 import useLocalStorage from './../CustomHooks/UseLocalStorage.js'
 import $ from 'jquery';
 import { kronecker, formImage, fillImageArray } from './inspect.js';
-import { Histogram } from './histogram.jsx';
+import { Histogram } from './Histogram.jsx';
 
 
 

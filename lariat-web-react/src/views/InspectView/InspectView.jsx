@@ -8,7 +8,7 @@ import '../style.css';
 import './inspect.css';
 
 import useLocalStorage from './../CustomHooks/UseLocalStorage.js';
-import { Histogram } from './histogram.jsx';
+import { Histogram } from './Histogram.jsx';
 
 
 export default function InspectView({pasteBoardProps,pasteBoardPropsUpdate}) {
