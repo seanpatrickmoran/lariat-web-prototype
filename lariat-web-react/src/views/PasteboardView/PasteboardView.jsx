@@ -235,7 +235,10 @@ export default class Pasteboard extends React.Component{
 
 
 			  <div id="callBoxDiv" style={{visibility: this.state.isDownloading}}>
-					<Downloading id={"downloadingWindow"} isDownloading={this.state.isDownloading} handleIsDownloadingChange={this.handleIsDownloadingChange} contentSet={this.state.contentSet}/>
+					<Downloading 	id={"downloadingWindow"} 
+												isDownloading={this.state.isDownloading} 
+												handleIsDownloadingChange={this.handleIsDownloadingChange} 
+												contentSet={this.state.contentSet}/>
 			  </div>  
 
 

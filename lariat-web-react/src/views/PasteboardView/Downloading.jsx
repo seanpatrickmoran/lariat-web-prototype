@@ -319,8 +319,16 @@ export default class Downloading extends React.Component{
             </select>
 
           <div className="row-container">
-            <button className="command_button" id="pbSelect" onClick={this.pbSelectAll}>Select All</button>
-            <button className="command_button" id="pbRemove" onClick={this.pbRemove}>Remove</button>
+            <button   className="command_button" 
+                      id="pbSelect" 
+                      onClick={this.pbSelectAll}>
+                      Select All
+            </button>
+            <button   className="command_button" 
+                      id="pbRemove" 
+                      onClick={this.pbRemove}>
+                      Remove
+            </button>
           </div>
 
           </div>
@@ -335,12 +343,23 @@ export default class Downloading extends React.Component{
               <p>Set a filename</p>
             </div>
             <div id="downloadRow" className="row-container">
-              <input type="text" id="filename" placeholder="OutfileName.csv" />
+              <input  type="text" 
+                      id="filename" 
+                      placeholder="OutfileName.csv" />
             </div>
 
             <div id="downloadRow" className="row-container">
-              <button disabled={!this.state.downloadActive} className="command-button" value="Download" onClick={this.dumpWithOptions}>Download</button>
-              <button disabled={this.state.downloadActive} className="command-button" value="Cancel" >Cancel</button>
+              <button   disabled={!this.state.downloadActive} 
+                        className="command-button" 
+                        value="Download" 
+                        onClick={this.dumpWithOptions}>
+                        Download
+              </button>
+              <button   disabled={this.state.downloadActive} 
+                        className="command-button" 
+                        value="Cancel" >
+                        Cancel
+              </button>
             </div>
           </div>
 
@@ -361,7 +380,11 @@ export default class Downloading extends React.Component{
             <div id="downloadRow" className="row-container">
               <div id="idCOMPT">
                 <label for="progress-bar">{this.state.status}</label>
-                <progress id="progress-bar" value={this.state.progress} max={this.state.maxAmount}>{toString(this.state.progress)}%</progress>
+                <progress   id="progress-bar" 
+                            value={this.state.progress} 
+                            max={this.state.maxAmount}>
+                            {toString(this.state.progress)}%
+                </progress>
               </div>
             </div>
           </div>

@@ -207,13 +207,13 @@ class MultiDropdownApp extends React.Component {
             highlightedIndex,
             toggleMenu,
           }) => (
-            <div style={{width: 350, margin: 'auto', position: 'relative'}}>
+            <div style={{width: 160, margin: 'auto', position: 'relative'}}>
               <div 	style={{cursor: "pointer",position: "relative",borderRadius: 6}}
 	                onClick={() => {
                   		toggleMenu()
                   		!isOpen && this.input.current.focus()
                 	}}>
-                <div style={{width: 350, display: "flex", flexWrap: "wrap"}}>
+                <div style={{width: 160, display: "flex", flexWrap: "wrap"}}>
                   {selectedItems.length > 0 &&
                     selectedItems.map(item => (
                       <div style={{
@@ -227,7 +227,7 @@ class MultiDropdownApp extends React.Component {
                       	key={item.id}>
 
                         <div style={{
-                        	width: 320,
+                        	width: 160,
                         	display: "grid",
                         	gridGap: 6,
                         	gridAutoFlow: "column",

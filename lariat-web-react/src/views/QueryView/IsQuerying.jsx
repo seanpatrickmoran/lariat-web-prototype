@@ -24,6 +24,10 @@ export default class IsQuerying extends React.Component{
               this.closeWindow = this.closeWindow.bind(this);
               this.dumpWithOptions = this.dumpWithOptions.bind(this);
               this.submitQuery = this.submitQuery.bind(this);
+              this.fromUserQuery = this.fromUserQuery.bind(this);
+              this.routeQuery = this.routeQuery.bind(this);
+              this.toggleSearchInput = this.toggleSearchInput.bind(this)
+              this.fromLariatQuery = this.fromLariatQuery.bind(this);
               this.handleFileUpload = this.handleFileUpload.bind(this);
               // this.handleDatasetChange = this.handleDatasetChange.bind(this);
               // this.handleResolutionChange = this.handleResolutionChange.bind(this);
@@ -50,21 +54,16 @@ export default class IsQuerying extends React.Component{
                   "Tool": "Select Tool",
                   "Search": "Select Similarity Type",
                   },
+                toggleDropzone: false,
                 resChoices: ["All"],
                 toolChoices: ["All"],
                 // imageNodeList: new Array(),
                 }
-              // this.featureOptions = this.props.storetable[Object.keys(this.props.storetable)[0]][Object.keys(this.props.storetable[Object.keys(this.props.storetable)[0]])[0]].map((el) => return el)
-              // this.datasets = ["All"].concat([...Object.keys(this.props.storetable)])
-              // this.ChooseDownshift = {
-              //     Dataset: "Select Dataset",
-              //     Resolution: "Select Resolution",
-              //     Tool: "Select Tool",
-              //     Search: "Select Similarity Type",
-              //   }
+
                 this.resChoices= ["All","2000","5000","10000"]
                 this.toolChoices= ["All","mustache","quagga"]
                 this.imageNodeList = new Array()
+                this.searchInputRoute = ""
               }
 
   componentDidMount() {
@@ -93,7 +92,7 @@ export default class IsQuerying extends React.Component{
       childX.onclick = function(e){
         document.querySelector(`[id="${fptr.name}"]`).remove()
       }
-      // document.querySelector(`[id="@asked-gpt-to-draw-anything-he-wants-and-im-satisfied-v0-u2wvxv3qlwge1.webp"]`).onclick = function(e){document.querySelector(`[id="@asked-gpt-to-draw-anything-he-wants-and-im-satisfied-v0-u2wvxv3qlwge1.webp"]`).remove()}
+
       childDiv.append(childX)
       let childspan = document.createElement('span');
       childspan.innerHTML = ` ${fptr.name}`;
@@ -167,7 +166,75 @@ export default class IsQuerying extends React.Component{
   }
 
 
-  submitQuery = async () => {
+
+
+  routeQuery = async () => {
+    //Check Fields
+    const datasetSearchFilter = document.querySelectorAll("#DatasetSelected");
+    const resolutionSearchFilter = document.querySelectorAll("#ResolutionSelected");
+    const toolsSearchFilter =  document.querySelectorAll("#ToolSelected");
+
+    var datasetNames = new Array();
+    var resolutionNames = new Array();
+    var toolsNames = new Array();
+
+    //Load datafields or All
+    for(var i = 0; i<datasetSearchFilter.length;i++){
+      if (datasetSearchFilter[i].innerHTML === "All"){
+        datasetNames = [];
+        datasetNames = [...Object.keys(this.props.storetable)]
+      break;
+      } else {
+        datasetNames.push(datasetSearchFilter[i].innerHTML)
+      }
+    }
+
+    //Load res fields or All
+    for(var i = 0; i<resolutionSearchFilter.length;i++){
+      if (resolutionSearchFilter[i].innerHTML === "All"){
+        resolutionNames = [];
+        resolutionNames = this.resChoices.slice(1);
+      break;
+      } else {
+        resolutionNames.push(resolutionSearchFilter[i].innerHTML)
+      }
+    }
+
+    //Load tool fields or All
+    for(var i = 0; i<toolsSearchFilter.length;i++){
+      if (toolsSearchFilter[i].innerHTML === "All"){
+        toolsNames = [];
+        toolsNames = this.toolChoices.slice(1);
+      break;
+      } else {
+        toolsNames.push(toolsSearchFilter[i].innerHTML)
+      }
+    }
+
+    //Constr. Parameter for 
+    var queryRoute = ""
+    datasetNames.forEach((dataElm) => {
+      resolutionNames.forEach((resElm) => {
+        toolsNames.forEach((toolElm) => {
+          console.log(dataElm+resElm+toolElm)
+          queryRoute += dataElm+resElm+toolElm + ","
+          
+        })
+      })
+    })
+
+    // queryRoute is the submission for search @ /bitmaskSearch
+    console.log("queryRoute")
+    console.log(queryRoute)
+    return queryRoute
+  }
+
+
+
+  //One method, we check for user supplied images and submit them one at a time
+  fromUserQuery = async () => {
+    const queryRoute = this.routeQuery();
+    console.log('dropzone')
 
     const parentNode = document.querySelector("#accepted_files")
     for(var i = 0; i<parentNode.childNodes.length;i++){
@@ -182,8 +249,36 @@ export default class IsQuerying extends React.Component{
 
       //provide HOWTO for people to make their own embeddings?
 
+      //1. Handle Images that are ours
+      //2. Handle Images that are from user.
+
+
     }
-  } 
+  }
+
+  //Two method, we use Lariat stashed images for query
+  fromLariatQuery = async () => {
+    const queryRoute = this.routeQuery();
+    console.log('lariat')
+
+  }
+
+
+  submitQuery = async () => {
+    console.log(this.searchInputRoute)
+    switch(this.searchInputRoute){
+      case("clipboard"):
+        await this.fromLariatQuery();
+        break;
+      case("dropzone"):
+        await this.fromUserQuery();
+        break;
+      default:
+        console.log('huh')
+    }
+  }
+
+
     // console.log(dataTransfer.files)
 
     // for(var i=0;i<dataTransfer.files.length;i++){
@@ -215,84 +310,6 @@ export default class IsQuerying extends React.Component{
     // console.log(dataTransfer.files)
     // }
 
-
-
-
-  // handleDatasetChange(value){
-  //   const reply = new Set()
-  //   for(var i=0;i<value.length;i++){
-  //     if(value[i].name==="All"){
-  //       Object.keys(this.props.storetable).forEach((dataKey =>{
-  //         Object.keys(this.props.storetable[dataKey]).forEach((resKey =>{
-  //           reply.add(resKey)
-  //         }))
-  //       }))
-  //       break;
-
-  //     } else{
-  //       Object.keys(this.props.storetable[value[i].name]).forEach((entry =>{
-  //         reply.add(entry)
-  //       }))
-  //     }
-  //   }
-  //   console.log(reply)
-  //   this.setState({resChoices: ["All", ...reply]})
-  // }
-
-
-  // handleResolutionChange(value){
-  //   console.log(this.props)
-  //   const dataSelected = document.querySelectorAll("#DatasetSelected")
-  //   // const resolutionSelected = document.querySelectorAll("#DatasetSelected")
-  //   const reply = new Set()
-  //   for(var i=0;i<value.length;i++){
-  //     console.log(value[i].name)
-  //     if(value[i].name==="All"){
-  //       dataSelected.forEach((dataKey =>{
-  //         console.log(dataKey.innerHTML)
-  //         Object.keys(this.props.storetable[dataKey.innerHTML]).forEach((resKey =>{
-  //           this.props.storetable[dataKey.innerHTML][resKey].forEach((toolKey =>{
-  //             reply.add(toolKey)
-  //           }))
-  //         }))
-  //       }))
-  //       break;
-
-  //     } else{
-  //       dataSelected.forEach((dataKey =>{
-  //         console.log(dataKey.innerHTML)
-  //         this.props.storetable[dataKey.innerHTML][value[i].name].forEach((toolKey =>{
-  //             reply.add(toolKey)
-  //           }))
-  //         }))
-  //     }
-  //   }
-  //   console.log(reply)
-  //   this.setState({toolChoices: ["All", ...reply]})
-  //   // console.log( this.state.resChoices)
-  // }
-
-  // handleToolChange(value){
-  //   const reply = []
-  //   for(var i=0;i<value.length;i++){
-  //     // Object.keys(this.props.storetable[value[i].name]).forEach(key =>{
-  //       // reply.add(key)
-  //     // })
-  //     console.log(value[i])
-  //     // console.log(this.props)
-
-  //   }
-  //   // const outfield = new Set();
-  //   // if(reply.includes("All")){
-  //     //take all resolutions from our tableMemory and add them to field 2
-  //   // } else {
-  //     // for(var i=0;i<reply.length;i++){
-  //       // this.props.storetable[]
-  //     // }
-  //     //take resolutions as expected and move them to field 2. 
-  //   // console.log(reply)
-
-  // }
 
 
   handleChange(value){
@@ -333,20 +350,34 @@ export default class IsQuerying extends React.Component{
 
 
 
+toggleSearchInput(response){
+    const label = response[0]
+    const reply = response[1]
+
+    console.log(label, reply)
+    switch(reply) {
+      case "User Upload":
+        document.querySelector("#dropzone-blind").style.visibility="visible" 
+        document.querySelector("#clipboard-blind").style.visibility="hidden"
+        this.searchInputRoute = "dropzone"
+        console.log(this.searchInputRoute)
+        break;
+      case "Clipboard":
+        document.querySelector("#dropzone-blind").style.visibility="hidden" 
+        //it seems unusable when hidden. no need to disable?
+        document.querySelector("#clipboard-blind").style.visibility="visible"
+        this.searchInputRoute = "clipboard"
+        console.log(this.searchInputRoute)
+        break;
+      default:
+        // code block
+    }
+    // } 
+  };
+
+
+
   componentDidUpdate(prevProps, prevState) {
-    // if((prevState.resChoices!=this.state.resChoices)||(prevState.toolChoices!=this.state.toolChoices)){
-      // this.setState({resChoices: this.state.resChoices, toolChoices, this.state.toolChoices})
-
-    // }
-
-    // if((prevState.resChoices!=this.state.resChoices)||(prevState.toolChoices!=this.state.toolChoices)){
-    //   console.log("state changed")
-    //   this.setState({resChoices: this.state.resChoices, toolChoices: this.state.toolChoices})
-    //   this.resChoices = this.state.resChoices;
-    //   this.toolChoices = this.state.toolChoices;
-    //   console.log(this.resChoices)
-    // }
-
     if(prevProps.searchVisible != this.props.searchVisible){
       const divs = document.querySelectorAll(".content");
     // this.setState({showAnt: this.props.searchVisible})
@@ -356,7 +387,7 @@ export default class IsQuerying extends React.Component{
       })
 
       document.getElementById(this.props.id).style.zIndex=0
-    // document.querySelector(".selectSpace").style.visibility=this.props.searchVisible
+    document.querySelector("#dropzone-blind").style.visibility=this.props.searchVisible 
     }
   }
 
@@ -365,8 +396,10 @@ export default class IsQuerying extends React.Component{
     // setTimeout(this.setState({showAnt: 'hidden'}))
     // document.querySelector(".selectSpace").style.visibility="hidden"
     this.props.setSearchVisible("hidden")
-    // this.props.handleIsDownloadingChange("hidden");
-  }
+    document.querySelector("#dropzone-blind").style.visibility="hidden" 
+    document.querySelector("#clipboard-blind").style.visibility="hidden"
+    this.searchInputRoute = "dropzone"
+    }
 
 
   async makeRequests(promiseSixArray) {
@@ -400,11 +433,29 @@ export default class IsQuerying extends React.Component{
 
 
 
-  pbSelectAll = (event) => {
+  queryClipboardSelectAll = (event) => {
+    const pasteBoardSelectField = document.getElementById("query-names");
+    const length = pasteBoardSelectField.options.length;
+    for(var i = 0;i<length;i++){
+    pasteBoardSelectField.options[i].selected = "selected";
+    }
   }
 
 
-  pbRemove = (event) => {
+  querySearchRemove = (event) => {
+    const pasteBoardSelectField = document.getElementById("query-names");
+    const length = pasteBoardSelectField.options.length;
+      let delArr = [];
+      for (let i = 0; i < pasteBoardSelectField.options.length; i++) {
+        delArr[i] = pasteBoardSelectField.options[i].selected;
+      }
+
+    let index = pasteBoardSelectField.options.length;
+    while (index--) {
+      if (delArr[index]) {
+        pasteBoardSelectField.remove(index);
+      }
+    }
   }
 
 
@@ -451,26 +502,47 @@ export default class IsQuerying extends React.Component{
           <a id="BoxTitleCloseInner" className="control-box-inner" onClick={this.closeWindow}></a>
           </div>
         </div>
-        <div className="row-container" style={{justifyContent: "center", height: 380}}>
-          <div className="column-container" style={{margin: 8, marginLeft:22, width:300}}>
+      <div className="column-container" style={{margin: 8, marginLeft:22, width:300}}>
+        <div className="row-container" style={{justifyContent: "center", height: 24}}>
 
-          <MultiDropdownApp id="dataset" tag={"Dataset"} choices={["All",...Object.keys(this.props.storetable)]}></MultiDropdownApp>
-          <MultiDropdownApp id="resolution" tag={"Resolution"} choices={[...this.resChoices]}></MultiDropdownApp>
-          <MultiDropdownApp id="tools" tag={"Tool"} choices={[...this.toolChoices]} handleChange={this.handleToolChange}></MultiDropdownApp>
+          <MultiDropdownApp   id="dataset" 
+                              tag={"Dataset"} 
+                              choices={["All",...Object.keys(this.props.storetable)]}>
+          </MultiDropdownApp>
 
-          <div className="row-container" style={{margin: 8, marginLeft:22, width:600}}>
-            <DownshiftTwo   tag="Similarity Type"
-                            choices={["All","Images","Epigenomic","Loop Orientation"]} handleChange={this.handleChange}>
-            </DownshiftTwo>
-          </div>
+          <MultiDropdownApp   id="resolution" 
+                              tag={"Resolution"} 
+                              choices={[...this.resChoices]}>
+          </MultiDropdownApp>
 
-          </div>
+          <MultiDropdownApp   id="tools" 
+                              tag={"Tool"} 
+                              choices={[...this.toolChoices]} 
+                              handleChange={this.handleToolChange}>
+          </MultiDropdownApp>
+        </div>
+      </div>
 
-          <div className="column-container" style={{margin: 8, marginLeft:22}}>
+      <div className="row-container" style={{justifyContent: "center"}}>
+        <div className="column-container" style={{margin: 8, marginLeft:22}}>
 
-            <Dropzone onDrop={acceptedFiles => this.handleFileUpload(acceptedFiles)}>
+{/*            <label class="switch">
+              <input type="checkbox" on></input>
+              <span className="slider round"></span>
+            </label>*/}
+          <div id="dropzone-blind">
+            <Dropzone   onDrop={acceptedFiles => this.handleFileUpload(acceptedFiles)} 
+                        disabled={this.state.toggleDropzone}>
+
               {({getRootProps, getInputProps}) => (
-                <div style={{display:"flex", alignItems: "center", justifyContent: "center", width: 400, backgroundColor:"#141414", marginTop:22, marginRight:22}}>
+                <div style={{ display:"flex", 
+                              alignItems: "center", 
+                              justifyContent: "center", 
+                              width: 400, 
+                              backgroundColor:"#141414",
+                              marginTop:22, 
+                              marginRight:22}}>
+
                   <div {...getRootProps()}
                         style={{  textAlign: "center",
                                   height: 80,
@@ -482,32 +554,77 @@ export default class IsQuerying extends React.Component{
                                   backgroundColor: "#141414"
                                 }}>
                     <input {...getInputProps()} />
-                    <p style={{marginBottom: 0}}>Drag 'n' drop some files here, or click to select files</p>
+                    <p style={{marginBottom: 0}}>
+                      Drag 'n' drop some files here, or click to select files
+                    </p>
                   </div>
                 </div>
               )}
             </Dropzone>
 
             <div  id="accepted_files" 
-                  style={{  whiteSpace: "pre-wrap", 
-                            wordBreak: "break-word",
-                            overflowY: "scroll",
-                            maxHeight: "200px",
-                            margin: "12px",
-                            width: "400px"
-                          }}>
+            style={{  whiteSpace: "pre-wrap", 
+                      wordBreak: "break-word",
+                      overflowY: "scroll",
+                      maxHeight: "200px",
+                      margin: "12px",
+                      width: "400px"
+                    }}>
             </div>
+
           </div>
+
+          <div id="clipboard-blind" style={{marginTop: -160, visibility: "hidden"}}>
+
+            <select id="query-names" style={{width: 600}} multiple size="8">
+            </select>
+            <div className="row-container">
+              <button   className="command_button" 
+                        id="querySearchSelect" 
+                        onClick={this.queryClipboardSelectAll}>
+                        Select All
+              </button>
+
+              <button   className="command_button" 
+                        id="querySearchRemove" 
+                        onClick={this.querySearchRemove}>
+                        Remove
+              </button>
+            </div>
+
+          </div>
+
+
         </div>
-        <button   onClick={this.submitQuery}
-                  style={{marginLeft: "60px"}}>
-        Submit Search
-        </button>
 
+      </div>
+      <div    className="row-container" 
+              style={{justifyContent: "center"}}>
 
-  </Rnd>
+        <div    className="row-container">
 
+          <button   onClick={this.submitQuery}>
+          Search
+          </button>
 
-        </>
+{/*            <select name="available" id="user-source-select" selected="user">
+              <option value="user">Upload</option>
+              <option value="database">Lariat Database</option>
+              <option value="all">All</option>
+            </select>*/}
+
+          <DownshiftTwo   tag="Input Source"
+                          choices={["User Upload", "Clipboard"]} 
+                          handleChange={this.toggleSearchInput}>
+          </DownshiftTwo>
+
+          <DownshiftTwo   tag="Vector Search Type"
+                          choices={["All","Images","Epigenomic","Loop Orientation"]} 
+                          handleChange={this.handleChange}>
+          </DownshiftTwo>
+        </div>
+      </div>
+    </Rnd>
+          </>
   }
 }

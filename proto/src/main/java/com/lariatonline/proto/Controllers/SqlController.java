@@ -30,8 +30,8 @@ import java.sql.*;
 
 @RestController
 public class SqlController {
-	private String databaseURI = "jdbc:sqlite:/Users/seanmoran/Projects/sTables/database_17_bin.db";
-//	private String databaseURI = "jdbc:sqlite:/Users/seanmoran/Documents/Master/2025/databse6_binary.db";
+	private String databaseURI = "jdbc:sqlite:/Users/seanmoran/Projects/sTables/__database_24_1bin.db";
+
 	
 	Map<String,List<String>> tableMemory = new HashMap<>();
 //	TalkTomcat binder = new TalkTomcat();
@@ -43,6 +43,7 @@ public class SqlController {
 //        List<Map<String, String>> listOfMaps = null;
 		String response = TalkTomcat.GetHost();
 //		listOfMaps.get(0).put("response", response);
+		System.out.println(databaseURI);
 		return new ResponseEntity<String>(new Gson().toJson(response), HttpStatus.OK);
 	}	
 	

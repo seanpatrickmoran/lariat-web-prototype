@@ -161,7 +161,7 @@ import Downshift from 'downshift';
              }) => (
               <div>
                 <button id={`${this.props.id}-button`} className="dropdown-button" {...getToggleButtonProps()}>
-                  {this.state.selectedDropItem !== '' ? this.state.selectedDropItem : `Select ${this.props.tag}`}
+                  {this.state.selectedDropItem !== '' ? this.state.selectedDropItem : `${this.props.tag}`}
                 </button>
                 <div style={{ position: 'relative' }}>
                   {isOpen ? (
